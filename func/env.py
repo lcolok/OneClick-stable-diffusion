@@ -74,7 +74,7 @@ def setProxy():
     from ipywidgets import interact, widgets
     from IPython.display import display, clear_output
     
-    global region,proxy
+    global region, proxy
     btnArray = []
     region = '未知'
     proxy = 'cd ./'  # 一句没有实际作用的命令作为占位
@@ -90,6 +90,7 @@ def setProxy():
 
 
     def autoRegion():
+        global region, proxy
         for key in ipDict:
             ip = ipDict[key]
             if (os.system(f'ping -c 1 -w 1 {ip}') == 0):
@@ -180,3 +181,5 @@ def setProxy():
 
     for e in btnArray:
         display(e)
+        
+    return({'region':region,'proxy':proxy})
