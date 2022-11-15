@@ -71,6 +71,37 @@ def getArch():
 
     return ({"arch": arch, "gpu": gpu})
 
+ipDict = {
+    '芜湖': '192.168.0.91',
+    '北京': '100.72.64.19',
+    '内蒙': '192.168.1.174',
+    '泉州': '10.55.146.88',
+    '南京': '172.181.217.43',
+    '佛山': '192.168.126.12',
+}
+
+def autoRegion():
+    global region, proxy
+    for key in ipDict:
+        ip = ipDict[key]
+        if (os.system(f'ping -c 1 -w 1 {ip}') == 0):
+            # print('OK')
+            global region, proxy
+            region = key
+            proxy = makeCLI(ip)
+            break
+        else:
+            # print('Connection failed')
+            continue
+
+def makeCLI(ip):
+    return f'export http_proxy=http://{ip}:12798 && export https_proxy=http://{ip}:12798'
+
+def setProxyCLI():
+    autoRegion()
+    ip = ipDict[region]
+    proxy = makeCLI(ip)
+    return({'region':region,'proxy':proxy})
 
 def setProxy():
 
@@ -83,36 +114,6 @@ def setProxy():
     btnArray = []
     region = '未知'
     proxy = 'cd ./'  # 一句没有实际作用的命令作为占位
-
-    ipDict = {
-        '芜湖': '192.168.0.91',
-        '北京': '100.72.64.19',
-        '内蒙': '192.168.1.174',
-        '泉州': '10.55.146.88',
-        '南京': '172.181.217.43',
-        '佛山': '192.168.126.12',
-    }
-
-
-    def autoRegion():
-        global region, proxy
-        for key in ipDict:
-            ip = ipDict[key]
-            if (os.system(f'ping -c 1 -w 1 {ip}') == 0):
-                print('OK')
-                global region, proxy
-                region = key
-                proxy = makeCLI(ip)
-                clear_output(wait=True)
-                break
-            else:
-                print('Connection failed')
-                continue
-
-
-    def makeCLI(ip):
-        return f'export http_proxy=http://{ip}:12798 && export https_proxy=http://{ip}:12798'
-
 
     def printSuccess(region):
         # print(f'已挂载【{region}】对应的代理')
@@ -178,6 +179,8 @@ def setProxy():
         display(e)
 
     autoRegion()
+    clear_output(wait=True)
+
     if region != '未知':
         autoClick(region)
     else:
