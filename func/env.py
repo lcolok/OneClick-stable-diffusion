@@ -183,3 +183,5 @@ def setProxy():
         display(e)
         
     return({'region':region,'proxy':proxy})
+
+installDir = '/root/OneClick-stable-diffusion/'
