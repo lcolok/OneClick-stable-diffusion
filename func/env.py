@@ -189,4 +189,42 @@ def setProxy():
         
     return({'region':region,'proxy':proxy})
 
+# def checkAndSetProxy():
+#     from IPython.display import display,clear_output
+#     try:
+#         proxy,region
+#     except NameError:
+#         cb=setProxy()
+#         global proxy,region
+#         proxy=cb['proxy']
+#         region=cb['region']
+#         clear_output(wait=True)
+
 installDir = '/root/OneClick-stable-diffusion/'
+
+import os
+
+def findDir(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in dirs:
+            return os.path.join(root, name)
+
+def findFile(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
+        
+
+webUIDir = findDir('stable-diffusion-webui','/root/')
+
+extDir = findDir('extensions',webUIDir)
+
+xformersDir = findDir('xformers',webUIDir)
+    
+def getDirSize(dir):
+    size = 0
+    for root, dirs, files in os.walk(dir):
+        size += sum([os.path.getsize(os.path.join(root, name)) for name in files])
+    return size
+
+styleURL = 'https://raw.githubusercontent.com/lcolok/My_SD_styles.csv/main/styles.csv'
