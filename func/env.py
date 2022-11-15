@@ -23,6 +23,8 @@ def getArch():
         gpu = 'A4000'
     elif 'A5000' in s:
         gpu = 'A5000'
+    elif 'NVIDIA GeForce GTX 1080 Ti' in s:
+        gpu = '1080 Ti'
     elif 'NVIDIA GeForce RTX 2080 Ti' in s:
         gpu = '2080 Ti'
     elif 'NVIDIA GeForce RTX 3060' in s:
@@ -45,7 +47,8 @@ def getArch():
     # https://qiita.com/k_ikasumipowder/items/1142dadba01b42ac6012
 
     arch = ""
-
+    
+    sm61_list = ['Titan Xp', 'Tesla P40', 'Tesla P4','1080','1080 Ti', '1070', '1060', '1050']
     sm89_list = ['4090']
     sm86_list = ['3060', '3070', '3080',
                  '3080 Ti', '3090', 'A40', 'A4000', 'A5000']
@@ -63,6 +66,8 @@ def getArch():
         arch = 'sm70'
     elif gpu in sm89_list:
         arch = 'sm89'
+    elif gpu in sm61_list:
+        arch = 'sm61'
 
     return ({"arch": arch, "gpu": gpu})
 
