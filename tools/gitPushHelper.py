@@ -7,7 +7,9 @@ from func.env import setProxyCLI
 cb=setProxyCLI()
 proxy=cb['proxy']
 region=cb['region']
+proxyURL=cb['proxyURL']
 
-cmd = f'{proxy} && git config --global user.email 425311101@qq.com && git config --global user.name lcolok && cd /root/OneClick-stable-diffusion && git push'
+cmd = f'git config --global http.proxy {proxyURL} && git config --global user.email 425311101@qq.com && git config --global user.name lcolok && cd {dir_path} && git push'
+# cmd = f'{proxy} && git config --global user.email 425311101@qq.com && git config --global user.name lcolok && cd /root/OneClick-stable-diffusion && git push'
 print(cmd)
 os.system(cmd)

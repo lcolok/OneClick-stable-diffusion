@@ -94,14 +94,18 @@ def autoRegion():
             # print('Connection failed')
             continue
 
+def getProxyURL(ip):
+    return f'http://{ip}:12798'
+
 def makeCLI(ip):
-    return f'export http_proxy=http://{ip}:12798 && export https_proxy=http://{ip}:12798'
+    return f'export http_proxy={getProxyURL(ip)} && export https_proxy={getProxyURL(ip)}'
 
 def setProxyCLI():
     autoRegion()
     ip = ipDict[region]
     proxy = makeCLI(ip)
-    return({'region':region,'proxy':proxy})
+    proxyURL = getProxyURL(ip)
+    return({'region':region,'proxy':proxy,'proxyURL':proxyURL})
 
 def setProxy():
 
@@ -110,7 +114,7 @@ def setProxy():
     from ipywidgets import interact, widgets
     from IPython.display import display, clear_output
     
-    global region, proxy
+    global region, proxy ,proxyURL
     btnArray = []
     region = '未知'
     proxy = 'cd ./'  # 一句没有实际作用的命令作为占位
@@ -149,6 +153,7 @@ def setProxy():
         obj.icon = 'check'
         region = obj.description
         ip = ipDict[region]
+        proxyURL = getProxyURL(ip)
         proxy = makeCLI(ip)
         printSuccess(obj.description)
 
@@ -190,7 +195,7 @@ def setProxy():
     for e in btnArray:
         display(e)
         
-    return({'region':region,'proxy':proxy})
+    return({'region':region,'proxy':proxy,'proxyURL':proxyURL})
 
 # def checkAndSetProxy():
 #     from IPython.display import display,clear_output
