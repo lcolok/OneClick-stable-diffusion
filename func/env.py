@@ -81,18 +81,23 @@ ipDict = {
 }
 
 def autoRegion():
+    from func.ping import ping_threading
     global region, proxy
-    for key in ipDict:
-        ip = ipDict[key]
-        if (os.system(f'ping -c 1 -w 1 {ip}') == 0):
-            # print('OK')
-            global region, proxy
-            region = key
-            proxy = makeCLI(ip)
-            break
-        else:
-            # print('Connection failed')
-            continue
+    cb=ping_threading(ipDict)
+    region = cb['region']
+    proxy = makeCLI(cb['ip'])
+    
+    # for key in ipDict:
+    #     ip = ipDict[key]
+    #     if (os.system(f'ping -c 1 -w 1 {ip}') == 0):
+    #         # print('OK')
+    #         global region, proxy
+    #         region = key
+    #         proxy = makeCLI(ip)
+    #         break
+    #     else:
+    #         # print('Connection failed')
+    #         continue
 
 def getProxyURL(ip):
     return f'http://{ip}:12798'
