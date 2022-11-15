@@ -80,13 +80,17 @@ ipDict = {
     '佛山': '192.168.126.12',
 }
 
+def getProxyURL(ip):
+    return f'http://{ip}:12798'
+
 def autoRegion():
     from func.ping import ping_threading
-    global region, proxy
+    global region, proxy, proxyURL
     cb=ping_threading(ipDict)
     region = cb['region']
-    proxy = makeCLI(cb['ip'])
-    
+    ip = cb['ip']
+    proxy = makeCLI(ip)
+    proxyURL = getProxyURL(ip)
     # for key in ipDict:
     #     ip = ipDict[key]
     #     if (os.system(f'ping -c 1 -w 1 {ip}') == 0):
@@ -98,9 +102,6 @@ def autoRegion():
     #     else:
     #         # print('Connection failed')
     #         continue
-
-def getProxyURL(ip):
-    return f'http://{ip}:12798'
 
 def makeCLI(ip):
     return f'export http_proxy={getProxyURL(ip)} && export https_proxy={getProxyURL(ip)}'
@@ -158,7 +159,6 @@ def setProxy():
         obj.icon = 'check'
         region = obj.description
         ip = ipDict[region]
-        proxyURL = getProxyURL(ip)
         proxy = makeCLI(ip)
         printSuccess(obj.description)
 
