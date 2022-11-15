@@ -48,7 +48,7 @@ def getArch():
 
     arch = ""
     
-    sm61_list = ['Titan Xp', 'Tesla P40', 'Tesla P4','1080','1080 Ti', '1070', '1060', '1050']
+    sm61_list = ['TITAN Xp', 'Tesla P40', 'Tesla P4','1080','1080 Ti', '1070', '1060', '1050']
     sm89_list = ['4090']
     sm86_list = ['3060', '3070', '3080',
                  '3080 Ti', '3090', 'A40', 'A4000', 'A5000']
