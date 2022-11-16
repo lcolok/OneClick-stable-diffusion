@@ -46,7 +46,8 @@ def getArch():
     # https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/
     # https://qiita.com/k_ikasumipowder/items/1142dadba01b42ac6012
 
-    arch = ""
+    arch=str
+    whlSize=int
     
     sm61_list = ['TITAN Xp', 'Tesla P40', 'Tesla P4','1080','1080 Ti', '1070', '1060', '1050']
     sm89_list = ['4090']
@@ -58,18 +59,24 @@ def getArch():
 
     if gpu in sm86_list:
         arch = 'sm86'
+        whlSize = 108993677
     elif gpu in sm80_list:
         arch = 'sm80'
+        whlSize = 109020527
     elif gpu in sm75_list:
         arch = 'sm75'
+        whlSize = 108867109
     elif gpu in sm70_list:
         arch = 'sm70'
+        whlSize = 111201556
     elif gpu in sm89_list:
         arch = 'sm89'
+        whlSize = 101099488
     elif gpu in sm61_list:
         arch = 'sm61'
+        whlSize = 106055982
 
-    return ({"arch": arch, "gpu": gpu})
+    return ({"arch": arch, "gpu": gpu, "whlSize":whlSize})
 
 ipDict = {
     '芜湖': '192.168.0.91',
