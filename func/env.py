@@ -227,20 +227,24 @@ import os
 def findDir(name, path):
     for root, dirs, files in os.walk(path):
         if name in dirs:
-            return os.path.join(root, name)
+            realPath = os.path.join(root, name)
+            if '.local/share/Trash' not in realPath:  #排除在回收站里面的文件夹
+                return realPath
 
 def findFile(name, path):
     for root, dirs, files in os.walk(path):
         if name in files:
-            return os.path.join(root, name)
-        
+            realPath = os.path.join(root, name)
+            if '.local/share/Trash' not in realPath:  #排除在回收站里面的文件夹
+                return realPath
 
-webUIDir = findDir('stable-diffusion-webui','/root/')
-
+webUIDir = findDir('stable-diffusion-webui','/root')
+# print('webUIDir:',webUIDir)
 extDir = findDir('extensions',webUIDir)
-
+# print('extDir:',extDir)
 xformersDir = findDir('xformers',webUIDir)
-    
+# print('xformersDir:',xformersDir)
+
 def getDirSize(dir):
     size = 0
     for root, dirs, files in os.walk(dir):
