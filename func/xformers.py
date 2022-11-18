@@ -9,14 +9,6 @@ import json
 from IPython.display import display,clear_output
 import ipywidgets as widgets
 
-try:
-    proxy,region
-except NameError:
-    cb=setProxy()
-    proxy=cb['proxy']
-    region=cb['region']
-    clear_output(wait=True)
-
 cb = getArch()
 arch = cb['arch']
 gpu = cb['gpu']
@@ -106,7 +98,14 @@ def checkXformersInstalled():
     else:
         return False
     
-def installXformers():
+def installXformers(proxy,region):
+    try:
+        proxy,region
+    except NameError:
+        cb=setProxy()
+        proxy=cb['proxy']
+        region=cb['region']
+        clear_output(wait=True)
     if arch in archWhiteList:
         installed = checkXformersInstalled()
         # print('已经安装了吗？_______________',installed)
