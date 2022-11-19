@@ -1,3 +1,5 @@
+import os
+
 def getArch():
 
     from subprocess import getoutput
@@ -46,10 +48,11 @@ def getArch():
     # https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/
     # https://qiita.com/k_ikasumipowder/items/1142dadba01b42ac6012
 
-    arch=str
-    whlSize=int
-    
-    sm61_list = ['TITAN Xp', 'Tesla P40', 'Tesla P4','1080','1080 Ti', '1070', '1060', '1050']
+    arch = str
+    whlSize = int
+
+    sm61_list = ['TITAN Xp', 'Tesla P40', 'Tesla P4',
+                 '1080', '1080 Ti', '1070', '1060', '1050']
     sm89_list = ['4090']
     sm86_list = ['3060', '3070', '3080',
                  '3080 Ti', '3090', 'A40', 'A4000', 'A5000']
@@ -76,49 +79,41 @@ def getArch():
         arch = 'sm61'
         whlSize = 106055982
 
-    return ({"arch": arch, "gpu": gpu, "whlSize":whlSize})
+    return ({"arch": arch, "gpu": gpu, "whlSize": whlSize})
 
-ipDict = {
-    '芜湖': '192.168.0.91',
-    '北京': '100.72.64.19',
-    '内蒙': '192.168.1.174',
-    '泉州': '10.55.146.88',
-    '南京': '172.181.217.43',
-    '佛山': '192.168.126.12',
-}
+ipDict = [
+    {'region': '芜湖', 'ip': '192.168.0.91', 'port': '12798'},
+    {'region': '北京', 'ip': '100.72.64.19', 'port': '12798'},
+    {'region': '内蒙', 'ip': '192.168.1.174', 'port': '12798'},
+    {'region': '泉州', 'ip': '10.55.146.88', 'port': '12798'},
+    {'region': '南京', 'ip': '172.181.217.43', 'port': '12798'},
+    {'region': '佛山', 'ip': '192.168.126.12', 'port': '12798'},
+    {'region': '九天', 'ip': '172.22.17.74', 'port': '3928'},
+]
 
-def getProxyURL(ip):
-    return f'http://{ip}:12798'
+def getProxyURL(ip,port):
+    return f'http://{ip}:{port}'
+
 
 def autoRegion():
     from func.ping import ping_threading
     global region, proxy, proxyURL
-    cb=ping_threading(ipDict)
+    cb = ping_threading(ipDict)
+    # print(cb)
     region = cb['region']
     ip = cb['ip']
-    proxy = makeCLI(ip)
-    proxyURL = getProxyURL(ip)
-    # for key in ipDict:
-    #     ip = ipDict[key]
-    #     if (os.system(f'ping -c 1 -w 1 {ip}') == 0):
-    #         # print('OK')
-    #         global region, proxy
-    #         region = key
-    #         proxy = makeCLI(ip)
-    #         break
-    #     else:
-    #         # print('Connection failed')
-    #         continue
+    port = cb['port']
+    proxy = makeCLI(ip,port)
+    proxyURL = getProxyURL(ip,port)
 
-def makeCLI(ip):
-    return f'export http_proxy={getProxyURL(ip)} && export https_proxy={getProxyURL(ip)}'
+def makeCLI(ip,port):
+    return f'export http_proxy={getProxyURL(ip,port)} && export https_proxy={getProxyURL(ip,port)}'
+
 
 def setProxyCLI():
     autoRegion()
-    ip = ipDict[region]
-    proxy = makeCLI(ip)
-    proxyURL = getProxyURL(ip)
-    return({'region':region,'proxy':proxy,'proxyURL':proxyURL})
+    return({'region': region, 'proxy': proxy, 'proxyURL': proxyURL})
+
 
 def setProxy():
 
@@ -126,11 +121,10 @@ def setProxy():
     import subprocess
     from ipywidgets import interact, widgets
     from IPython.display import display, clear_output
-    
-    global region, proxy ,proxyURL
+
+    global proxyURL
     btnArray = []
-    region = '未知'
-    proxy = 'cd ./'  # 一句没有实际作用的命令作为占位
+
 
     def printSuccess(region):
         # print(f'已挂载【{region}】对应的代理')
@@ -138,13 +132,11 @@ def setProxy():
         picked.description = f'在使用【{region}】代理'
         # picked.icon = 'check'
 
-
     def printFail():
         # print(f'已挂载【{region}】对应的代理')
         picked.button_style = 'warning'
         picked.description = f'没有合适的代理'
         picked.icon = 'exclamation-triangle'
-
 
     def autoClick(region):
         for o in btnArray:  # 取消所有按钮被选中的样式
@@ -155,7 +147,6 @@ def setProxy():
             if k.description == region:
                 k.button_style = 'success'
                 k.icon = 'check'
-
 
     def btn_eventhandle(obj):
         global region, proxy
@@ -169,7 +160,6 @@ def setProxy():
         proxy = makeCLI(ip)
         printSuccess(obj.description)
 
-
     picked = widgets.Button(
         value=False,
         description=f'自动侦测中...',
@@ -181,7 +171,7 @@ def setProxy():
 
     for i in ipDict:
         btn = widgets.Button(
-            description=i,
+            description=i['region'],
             disabled=False,
             button_style='',  # 'success', 'info', 'warning', 'danger' or ''
             tooltip='Click me',
@@ -206,8 +196,8 @@ def setProxy():
 
     for e in btnArray:
         display(e)
-        
-    return({'region':region,'proxy':proxy,'proxyURL':proxyURL})
+
+    return({'region': region, 'proxy': proxy, 'proxyURL': proxyURL})
 
 # def checkAndSetProxy():
 #     from IPython.display import display,clear_output
@@ -220,38 +210,43 @@ def setProxy():
 #         region=cb['region']
 #         clear_output(wait=True)
 
+
 installDir = '/root/OneClick-stable-diffusion/'
 
-import os
 
 def findDir(name, path):
     for root, dirs, files in os.walk(path):
         if name in dirs:
             realPath = os.path.join(root, name)
-            if '.local/share/Trash' not in realPath:  #排除在回收站里面的文件夹
+            if '.local/share/Trash' not in realPath:  # 排除在回收站里面的文件夹
                 return realPath
     return ''
+
 
 def findFile(name, path):
     for root, dirs, files in os.walk(path):
         if name in files:
             realPath = os.path.join(root, name)
-            if '.local/share/Trash' not in realPath:  #排除在回收站里面的文件夹
+            if '.local/share/Trash' not in realPath:  # 排除在回收站里面的文件夹
                 return realPath
     return ''
 
-webUIDir = findDir('stable-diffusion-webui','/root')
+
+webUIDir = findDir('stable-diffusion-webui', '/root')
 # print('webUIDir:',webUIDir)
-if webUIDir!='':
-    extDir = findDir('extensions',webUIDir)
+if webUIDir != '':
+    extDir = findDir('extensions', webUIDir)
     # print('extDir:',extDir)
-    xformersDir = findDir('xformers',webUIDir)
+    xformersDir = findDir('xformers', webUIDir)
     # print('xformersDir:',xformersDir)
+
 
 def getDirSize(dir):
     size = 0
     for root, dirs, files in os.walk(dir):
-        size += sum([os.path.getsize(os.path.join(root, name)) for name in files])
+        size += sum([os.path.getsize(os.path.join(root, name))
+                    for name in files])
     return size
+
 
 styleURL = 'https://raw.githubusercontent.com/lcolok/My_SD_styles.csv/main/styles.csv'
