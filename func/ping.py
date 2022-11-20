@@ -1,12 +1,12 @@
+region='未知'
+ip=''
+port=''
+    
 def ping_threading(ipDict):
     import threading
     import subprocess
     import time
     from queue import Queue
-
-    global proxy, proxyURL
-    proxy = 'cd ./'  # 一句没有实际作用的命令作为占位
- 
 
     # 定义工作线程
     WORD_THREAD = 10
@@ -20,10 +20,6 @@ def ping_threading(ipDict):
 
 
     def ping_ip():
-        global region,ip,port
-        region = '未知'
-        port = '',
-        ip = ''
         while (not IP_QUEUE.empty()):
             cb = IP_QUEUE.get()
             # print(cb)
@@ -33,7 +29,8 @@ def ping_threading(ipDict):
             res = subprocess.call('ping -c 1 -w 1 %s' % test_ip,stdout=subprocess.PIPE,shell=True)  # linux 系统将 '-n' 替换成 '-c' ，而且设置shell=True，详情请参考：https://xilou.info/p/118
             # 打印运行结果
             if res == 0:
-                
+                # 引入全局变量：https://blog.csdn.net/songyunli1111/article/details/76095971
+                global region,ip,port 
                 region = test_region
                 ip = test_ip
                 port = test_port

@@ -91,6 +91,8 @@ ipDict = [
     {'region': '九天', 'ip': '172.22.17.74', 'port': '3928'},
 ]
 
+debugging=False
+
 def getProxyURL(ip,port):
     return f'http://{ip}:{port}'
 
@@ -186,12 +188,14 @@ def setProxy():
         display(e)
 
     autoRegion()
-    clear_output(wait=True)
-
+    if debugging==False:
+        clear_output(wait=True)
+    
     if region != '未知':
         autoClick(region)
     else:
-        clear_output(wait=True)
+        if debugging==False:
+            clear_output(wait=True)
         printFail()
 
     for e in btnArray:

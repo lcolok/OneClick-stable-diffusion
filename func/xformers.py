@@ -9,11 +9,6 @@ import json
 from IPython.display import display,clear_output
 import ipywidgets as widgets
 
-cb = getArch()
-arch = cb['arch']
-gpu = cb['gpu']
-targetWhlSize = cb['whlSize']
-
 archWhiteList = ['sm80','sm75','sm70','sm89','sm61','sm86']
 
 hasInstalledBtn = widgets.Button(
@@ -65,13 +60,17 @@ def installCMD(arch,whlDir,gpu):
     showToast(arch,gpu)
     display(finishedInstallBtn)
 
-def downloadWhl(fileDir,fileName,url):
+def downloadWhl(fileDir,fileName,url,ctx):
+    proxy=ctx['proxy']
     if (not os.path.exists(fileDir)):
         os.makedirs(fileDir)
     filePath = os.path.join(fileDir,fileName)
     os.system(f'{proxy} && wget -O {filePath} {url}')
 
-def installExec(arch,targetWhlSize,gpu):
+def installExec(ctx):
+    arch=ctx['arch']
+    gpu=ctx['gpu']
+    targetWhlSize=ctx['targetWhlSize']
     whlFileName = 'xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl'
     whlFileDir = f'/root/autodl-tmp/pkg/Xformers_precompiled/xformers_0.0.14.dev0/{arch}/'
     whlFilePath = os.path.join(whlFileDir,whlFileName)
@@ -79,7 +78,7 @@ def installExec(arch,targetWhlSize,gpu):
     print(not os.path.exists(whlFilePath))
     if os.path.exists(whlFilePath)==False:
         print('预编译包不在本地，需要下载...')
-        downloadWhl(whlFileDir,whlFileName,url)
+        downloadWhl(whlFileDir,whlFileName,url,ctx)
     test_whlSize = os.path.getsize(whlFilePath)
     if targetWhlSize==test_whlSize:
         print('目标文件大小一致，whl文件已经在本地')
@@ -87,7 +86,7 @@ def installExec(arch,targetWhlSize,gpu):
     else:
         print('目标文件大小不一样')
         os.system(f'rm -rf {whlFilePath}')
-        installExec(arch)
+        installExec(ctx)
 
 def checkXformersInstalled():
     # 通过python加载模块来检测是否有安装对应的模块
@@ -99,18 +98,33 @@ def checkXformersInstalled():
         return False
     
 def installXformers(proxy,region):
-    try:
-        proxy,region
-    except NameError:
-        cb=setProxy()
-        proxy=cb['proxy']
-        region=cb['region']
-        clear_output(wait=True)
+    cb = getArch()
+    arch = cb['arch']
+    gpu = cb['gpu']
+    targetWhlSize = cb['whlSize']
+    
+#     try:
+#         proxy,region
+#     except NameError:
+#         cb=setProxy()
+#         proxy=cb['proxy']
+#         region=cb['region']
+#         clear_output(wait=True)
+        
+    ctx={
+        'arch':arch,
+        'gpu':gpu,
+        'targetWhlSize':targetWhlSize,
+        'proxy':proxy,
+        'region':region
+    }
+    
     if arch in archWhiteList:
         installed = checkXformersInstalled()
+    
         # print('已经安装了吗？_______________',installed)
         if installed==False:
-            installExec(arch,targetWhlSize,gpu)
+            installExec(ctx)
         else:
             xformersInstalledDir = getXformersDir()
             # print(xformersInstalledDir)
@@ -120,13 +134,13 @@ def installXformers(proxy,region):
                     installedArch = file.read()
                 # print(installedArch)
                 if installedArch!=arch:
-                    installExec(arch,targetWhlSize,gpu)
+                    installExec(ctx)
                 else:
                     # 已经预装好了
                     showToast(arch,gpu)
                     display(hasInstalledBtn)
             else:
-                installExec(arch,targetWhlSize,gpu)
+                installExec(ctx)
     else:
         print(f'没有合适{gpu}的Xformers编译包')
         display(
