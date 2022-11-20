@@ -235,6 +235,18 @@ def findFile(name, path):
                 return realPath
     return ''
 
+def getWebUIDir():
+    return findDir('stable-diffusion-webui', '/root')
+
+def getExtDir():
+    webUIDir = findDir('stable-diffusion-webui', '/root')
+    extDir = findDir('extensions', webUIDir)
+    return extDir
+
+def getXformersDir():
+    webUIDir = findDir('stable-diffusion-webui', '/root')
+    xformersDir = findDir('xformers', webUIDir)
+    return xformersDir
 
 webUIDir = findDir('stable-diffusion-webui', '/root')
 # print('webUIDir:',webUIDir)
