@@ -1,6 +1,6 @@
 import os,sys
 sys.path.append('../') # 把上级路径也加入到系统路径中，这样就能够找到func
-from func.env import setProxy,webUIDir,extDir,findDir,getDirSize
+from func.env import setProxy,getExtDir,findDir,getDirSize
 import ipywidgets as widgets
 from subprocess import getoutput
 from IPython.display import display,clear_output
@@ -42,6 +42,7 @@ def install(extName,extURL,extFileSize):
             btn.icon='exclamation-triangle'
 
     def autoInstall(obj):
+        extDir=getExtDir()
         zhLocalDir = os.path.join(extDir,extName)
         if os.path.exists(zhLocalDir):
             checkInstalled(zhLocalDir,False)

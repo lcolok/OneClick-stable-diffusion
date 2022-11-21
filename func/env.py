@@ -248,13 +248,13 @@ def getXformersDir():
     xformersDir = findDir('xformers', webUIDir)
     return xformersDir
 
-webUIDir = findDir('stable-diffusion-webui', '/root')
-# print('webUIDir:',webUIDir)
-if webUIDir != '':
-    extDir = findDir('extensions', webUIDir)
-    # print('extDir:',extDir)
-    xformersDir = findDir('xformers', webUIDir)
-    # print('xformersDir:',xformersDir)
+# webUIDir = findDir('stable-diffusion-webui', '/root')
+# # print('webUIDir:',webUIDir)
+# if webUIDir != '':
+#     extDir = findDir('extensions', webUIDir)
+#     # print('extDir:',extDir)
+#     xformersDir = findDir('xformers', webUIDir)
+#     # print('xformersDir:',xformersDir)
 
 
 def getDirSize(dir):
