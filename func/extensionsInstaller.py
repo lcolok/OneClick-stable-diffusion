@@ -4,6 +4,7 @@ from func.env import setProxy,getExtDir,findDir,getDirSize
 import ipywidgets as widgets
 from subprocess import getoutput
 from IPython.display import display,clear_output
+from urllib.parse import urlparse
 
 try:
     proxy,region
@@ -13,19 +14,20 @@ except NameError:
     region=cb['region']
     clear_output(wait=True)
 
-btn = widgets.Button(
+def install(extURL,extFileSize):
+    
+    btn = widgets.Button(
     value=False,
     description='安装拓展',
     disabled=False,
     button_style='', # 'success', 'info', 'warning', 'danger' or ''
     # tooltip='Description',
     # icon='check' # (FontAwesome names without the `fa-` prefix)
-)
+    )
 
-def install(extName,extURL,extFileSize):
-    def checkInstalled(zhLocalDir,firstInstall):
-        fileSize = getDirSize(zhLocalDir)
-        # print(fileSize)
+    def checkInstalled(targetExtDir,firstInstall):
+        fileSize = getDirSize(targetExtDir)
+        print('拓展文件夹体积大小：'+str(fileSize))
         if fileSize>=extFileSize :
             if firstInstall==True:
                 btn.description='安装成功!'
@@ -37,15 +39,19 @@ def install(extName,extURL,extFileSize):
                 btn.icon='check-circle'
         else:
             # !rm -rf {dirpath}
-            btn.description="安装失败"
+            btn.description="文件大小不一致，安装失败"
             btn.button_style='danger'
             btn.icon='exclamation-triangle'
 
     def autoInstall(obj):
-        extDir=getExtDir()
-        zhLocalDir = os.path.join(extDir,extName)
-        if os.path.exists(zhLocalDir):
-            checkInstalled(zhLocalDir,False)
+        extDir=getExtDir()    
+        o=urlparse(extURL)
+        extPath=o.path
+        (_, extName) = os.path.split(extPath)
+        
+        targetExtDir = os.path.join(extDir,extName)
+        if os.path.exists(targetExtDir):
+            checkInstalled(targetExtDir,False)
         else:
             import subprocess
             try:
@@ -61,7 +67,7 @@ def install(extName,extURL,extFileSize):
                     stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                 )
                 if obj==0:
-                    checkInstalled(zhLocalDir,True)
+                    checkInstalled(targetExtDir,True)
             except subprocess.CalledProcessError as e:
                 print("Exception on process, rc=", e.returncode, "output=", e.output)
 
