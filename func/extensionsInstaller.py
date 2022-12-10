@@ -66,6 +66,11 @@ def install(extURL,extFileSize):
                 btn.description='已经安装过'
                 btn.button_style='info'
                 btn.icon='check-circle'
+                subprocess.call('rm -rf ' + targetExtDir, shell=True)
+                autoInstall(btn)
+                btn.description='强制重装成功!'
+                btn.button_style='success'
+                btn.icon='check'
         else:
             # !rm -rf {dirpath}
             btn.description="文件大小不一致，安装失败"
@@ -84,9 +89,14 @@ def install(extURL,extFileSize):
         else:
             import subprocess
             try:
-                btn.description='安装中...'
-                btn.button_style='warning'
-                btn.icon='download'
+                if(btn.description=='已经安装过'):
+                    btn.description='重装中...'
+                    btn.button_style='warning'
+                    btn.icon='refresh'
+                else:
+                    btn.description='全新安装中...'
+                    btn.button_style='warning'
+                    btn.icon='download'
                 obj = subprocess.check_call(
                     f'{proxy} &&\
                     cd {extDir} &&\
