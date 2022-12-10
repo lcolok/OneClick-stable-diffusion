@@ -14,6 +14,23 @@ except NameError:
     region=cb['region']
     clear_output(wait=True)
 
+def update():
+    extDir=getExtDir()
+    directory=extDir
+    
+    """遍历一个目录下的一级目录，并忽略隐藏目录"""
+    # 获取指定目录下的所有文件和文件夹
+    items = os.listdir(directory)
+    # 遍历所有文件和文件夹
+    for item in items:
+      # 获取文件或文件夹的路径
+      item_path = os.path.join(directory, item)
+      # 如果该文件或文件夹是一个目录且不是隐藏文件夹，则打印
+      if os.path.isdir(item_path) and not os.path.basename(item_path).startswith('.'):
+          # 执行 git pull 命令
+          os.system(f'cd {item_path} && git pull')
+
+
 def install(extURL,extFileSize):
     
     btn = widgets.Button(
