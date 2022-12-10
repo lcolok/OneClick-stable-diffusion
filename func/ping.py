@@ -2,8 +2,8 @@ region='未知'
 ip=''
 port=''
     
-import threading
 import os
+import threading
 import time
 
 def ping_threading(ipDict):
@@ -30,7 +30,8 @@ def ping_ip(item, result, event):
     ip = item['ip']
 
     # 使用 Linux 的 ping 命令测试该 IP 地址是否可以 ping 通
-    if os.system('ping -c 1 -w 1 ' + ip) == 0:
+    # 将控制台输出重定向到/dev/null，以屏蔽 ping 命令的输出信息
+    if os.system('ping -c 1 -w 1 ' + ip + ' > /dev/null') == 0:
         # 如果可以 ping 通，则将该地址添加到结果列表中
         result.append(item)
         # 通知其他线程退出
