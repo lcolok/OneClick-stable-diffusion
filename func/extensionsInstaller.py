@@ -1,4 +1,5 @@
 import os,sys
+import subprocess
 sys.path.append('../') # 把上级路径也加入到系统路径中，这样就能够找到func
 from func.env import setProxy,getExtDir,findDir,getDirSize
 import ipywidgets as widgets
@@ -16,19 +17,30 @@ except NameError:
 
 def update():
     extDir=getExtDir()
-    directory=extDir
+    root_dir=extDir
     
-    """遍历一个目录下的一级目录，并忽略隐藏目录"""
-    # 获取指定目录下的所有文件和文件夹
-    items = os.listdir(directory)
-    # 遍历所有文件和文件夹
-    for item in items:
-      # 获取文件或文件夹的路径
-      item_path = os.path.join(directory, item)
-      # 如果该文件或文件夹是一个目录且不是隐藏文件夹，则打印
-      if os.path.isdir(item_path) and not os.path.basename(item_path).startswith('.'):
-          # 执行 git pull 命令
-          os.system(f'cd {item_path} && git pull')
+    """
+    在给定的根目录下遍历一级目录，并执行git pull操作，如果更新失败则进行3次重试。
+    忽略隐藏目录和非GitHub repo目录。
+    :param root_dir: 根目录
+    """
+    # 遍历一级目录
+    for item in os.listdir(root_dir):
+        # 忽略隐藏目录和非repo目录
+        if item.startswith('.') or not os.path.isdir(os.path.join(root_dir, item, '.git')):
+            continue
+
+        # 进入repo目录并执行git pull操作
+        repo_dir = os.path.join(root_dir, item)
+        print(f'正在更新{item}...')
+        for i in range(3):  # 最多进行3次重试
+            try:
+                subprocess.check_call(['git', 'pull'], cwd=repo_dir)
+                break  # 更新成功后跳出循环
+            except subprocess.CalledProcessError:
+                if i < 2:  # 如果不是最后一次重试则继续
+                    continue
+                print(f'更新{item}失败')
 
 
 def install(extURL,extFileSize):
