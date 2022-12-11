@@ -43,7 +43,7 @@ def update():
                 print(f'更新{item}失败')
 
 
-def install(extURL,extFileSize):
+def install(extURL,extFileSize,forceReinstall=False):
     
     btn = widgets.Button(
     value=False,
@@ -54,28 +54,30 @@ def install(extURL,extFileSize):
     # icon='check' # (FontAwesome names without the `fa-` prefix)
     )
 
-    def checkInstalled(targetExtDir,firstInstall):
+    # 检查是否已安装
+    def checkInstalled(targetExtDir, firstInstall):
         fileSize = getDirSize(targetExtDir)
-        print('拓展文件夹体积大小：'+str(fileSize))
-        if fileSize>=extFileSize :
-            if firstInstall==True:
-                btn.description='安装成功!'
-                btn.button_style='success'
-                btn.icon='check'
+        print('拓展文件夹体积大小：' + str(fileSize))
+        if fileSize >= extFileSize:
+            if firstInstall:
+                btn.description = '安装成功!'
+                btn.button_style = 'success'
+                btn.icon = 'check'
             else:
-                btn.description='已经安装过'
-                btn.button_style='info'
-                btn.icon='check-circle'
-                subprocess.call('rm -rf ' + targetExtDir, shell=True)
-                autoInstall(btn)
-                btn.description='强制重装成功!'
-                btn.button_style='success'
-                btn.icon='check'
+                btn.description = '已经安装过'
+                btn.button_style = 'info'
+                btn.icon = 'check-circle'
+                if forceReinstall:
+                    # 如果需要强制重新安装，则进行重新安装
+                    subprocess.call('rm -rf ' + targetExtDir, shell=True)
+                    autoInstall(btn)
+                    btn.description = '强制重装成功!'
+                    btn.button_style = 'success'
+                    btn.icon = 'check'
         else:
-            # !rm -rf {dirpath}
-            btn.description="文件大小不一致，安装失败"
-            btn.button_style='danger'
-            btn.icon='exclamation-triangle'
+            btn.description = "文件大小不一致，安装失败"
+            btn.button_style = 'danger'
+            btn.icon = 'exclamation-triangle'
 
     def autoInstall(obj):
         extDir=getExtDir()    

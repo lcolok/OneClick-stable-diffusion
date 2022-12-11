@@ -6,6 +6,19 @@ import os
 import threading
 import time
 
+def print_time(start_time):
+    time_elapsed = time.time() - start_time
+    minutes = int(time_elapsed / 60)
+    seconds = int(time_elapsed % 60)
+    millis = int((time_elapsed % 1) * 1000)
+    message = f'\033[1;33mPing程序运行耗时\033[0m: \033[1;32m'
+    if minutes > 0:
+        message += f'{minutes}分'
+    if seconds > 0 or minutes > 0:
+        message += f'{seconds}秒'
+    message += f'{millis}毫秒\033[0m'
+    print(message)
+
 def ping_threading(ipDict):
     start_time = time.time()
     # 创建一个事件，用于在成功 ping 通某个 IP 地址后通知其他线程退出
@@ -21,7 +34,7 @@ def ping_threading(ipDict):
 
     # 如果有线程成功 ping 通了某个 IP 地址，则通知其他线程退出
     if event.wait():
-        print('Ping程序运行耗时：%s' % (time.time() - start_time))
+        print_time(start_time)
         # 返回成功 ping 通的 IP 地址
         return result[0]
 
