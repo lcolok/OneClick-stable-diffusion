@@ -2,9 +2,9 @@ import os
 import shutil
 
 # 要删除的目录
-trash_dir = '/root/.local/share/Trash'
+trash_dir = '/root/.local/share/Trash/'
 miniconda_dir = '/root/miniconda3/pkgs/'
-tmp_dir = '/root/tmp' 
+tmp_dir = '/tmp/' 
 
 # 定义 checkAndDelete 函数
 def checkAndDelete(directory):
@@ -15,7 +15,7 @@ def checkAndDelete(directory):
         except:
             print("删除失败")
     else:
-        print("已经清理干净")
+        print(f"{directory}已经清理干净")
 
 # 使用 checkAndDelete 函数删除目录
 checkAndDelete(trash_dir)
