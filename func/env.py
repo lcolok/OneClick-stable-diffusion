@@ -88,6 +88,7 @@ ipDict = [
     {'region': '泉州', 'ip': '10.55.146.88', 'port': '12798'},
     {'region': '南京', 'ip': '172.181.217.43', 'port': '12798'},
     {'region': '佛山', 'ip': '192.168.126.12', 'port': '12798'},
+    {'region': '贝式', 'ip': 'alchemist-experience', 'port': '7890'},
     # {'region': '九天', 'ip': '172.22.17.74', 'port': '3928'},
 ]
 
@@ -234,6 +235,9 @@ def findFile(name, path):
             if '.local/share/Trash' not in realPath:  # 排除在回收站里面的文件夹
                 return realPath
     return ''
+
+def getOneClickDir():
+    return findDir('OneClick-stable-diffusion', '/')
 
 def getWebUIDir():
     return findDir('stable-diffusion-webui', '/root')
