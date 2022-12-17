@@ -19,6 +19,14 @@ def print_time(start_time):
     message += f'{millis}毫秒\033[0m'
     print(message)
 
+def print_sentence(proxy_info):
+    region = proxy_info['region']
+    ip = proxy_info['ip']
+    port = proxy_info['port']
+
+    print(f"Ping通该IP与端口：{ip}:{port}，正在使用【{region}】代理")
+    
+    
 def ping_threading(ipDict):
     start_time = time.time()
     # 创建一个事件，用于在成功 ping 通某个 IP 地址后通知其他线程退出
@@ -35,6 +43,7 @@ def ping_threading(ipDict):
     # 如果有线程成功 ping 通了某个 IP 地址，则通知其他线程退出
     if event.wait():
         print_time(start_time)
+        print_sentence(result[0])
         # 返回成功 ping 通的 IP 地址
         return result[0]
 

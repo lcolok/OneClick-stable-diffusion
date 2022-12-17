@@ -94,6 +94,20 @@ ipDict = [
 
 debugging=False
 
+import urllib.request
+
+def proxyWget(url, out, proxyURL):
+    # 设置代理
+    proxy = urllib.request.ProxyHandler({'http': proxyURL})
+    opener = urllib.request.build_opener(proxy)
+    urllib.request.install_opener(opener)
+
+    # 下载文件
+    file_path, _ = urllib.request.urlretrieve(url, out)
+
+    # 返回已完成下载的文件路径
+    return file_path
+
 def getProxyURL(ip,port):
     return f'http://{ip}:{port}'
 
