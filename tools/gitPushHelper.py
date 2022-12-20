@@ -1,4 +1,7 @@
-import os,sys
+import sys
+import os
+import json
+
 dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(dir_path)
 # print(sys.path)
@@ -41,7 +44,45 @@ keywords = {
     "dir_path": "\033[1;41m",# dir_path：深黑色
 }
 
-cmd = f'git config --global http.proxy {proxyURL} && git config --global user.email 425311101@qq.com && git config --global user.name lcolok && cd {dir_path} && git push'
-print_with_color(cmd, keywords)
+# 它可以遍历指定目录下的所有子目录，并清除所有 ipynb 文件中的所有输出和执行次数，同时把代码折叠起来，不使用第三方的库
+import os
+import json
 
-os.system(cmd)
+def clean_notebooks(folder):
+    # 遍历目录下的所有子目录
+    for root, dirs, files in os.walk(folder):
+        # 遍历文件列表
+        for file in files:
+            # 获取文件扩展名
+            _, ext = os.path.splitext(file)
+            # 如果是 ipynb 文件
+            if ext == '.ipynb':
+                # 获取文件的完整路径
+                file_path = os.path.join(root, file)
+                # 读取 ipynb 文件
+                with open(file_path, 'r') as f:
+                    nb = json.load(f)
+
+                # 遍历所有单元格
+                for cell in nb['cells']:
+                    # 如果单元格是代码单元格
+                    if cell['cell_type'] == 'code':
+                        # 清除输出
+                        cell['outputs'] = []
+                        # 把代码折叠起来
+                        cell['metadata']['collapsed'] = True
+
+                # 写入修改后的 ipynb 文件
+                with open(file_path, 'w') as f:
+                    json.dump(nb, f, indent=2)
+
+# 使用清理notebook函数
+clean_notebooks(dir_path)
+
+pullCMD = f'git config --global http.proxy {proxyURL} && cd {dir_path} && git pull'
+print_with_color(pullCMD, keywords)
+os.system(pullCMD)
+
+pushCMD = f'git config --global http.proxy {proxyURL} && git config --global user.email 425311101@qq.com && git config --global user.name lcolok && cd {dir_path} && git push'
+print_with_color(pushCMD, keywords)
+os.system(pushCMD)
