@@ -68,8 +68,9 @@ def clean_notebooks(folder):
                     if cell['cell_type'] == 'code':
                         # 清除输出
                         cell['outputs'] = []
-                        # 把代码折叠起来
-                        cell['metadata']['collapsed'] = True
+                        cell['execution_count'] = None
+                        cell['metadata'].pop('execution', None)
+                        cell['metadata'].pop('collapsed', None)
 
                 # 写入修改后的 ipynb 文件
                 with open(file_path, 'w') as f:
