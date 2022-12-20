@@ -45,7 +45,6 @@ keywords = {
 }
 
 # 它可以遍历指定目录下的所有子目录，并清除所有 ipynb 文件中的所有输出和执行次数，同时把代码折叠起来，不使用第三方的库
-import os
 import json
 
 def clean_notebooks(folder):
@@ -75,6 +74,24 @@ def clean_notebooks(folder):
                 # 写入修改后的 ipynb 文件
                 with open(file_path, 'w') as f:
                     json.dump(nb, f, indent=2)
+
+def format_notebooks(folder):
+    import black
+    # 遍历目录下的所有子目录
+    for root, dirs, files in os.walk(folder):
+        # 遍历文件列表
+        for file in files:
+            # 获取文件扩展名
+            _, ext = os.path.splitext(file)
+            # 如果是 ipynb 文件
+            if ext == '.ipynb':
+                # 获取文件的完整路径
+                file_path = os.path.join(root, file)
+                # 使用 black 命令格式化代码
+                os.system(f'black {file_path}')
+
+# # 使用black格式化所有ipynb
+# format_notebooks(dir_path)
 
 # 使用清理notebook函数
 clean_notebooks(dir_path)
