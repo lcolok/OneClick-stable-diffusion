@@ -255,15 +255,15 @@ def getOneClickDir():
     return findDir('OneClick-stable-diffusion', '/')
 
 def getWebUIDir():
-    return findDir('stable-diffusion-webui', '/root')
+    return findDir('stable-diffusion-webui', '/')
 
 def getExtDir():
-    webUIDir = findDir('stable-diffusion-webui', '/root')
+    webUIDir = findDir('stable-diffusion-webui', '/')
     extDir = findDir('extensions', webUIDir)
     return extDir
 
 def getXformersDir():
-    webUIDir = findDir('stable-diffusion-webui', '/root')
+    webUIDir = findDir('stable-diffusion-webui', '/')
     xformersDir = findDir('xformers', webUIDir)
     return xformersDir
 
