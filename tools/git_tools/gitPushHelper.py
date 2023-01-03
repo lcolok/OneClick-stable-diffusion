@@ -2,9 +2,31 @@ import sys
 import os
 import json
 
-dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+# dir_path = os.path.realpath(os.path.join(os.path.dirname(__file__), '../../'))
+
+# 定义find_repo_root函数，能够求得当前运行的py脚本所在的repo文件夹的根目录路径（而且是最外层的git_repo）
+def find_repo_root():
+    # 获取当前脚本的绝对路径
+    script_path = os.path.abspath(__file__)
+    # 初始化存储结果的变量
+    result = None
+    # 循环求当前路径的父目录，直到找到`.git`文件夹
+    while True:
+        # 将当前路径的父目录赋值给当前路径
+        script_path = os.path.dirname(script_path)
+        # 判断当前路径是否存在`.git`文件夹
+        if os.path.isdir(os.path.join(script_path, '.git')):
+            # 如果存在，将当前路径存储在结果变量中
+            result = script_path
+        # 判断当前路径是否为根目录（即是否已经搜索到最外层）
+        if script_path == '/':
+            # 如果是，返回结果变量的值
+            return result
+        
+dir_path = find_repo_root()
 sys.path.append(dir_path)
 # print(sys.path)
+
 from func.env import setProxyCLI
 
 cb=setProxyCLI()
