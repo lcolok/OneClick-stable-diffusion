@@ -86,13 +86,12 @@ def clean_notebooks(folder):
 
                 # 遍历所有单元格
                 for cell in nb['cells']:
-                    # 如果单元格是代码单元格
-                    if cell['cell_type'] == 'code':
-                        # 清除输出
-                        cell['outputs'] = []
-                        cell['execution_count'] = None
-                        cell['metadata'].pop('execution', None)
-                        cell['metadata'].pop('collapsed', None)
+                    # 清除输出
+                    cell['outputs'] = []
+                    cell['execution_count'] = None
+                    cell['metadata'].pop('execution', None)
+                    cell['metadata'].pop('collapsed', None)
+                    cell['metadata'].pop('tags', None)
 
                 # 写入修改后的 ipynb 文件
                 with open(file_path, 'w') as f:

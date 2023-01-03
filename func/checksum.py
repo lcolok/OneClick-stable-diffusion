@@ -14,6 +14,8 @@ def generate_checksum(folder_path, print_elapsed_time=False):
         for entry in sorted_entries:
             # 若为子文件夹，则递归调用 generate_checksum()
             if entry.is_dir():
+                # # 把文件名先更新上去
+                # checksum.update(entry.name.encode())
                 # 递归调用 generate_checksum()
                 checksum.update(generate_checksum(entry.path).encode())
             # 若为文件，则更新文件名哈希值
@@ -36,25 +38,40 @@ def generate_checksum(folder_path, print_elapsed_time=False):
 # print(code)
 
 def find_folder(root_folder, checksum):
+    # 记录函数开始时的时间
     start_time = time.time()
-    # 先计算根目录的校验和
-    root_checksum = generate_checksum(root_folder)
-    if root_checksum == checksum:
-        elapsed_time = time.time() - start_time
-        print(f'\033[32m在目录 {root_folder} 下，找到校验和为【{checksum}】的目录，耗时: {elapsed_time:.2f} 秒，文件路径为：{root_folder}\033[0m')
-        return root_folder
-    # 遍历目录树
-    for root, dirs, files in os.walk(root_folder):
-        for folder in dirs:
-            folder_path = os.path.join(root, folder)
-            folder_checksum = generate_checksum(folder_path)
-            if folder_checksum == checksum:
-                elapsed_time = time.time() - start_time
-                print(f'\033[32m在目录 {root_folder} 下，找到校验和为【{checksum}】的目录，耗时: {elapsed_time:.2f} 秒，文件路径为：{folder_path}\033[0m')
-                return folder_path
+    def sub_find_folder(root_folder, checksum):
+        # 先计算根目录的校验和
+        root_checksum = generate_checksum(root_folder)
+        if root_checksum == checksum:
+            # 如果根目录的校验和与目标校验和相等，则返回根目录
+            return root_folder
+        # 遍历根目录下的所有文件和文件夹
+        for entry in os.scandir(root_folder):
+            # 如果当前 entry 是文件夹，则对文件夹进行递归搜索
+            if entry.is_dir():
+                folder_path = sub_find_folder(entry.path, checksum)
+                if folder_path is not None:
+                    return folder_path
+            # 如果当前 entry 是符号链接，则检查它是否是文件夹
+            elif entry.is_symlink():
+                if os.path.isdir(entry.path):
+                    folder_path = sub_find_folder(entry.path, checksum)
+                    if folder_path is not None:
+                        return folder_path
+                    
+    # 调用 sub_find_folder 来搜索根目录
+    result = sub_find_folder(root_folder, checksum)
+    # 记录函数结束时的时间，并计算总共用时
     elapsed_time = time.time() - start_time
-    print(f'\033[31m在目录 {root_folder} 下，未找到校验和为【{checksum}】的目录，耗时: {elapsed_time:.2f} 秒\033[0m')
-    return None
+    # 如果找到了符合条件的文件夹，则打印相关信息
+    if result:
+        print(f'\033[32m在目录 {root_folder} 下，找到校验和为【{checksum}】的目录，耗时: {elapsed_time:.2f} 秒，文件路径为：{root_folder}\033[0m')
+        return result
+    # 在所有目录中都找不到时，打印 "未找到" 的信息
+    else:
+        print(f'\033[31m在目录 {root_folder} 下，未找到校验和为【{checksum}】的目录，耗时: {elapsed_time:.2f} 秒\033[0m')
+        return None
 
 # # 示例用法：调用find_folder来查找对应文件夹的路径
 # find_folder('/input1', 'c7ee605be833a2d9')
