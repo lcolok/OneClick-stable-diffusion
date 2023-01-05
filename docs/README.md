@@ -1,2 +1,2 @@
-[English](docs/README.md) | [中文](docs/README.zh.md)
+[English](./README.md) | [中文](./README.zh.md)
 One-click configuration of the Stable Diffusion WebUI runtime environment, automatic matching of the mirror image location for academic acceleration, automatic detection of the current hardware's CUDA architecture, matching of the corresponding version of the Xformers precompiled package, and running from start-up to operation in less than 3 minutes.
