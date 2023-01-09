@@ -1,5 +1,71 @@
 import os
 
+def check_environment(output):
+    environments = {
+        "AutoDL": {
+            "content_path": "/root/autodl-tmp/content",
+            "env_name": "AutoDL"
+        },
+        "OpenBayes": {
+            "content_path": "/openbayes/home/content",
+            "env_name": "OpenBayes"
+        }
+    }
+    # 检查输出是否包含字符串"autodl"或"openbayes"
+    # for i in output:
+    if "AutoDL" in output:
+        return environments["AutoDL"]
+    elif "OpenBayes" in output:
+        return environments["OpenBayes"]
+    # 如果输出中没有包含上述字符串，则返回空字典
+    return {}
+
+
+def detect_environment():
+    # 初始化 content_path 和 env_name 变量
+    content_path = None
+    env_name = None
+
+    # 将命令行存储在列表中
+    commands = [
+        "cd /openbayes/home && chmod +x /etc/welcome && /etc/welcome",
+        "chmod +x /etc/autodl-motd && /etc/autodl-motd"
+    ]
+
+    # 遍历命令行列表，执行命令并存储输出
+    for command in commands:
+        try:
+            import subprocess
+            # 使用 subprocess 模块执行命令
+            r = subprocess.run(command, shell=True, stdout=subprocess.PIPE)
+            output = r.stdout
+            # 将输出转换为字符串
+            output = output.decode()
+            # print(output)
+            result = check_environment(output)
+            content_path = result["content_path"]
+            env_name = result["env_name"]
+            # 如果检测到环境，则退出循环
+            if content_path and env_name:
+                break
+        except Exception as e:
+            # print("无法执行命令：", e)
+            continue
+
+    # 打印结果
+    if content_path and env_name:
+        print("当前运行环境：", env_name)
+        print("内容路径：", content_path)
+    else:
+        print("未检测到当前运行环境")
+        
+    return {
+        "content_path":content_path,
+        "env_name":env_name
+    }
+
+env_name = detect_environment()['env_name']
+
 def getArch():
 
     from subprocess import getoutput
@@ -82,16 +148,23 @@ def getArch():
     return ({"arch": arch, "gpu": gpu, "whlSize": whlSize})
 
 ipDict = [
-    {'region': '芜湖', 'ip': '192.168.0.91', 'port': '12798'},
-    {'region': '北京', 'ip': '100.72.64.19', 'port': '12798'},
-    {'region': '内蒙', 'ip': '192.168.1.174', 'port': '12798'},
-    {'region': '泉州', 'ip': '10.55.146.88', 'port': '12798'},
-    {'region': '南京', 'ip': '172.181.217.43', 'port': '12798'},
-    {'region': '佛山', 'ip': '192.168.126.12', 'port': '12798'},
-    {'region': 'A100专区', 'ip': '172.31.1.127', 'port': '12798'},
-    {'region': '贝式', 'ip': 'alchemist-experience', 'port': '7890'},
-    # {'region': '九天', 'ip': '172.22.17.74', 'port': '3928'},
+    {'region': '九天', 'ip': '172.22.17.74', 'port': '3928'}
 ]
+
+if env_name == 'AutoDL':
+    ipDict = [
+        {'region': '芜湖', 'ip': '192.168.0.91', 'port': '12798'},
+        {'region': '北京', 'ip': '100.72.64.19', 'port': '12798'},
+        {'region': '内蒙', 'ip': '192.168.1.174', 'port': '12798'},
+        {'region': '泉州', 'ip': '10.55.146.88', 'port': '12798'},
+        {'region': '南京', 'ip': '172.181.217.43', 'port': '12798'},
+        {'region': '佛山', 'ip': '192.168.126.12', 'port': '12798'},
+        {'region': 'A100专区', 'ip': '172.31.1.127', 'port': '12798'},
+    ] + ipDict
+elif env_name == 'OpenBayes':
+    ipDict = [
+        {'region': '贝式', 'ip': 'alchemist-experience', 'port': '7890'},
+    ] + ipDict
 
 debugging=False
 
