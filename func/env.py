@@ -25,12 +25,15 @@ def detect_environment():
     # 初始化 content_path 和 env_name 变量
     content_path = None
     env_name = None
-
-    # 将命令行存储在列表中
-    commands = [
-        "cd /openbayes/home && chmod +x /etc/welcome && /etc/welcome",
-        "chmod +x /etc/autodl-motd && /etc/autodl-motd"
-    ]
+    
+    commands = []
+    
+    # 根据条件把命令行存储在列表中
+    if os.path.exists('/openbayes/home'):
+        commands.append("cd /openbayes/home && chmod +x /etc/welcome && /etc/welcome")
+    
+    if os.path.exists('/root'):
+        commands.append("chmod +x /etc/autodl-motd && /etc/autodl-motd")
 
     # 遍历命令行列表，执行命令并存储输出
     for command in commands:
