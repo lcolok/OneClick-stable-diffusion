@@ -48,13 +48,14 @@ def installCMD(arch,whlDir,gpu):
     cmd = (" ").join(args) 
     os.system(cmd)
     xformersInstalledDir = getXformersDir()
-    archTextDir = os.path.join(xformersInstalledDir,'./arch.txt')
+    archTextDir = os.path.realpath(os.path.join(xformersInstalledDir,'./arch.txt'))
+    if os.path.exists(archTextDir):
+        with open(archTextDir,"w") as archText:
+            archText.write(arch)
 
-    with open(archTextDir,"w") as archText:
-        archText.write(arch)
-
-    with  open(archTextDir,'r') as file:
-        print(file.read())
+        with  open(archTextDir,'r') as file:
+            print(file.read())
+        print("不存在arch.txt文件")
 
     clear_output(wait=True) # 生产环境下清除日志
     showToast(arch,gpu)
@@ -128,7 +129,7 @@ def installXformers(proxy,region):
         else:
             xformersInstalledDir = getXformersDir()
             # print(xformersInstalledDir)
-            archTextDir = os.path.join(xformersInstalledDir,'./arch.txt')
+            archTextDir = os.path.realpath(os.path.join(xformersInstalledDir,'./arch.txt'))
             if os.path.exists(archTextDir):
                 with  open(archTextDir,'r') as file:
                     installedArch = file.read()
