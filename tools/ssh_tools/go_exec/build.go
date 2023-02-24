@@ -20,7 +20,18 @@ func compile(goFile string) error {
 	// 遍历操作系统和架构列表，编译对应的可执行程序
 	for _, osName := range osList {
 		for _, arch := range archList {
-			output := filepath.Join("bin", fmt.Sprintf("%s_%s_%s", goFile[:len(goFile)-3], osName, arch))
+			// 设置文件后缀名
+			var suffix string
+			switch osName {
+			case "windows":
+				suffix = ".exe"
+			case "darwin", "linux":
+				suffix = ""
+			default:
+				return fmt.Errorf("Unsupported OS: %s", osName)
+			}
+
+			output := filepath.Join("bin", fmt.Sprintf("%s_%s_%s%s", goFile[:len(goFile)-3], osName, arch, suffix))
 
 			// 设置编译参数
 			cmd := exec.Command("go", "build", "-o", output, goFile)
@@ -39,6 +50,11 @@ func compile(goFile string) error {
 }
 
 func main() {
+	if err := os.RemoveAll("bin"); err != nil {
+		return
+	}
+	fmt.Println("已清理构建目录")
+
 	if err := compile("ssh-keygen.go"); err != nil {
 		fmt.Println(err)
 	}

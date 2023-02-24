@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 	"regexp"
@@ -35,7 +35,7 @@ func getClipboardContent() (string, error) {
 }
 
 func createSSHTunnelForWin(username, host, port, localPort, remotePort string) (string, error) {
-	fmt.Println("正在建立连接...")
+	fmt.Println("正在建立连接，请勿关闭，关闭则会中断连接...")
 	cmd := exec.Command("ssh", "-L", fmt.Sprintf("%s:localhost:%s", localPort, remotePort), "-p", port, fmt.Sprintf("%s@%s", username, host))
 
 	// 创建管道，将命令的标准输出和标准错误输出保存到管道中
@@ -48,32 +48,33 @@ func createSSHTunnelForWin(username, host, port, localPort, remotePort string) (
 		return "", fmt.Errorf("failed to create stderr pipe: %v", err)
 	}
 
+	// 创建多重写入器，将命令的标准输出和标准错误输出同时输出到终端
+	cmdWriter := io.MultiWriter(os.Stdout)
+
 	// 启动命令
 	if err := cmd.Start(); err != nil {
 		return "", fmt.Errorf("failed to start SSH command: %v", err)
 	}
 
-	// 读取命令的标准输出和标准错误输出
-	outBytes, err := ioutil.ReadAll(stdout)
-	if err != nil {
-		return "", fmt.Errorf("failed to read stdout: %v", err)
-	}
-	errBytes, err := ioutil.ReadAll(stderr)
-	if err != nil {
-		return "", fmt.Errorf("failed to read stderr: %v", err)
-	}
+	// 在新的协程中读取命令的标准输出和标准错误输出，并将它们输出到终端中
+	go func() {
+		_, err := io.Copy(cmdWriter, io.MultiReader(stdout, stderr))
+		if err != nil {
+			fmt.Printf("failed to copy command output: %v\n", err)
+		}
+
+		// 关闭标准输出和标准错误输出的管道
+		stdout.Close()
+		stderr.Close()
+	}()
 
 	// 等待命令执行结束
 	if err := cmd.Wait(); err != nil {
 		return "", fmt.Errorf("failed to create SSH tunnel: %v", err)
 	}
 
-	// 将命令的标准输出和标准错误输出返回给调用者
-	outStr := strings.TrimSpace(string(outBytes))
-	errStr := strings.TrimSpace(string(errBytes))
-
 	// 返回成功建立SSH隧道的信息
-	return fmt.Sprintf("Successfully created SSH tunnel from local port %s to remote port %s on %s@%s.\nSSH command output: %s\nSSH command error output: %s", localPort, remotePort, username, host, outStr, errStr), nil
+	return fmt.Sprintf("Successfully created SSH tunnel from local port %s to remote port %s on %s@%s.\n", localPort, remotePort, username, host), nil
 }
 
 func createSSHTunnel(username, host, port, localPort, remotePort string) error {
@@ -101,6 +102,12 @@ func createSSHTunnel(username, host, port, localPort, remotePort string) error {
 	return nil
 }
 
+func holdon() {
+	// 等待用户输入回车以便能看到输出结果
+	fmt.Println("按回车键退出...")
+	fmt.Scanln()
+}
+
 func main() {
 	// 获取剪贴板内容
 	clipboard, err := getClipboardContent()
@@ -114,7 +121,7 @@ func main() {
 	matches := re.FindStringSubmatch(clipboard)
 	if len(matches) != 4 {
 		fmt.Println("SSH命令不符合要求，请重新复制！")
-		err = fmt.Errorf("invalid SSH command format")
+		holdon()
 		return
 	}
 	username := matches[1]
@@ -139,4 +146,5 @@ func main() {
 
 	// 创建 SSH 隧道
 	createSSHTunnel(username, host, port, localPort, remotePort)
+	holdon()
 }
