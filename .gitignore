@@ -261,3 +261,8 @@ temp/
 
 # Ignore bin directory
 bin/
+
+# Ignore models
+*.safetensors
+*.pth
+*.pt
