@@ -15,33 +15,39 @@ except NameError:
     region=cb['region']
     clear_output(wait=True)
 
-def update():
-    extDir=getExtDir()
-    root_dir=extDir
+def doUpdate(cwd):
+    for i in range(3):  # 最多进行3次重试
+        try:
+            # subprocess.check_call(['git', 'pull'], cwd=cwd)
+            subprocess.call(f'{proxy} && git pull', cwd=cwd, shell=True)
+            break  # 更新成功后跳出循环
+        except subprocess.CalledProcessError:
+            if i < 2:  # 如果不是最后一次重试则继续
+                continue
+            print(f'更新{item}失败')
     
-    """
-    在给定的根目录下遍历一级目录，并执行git pull操作，如果更新失败则进行3次重试。
-    忽略隐藏目录和非GitHub repo目录。
-    :param root_dir: 根目录
-    """
-    # 遍历一级目录
-    for item in os.listdir(root_dir):
-        # 忽略隐藏目录和非repo目录
-        if item.startswith('.') or not os.path.isdir(os.path.join(root_dir, item, '.git')):
-            continue
+def update(targetExtDir):
+    if targetExtDir:
+        doUpdate(targetExtDir)
+    else:
+        extDir=getExtDir()
+        root_dir=extDir
 
-        # 进入repo目录并执行git pull操作
-        repo_dir = os.path.join(root_dir, item)
-        print(f'正在更新{item}...')
-        for i in range(3):  # 最多进行3次重试
-            try:
-                subprocess.check_call(['git', 'pull'], cwd=repo_dir)
-                break  # 更新成功后跳出循环
-            except subprocess.CalledProcessError:
-                if i < 2:  # 如果不是最后一次重试则继续
-                    continue
-                print(f'更新{item}失败')
+        """
+        在给定的根目录下遍历一级目录，并执行git pull操作，如果更新失败则进行3次重试。
+        忽略隐藏目录和非GitHub repo目录。
+        :param root_dir: 根目录
+        """
+        # 遍历一级目录
+        for item in os.listdir(root_dir):
+            # 忽略隐藏目录和非repo目录
+            if item.startswith('.') or not os.path.isdir(os.path.join(root_dir, item, '.git')):
+                continue
 
+            # 进入repo目录并执行git pull操作
+            repo_dir = os.path.join(root_dir, item)
+            print(f'正在更新{item}...')
+            doUpdate(repo_dir)
 
 def install(extURL,extFileSize,forceReinstall=False):
     
@@ -72,6 +78,11 @@ def install(extURL,extFileSize,forceReinstall=False):
                     subprocess.call('rm -rf ' + targetExtDir, shell=True)
                     autoInstall(btn)
                     btn.description = '强制重装成功!'
+                    btn.button_style = 'success'
+                    btn.icon = 'check'
+                else:
+                    update(targetExtDir)
+                    btn.description = '更新成功!'
                     btn.button_style = 'success'
                     btn.icon = 'check'
         else:
