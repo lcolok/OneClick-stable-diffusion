@@ -125,10 +125,12 @@ def format_notebooks(folder):
 # 使用清理notebook函数
 clean_notebooks(dir_path)
 
-pullCMD = f'git config --global http.proxy {proxyURL} && cd {dir_path} && git pull'
+# pullCMD = f'git config --global http.proxy {proxyURL} && cd {dir_path} && git pull'
+pullCMD = f'cd {dir_path} && git pull && cd -'
 print_with_color(pullCMD, keywords)
 os.system(pullCMD)
 
-pushCMD = f'git config --global http.proxy {proxyURL} && git config --global user.email 425311101@qq.com && git config --global user.name lcolok && cd {dir_path} && git push'
+# pushCMD = f'git config --global http.proxy {proxyURL} && git config --global user.email 425311101@qq.com && git config --global user.name lcolok && cd {dir_path} && git push && cd -'
+pushCMD = f'git config --global user.email 425311101@qq.com && git config --global user.name lcolok && cd {dir_path} && git push && cd -'
 print_with_color(pushCMD, keywords)
 os.system(pushCMD)
