@@ -146,24 +146,31 @@
         "Upscale by": 448,
         "Sampling steps": 150
     },
-    "16\u5bab\u683c": {
-        "Batch count": 16
+    "\u5bab\u683c\uff081\u56fe\uff09": {
+        "Batch count": 1
     },
-    "9\u5bab\u683c": {
-        "Batch count": 9
-    },
-    "25\u5bab\u683c": {
-        "Batch count": 25
-    },
-    "4\u5bab\u683c": {
+    "\u5bab\u683c\uff084\u56fe\uff09": {
         "Batch count": 4
     },
-    "\u6a2a\u5c4f(1024x512)": {
-        "Width": 1024,
-        "Height": 512
+    "\u5bab\u683c\uff089\u56fe\uff09": {
+        "Batch count": 9
     },
-    "\u6a2a\u5c4f(2048x1024)": {
+    "\u5bab\u683c\uff0816\u56fe\uff09": {
+        "Batch count": 16
+    },
+    "\u5bab\u683c\uff0825\u56fe\uff09": {
+        "Batch count": 25
+    },
+    "\u6a2a\u5c4fMax (2048x1024)": {
         "Width": 2048,
         "Height": 1024
+    },
+    "\u6a2a\u5c4f (1024x512)": {
+        "Width": 2048,
+        "Height": 1024
+    },
+    "\u6b63\u65b9 (512x512)": {
+        "Width": 1024,
+        "Height": 512
     }
 }
