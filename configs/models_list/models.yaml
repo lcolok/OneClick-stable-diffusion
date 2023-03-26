@@ -1,0 +1,61 @@
+# Stable-diffusion 模型
+sd_models:
+    # SD 2.1模型
+    - v2-1_768-nonema-pruned.ckpt
+    # ChilloutMix·高清写实真人模型
+    - chilloutmix_NiPrunedFp16.safetensors
+    # AOM3·二次元模型
+    - abyssorangemix3AOM3_aom3a3.safetensors
+    # 二次元粗描边模型
+    - camelliamixLine_v10.safetensors
+    # 二次元粗描边模型
+    - expmixLine_v20.safetensors
+    # Anything系列模型
+    - anything-v4.5-pruned-fp16.ckpt
+    # Anything系列模型
+    - anything-v4.0-pruned-fp16.safetensors
+    # PVC手办模型
+    - PVC-AO.safetensors
+    - midjourneyPapercut_v1.ckpt
+    - CamelliaMix_2.5D-fp16-pruned.safetensors
+    - CamelliaMix_Line_V2.safetensors
+    - Camelliamix_V2-fp16-pruned.safetensors
+    - abyssorangemix3AOM3_aom3.safetensors
+
+# VAE模型
+vae_models:
+    - orangemix.vae.pt
+    - kl-f8-anime2.ckpt
+    
+# LoRA模型
+LoRA_models:
+    - Akira Toriyama.safetensors   # 鸟山明风格
+    - Makima.safetensors   # 电锯人 玛奇玛
+    - animeScreencapStyle_v230epochs.safetensors   # 动画片质感
+    - kamehameha.safetensors   # 龟波气功
+    - lisaLoraCollectionOf_singleLoraLisa.safetensors   # 原神 丽莎 模型
+    - princess zelda.safetensors   # 塞尔达公主模型
+    - pyraMythraPneuma_50Epochs.safetensors   # 异度之刃模型
+    - wlop.safetensors   # wlop画风模型
+    - yakumo_yukari.pt   # 八云紫模型
+    - atomicHeartTwins_v1.safetensors   # 原子之心 双生舞伶模型
+    - atomictwinnies_v10.safetensors   # 原子之心 双生舞伶模型
+    - bliznyashkiTheTwins_v1.safetensors   # 原子之心 双生舞伶模型
+    - epiNoiseoffset_v2.safetensors   # Noise Offset模型
+    - epiNoiseoffset_v2Pynoise.safetensors   # Noise Offset模型
+    - Moxin_10.safetensors   # 墨心风格
+    - charturnerbetaLora_charturnbetalora.safetensors   # 角色多视角图
+    - animeLineartStyle_v20Offset.safetensors   # 线稿
+    - tokiameStyleThick.safetensors   # 线稿
+    - thickerLinesAnimeStyle_loraVersion.safetensors   # 描边
+    - LuisapPixelArtLORA_v1.safetensors   # 像素风
+    - aespaKarina_aespaKarinaV2.safetensors  # 柳姐v2
+    - aespaKarina_aespaKarinaV3.safetensors  # 柳姐v3
+    - cuteJointsDollsLora_2.safetensors  # BJD公仔效果
+
+# 嵌入模型
+embeddings:
+    - bad_prompt_version2.pt   # https://huggingface.co/datasets/Nerfgun3/bad_prompt
+    - EasyNegative.safetensors   # https://civitai.com/models/7808/easynegative
+    - ng_deepnegative_v1_75t.pt   # https://civitai.com/models/4629/deep-negative-v1x
+    - badhandv4.pt   # https://civitai.com/models/16993/badhandv4-animeillustdiffusion
