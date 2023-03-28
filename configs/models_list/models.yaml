@@ -21,6 +21,8 @@ sd_models:
     - CamelliaMix_Line_V2.safetensors
     - Camelliamix_V2-fp16-pruned.safetensors
     - abyssorangemix3AOM3_aom3.safetensors
+    - realisticVisionV20_20.safetensors
+    - dreamshaper_4BakedVaeFp16.safetensors
 
 # VAE模型
 vae_models:
