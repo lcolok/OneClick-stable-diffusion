@@ -45,7 +45,8 @@ LoRA_models:
     - bliznyashkiTheTwins_v1.safetensors   # 原子之心 双生舞伶模型
     - epiNoiseoffset_v2.safetensors   # Noise Offset模型
     - epiNoiseoffset_v2Pynoise.safetensors   # Noise Offset模型
-    - Moxin_10.safetensors   # 墨心风格
+    - Moxin_10.safetensors   # 墨心风格 
+    - Moxin_Shukezouma11.safetensors # 疏可走马，这是一个和墨心搭配使用的构图Lora, 一旦使用并再最前前置提示词后，就会采用较大面积留白的构图风格
     - charturnerbetaLora_charturnbetalora.safetensors   # 角色多视角图
     - animeLineartStyle_v20Offset.safetensors   # 线稿
     - tokiameStyleThick.safetensors   # 线稿
@@ -54,6 +55,7 @@ LoRA_models:
     - aespaKarina_aespaKarinaV2.safetensors  # 柳姐v2
     - aespaKarina_aespaKarinaV3.safetensors  # 柳姐v3
     - cuteJointsDollsLora_2.safetensors  # BJD公仔效果
+
 
 # 嵌入模型
 embeddings:
