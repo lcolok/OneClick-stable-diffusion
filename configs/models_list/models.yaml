@@ -59,7 +59,11 @@ LoRA_models:
 
 # 嵌入模型
 embeddings:
+    - bad_prompt.pt
     - bad_prompt_version2.pt   # https://huggingface.co/datasets/Nerfgun3/bad_prompt
+    - bad-artist.pt
+    - bad-artist-anime.pt
+    - bad-image-v2-39000.pt
     - EasyNegative.safetensors   # https://civitai.com/models/7808/easynegative
     - ng_deepnegative_v1_75t.pt   # https://civitai.com/models/4629/deep-negative-v1x
     - badhandv4.pt   # https://civitai.com/models/16993/badhandv4-animeillustdiffusion
