@@ -1,0 +1,70 @@
+Pizza
+Hamburger
+Hotdog
+Sushi
+Ramen
+Tacos
+Burritos
+Quesadillas
+Enchiladas
+Fajitas
+Empanadas
+Arepas
+Falafel
+Gyro
+Shawarma
+Kebab
+Fried chicken
+BBQ ribs
+Steak
+Fish and chips
+Lobster
+Shrimp
+Crab
+Clams
+Oysters
+Mussels
+Calamari
+Caviar
+Escargot
+Beef brisket
+Pulled pork
+Meatballs
+Chicken wings
+Buffalo wings
+Chicken nuggets
+French fries
+Onion rings
+Potato chips
+Popcorn
+Nachos
+Guacamole
+Salsa
+Hummus
+Baba ghanoush
+Tabouleh
+Caesar salad
+Greek salad
+Caprese salad
+Cobb salad
+Fruit salad
+Smoothie
+Milkshake
+Ice cream
+Gelato
+Sorbet
+Cheesecake
+Chocolate cake
+Carrot cake
+Apple pie
+Pumpkin pie
+Lemon meringue pie
+Tiramisu
+Cannoli
+Macarons
+Donuts
+Croissants
+Bagels
+Muffins
+Pancakes
+Waffles
