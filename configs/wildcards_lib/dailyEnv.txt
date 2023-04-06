@@ -1,0 +1,27 @@
+kitchen
+living room
+bedroom
+bathroom
+dining room
+office
+classroom
+gym
+park
+street
+subway
+bus stop
+airport
+library
+supermarket
+mall
+restaurant
+coffee shop
+bar
+cinema
+theater
+museum
+hospital
+bank
+post office
+gas station
+car wash

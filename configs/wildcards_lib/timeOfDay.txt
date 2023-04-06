@@ -1,0 +1,6 @@
+midnight
+sunrise
+noon
+golden hour
+sunset
+twilight

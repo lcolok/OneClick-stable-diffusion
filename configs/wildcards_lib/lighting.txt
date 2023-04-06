@@ -1,0 +1,19 @@
+warm lighting
+cool lighting
+white balance
+golden hour
+blue hour
+daylight
+tungsten lighting
+fluorescent lighting
+candlelight
+firelight
+sunset lighting
+sunrise lighting
+overcast lighting
+dappled lighting
+diffused lighting
+direct lighting
+softbox lighting
+ring light
+bounce light
