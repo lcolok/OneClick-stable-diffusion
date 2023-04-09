@@ -1,0 +1,90 @@
+Red
+Vermilion
+Scarlet
+Orange
+Tangerine
+Burnt Orange
+Yellow
+Lemon Yellow
+Golden Yellow
+Green
+Lime Green
+Forest Green
+Blue
+Sky Blue
+Navy Blue
+Indigo
+Royal Indigo
+Deep Indigo
+Violet
+Lavender Violet
+Dark Violet
+Pink
+Hot Pink
+Baby Pink
+Brown
+Chocolate Brown
+Sienna Brown
+White
+Snow White
+Pearl White
+Black
+Jet Black
+Charcoal Black
+Gray
+Light Gray
+Slate Gray
+Silver
+Platinum Silver
+Shiny Silver
+Gold
+Antique Gold
+Metallic Gold
+Beige
+Sand Beige
+Warm Beige
+Khaki
+Dark Khaki
+Olive Khaki
+Maroon
+Wine Maroon
+Deep Maroon
+Crimson
+Ruby Crimson
+Deep Crimson
+Salmon
+Light Salmon
+Dark Salmon
+Coral
+Coral Pink
+Coral Orange
+Peach
+Pale Peach
+Soft Peach
+Apricot
+Apricot Orange
+Apricot Pink
+Amber
+Honey Amber
+Golden Amber
+Chartreuse
+Lime Chartreuse
+Yellow Chartreuse
+Olive
+Olive Green
+Dark Olive
+Lime
+Lime Green
+Bright Lime
+Teal
+Dark Teal
+Light Teal
+Turquoise
+Turquoise Blue
+Turquoise Green
+Cyan
+Light Cyan
+Dark Cyan
+Azure
+Azure Blue
+Azure Sky

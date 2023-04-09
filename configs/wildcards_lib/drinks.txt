@@ -1,0 +1,110 @@
+Coca-Cola
+Pepsi
+Sprite
+7-Up
+Dr. Pepper
+Root Beer
+Ginger Ale
+Mountain Dew
+Fanta
+Sarsi
+Club Soda
+Tonic Water
+Seltzer Water
+Mineral Water
+Sparkling Water
+Coconut Water
+Iced Tea
+Lemonade
+Limeade
+Orangeade
+Arnold Palmer
+Fruit Punch
+Gatorade
+Powerade
+Vitamin Water
+Red Bull
+Monster Energy
+Rockstar Energy
+5-Hour Energy
+Espresso
+Cappuccino
+Latte
+Macchiato
+Americano
+Flat White
+Mocha
+Cortado
+Affogato
+Irish Coffee
+Chai Latte
+Matcha Latte
+Hot Chocolate
+White Hot Chocolate
+Milo
+Ovaltine
+Horlicks
+Earl Grey Tea
+English Breakfast Tea
+Green Tea
+Oolong Tea
+White Tea
+Chamomile Tea
+Peppermint Tea
+Jasmine Tea
+Masala Chai
+Turkish Tea
+Moroccan Mint Tea
+Bubble Tea
+Thai Iced Tea
+Vietnamese Iced Coffee
+Frappe
+Milkshake
+Smoothie
+Lassi
+Margarita
+Daiquiri
+Mojito
+Bloody Mary
+Martini
+Gin and Tonic
+Vodka Tonic
+Whiskey Sour
+Old Fashioned
+Negroni
+Manhattan
+Cosmopolitan
+Mai Tai
+Pina Colada
+Screwdriver
+Mimosa
+Bellini
+Sangria
+Caipirinha
+Rum Punch
+Long Island Iced Tea
+Tequila Sunrise
+Moscow Mule
+Mint Julep
+Irish Car Bomb
+Michelada
+Shandy
+Wine
+Champagne
+Prosecco
+Cava
+Sake
+Soju
+Shochu
+Beer
+Stout
+Lager
+Ale
+IPA
+Porter
+Cider
+Mead
+Kombucha
+Mulled Wine
+Hot Toddy
+Eggnog
