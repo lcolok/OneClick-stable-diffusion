@@ -1,0 +1,15 @@
+Newborn - Soft skin, little to no hair, closed eyes, delicate features
+Infant (0-12 months) - Growing hair, round face, chubby cheeks, toothless smile, crawling
+Toddler (1-3 years) - Growing hair, baby teeth, learning to walk, curious expression
+Preschooler (3-5 years) - Longer hair, more defined facial features, playful demeanor, more coordinated movements
+Early school age (5-7 years) - Losing baby teeth, more expressive facial features, developing social skills
+Middle childhood (8-11 years) - Developing adult teeth, more defined facial features, taller stature, increased motor skills
+Preteen (12-14 years) - Emerging signs of puberty, growth spurt, body shape changes, acne
+Teenager (15-17 years) - Puberty in full swing, growth spurt, changing voice, body hair growth, acne
+Young adult (18-24 years) - Adult facial features, more mature appearance, potential facial hair (for males)
+Adult (25-34 years) - Stable adult appearance, potential early signs of aging, potential hair thinning (for males)
+Mid-adult (35-44 years) - Early signs of aging, wrinkles, potential gray hair, potential hair loss (for males)
+Late adult (45-54 years) - Aging features, wrinkles, gray hair, potential hair loss (for males), potential age spots
+Middle-aged (55-64 years) - Noticeable wrinkles, gray or white hair, potential hair loss (for males), age spots
+Senior (65-74 years) - Prominent wrinkles, white hair, potential hair loss (for males), age spots, potential stooped posture
+Elderly (75+ years) - Pronounced wrinkles, thinning hair, potential hair loss (for males), age spots, stooped posture, potential mobility issues

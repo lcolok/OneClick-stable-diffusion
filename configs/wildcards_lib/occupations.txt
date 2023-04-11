@@ -1,0 +1,169 @@
+Chef - White chef's hat (toque), white double-breasted jacket, checkered pants, apron
+Doctor - White lab coat, stethoscope, ID badge
+Nurse - Nurse's cap, scrubs or white nurse's uniform, ID badge
+Police officer - Uniform, badge, hat, duty belt
+Firefighter - Fire-resistant suit, helmet, boots, gloves
+Military personnel - Camouflage or dress uniform, rank insignia, hat or beret
+Construction worker - Hard hat, safety vest, work boots, tool belt
+Pilot - Uniform with shoulder stripes, pilot's cap, wings badge
+Flight attendant - Uniform, nametag, scarf or tie, wings badge
+Astronaut - Space suit, helmet, gloves, boots
+Lifeguard - Red or yellow shirt or swimsuit, whistle, hat, sunglasses
+Miner - Hard hat with light, safety goggles, coveralls, boots
+Farmer - Overalls, plaid shirt, straw or wide-brimmed hat, work boots
+Mail carrier - Uniform, hat, mailbag
+Judge - Black robe, gavel
+Lawyer - Business suit, briefcase, law books
+Scientist - Lab coat, safety goggles, gloves, ID badge
+Painter (artist) - Smock or apron, beret, paintbrush, palette
+House painter - Coveralls, paint-splattered clothing, hat, paintbrush
+Ballet dancer - Leotard, tutu, tights, ballet slippers
+Ballroom dancer - Formal dress or suit, dance shoes, hair styled
+Clown - Colorful costume, oversized shoes, wig, makeup, red nose
+Mime - Black and white striped shirt, black pants, suspenders, white face paint, beret
+Magician - Tuxedo, cape, top hat, wand, gloves
+Waiter/Waitress - Uniform, apron, notepad, pen, tray
+Fast food worker - Branded uniform, hat, nametag
+Chef's assistant (Sous-chef) - White double-breasted jacket, checkered pants, apron
+Fisherman - Raincoat, rubber boots, hat, fishing net, fishing rod
+Surgeon - Scrubs, surgical cap, mask, gloves
+Dentist - Lab coat, dental instruments, mask, safety goggles
+Veterinarian - Lab coat, stethoscope, ID badge
+Hairdresser/Barber - Smock or apron, scissors, comb, hairbrush
+Makeup artist - Apron or smock, makeup brushes, makeup palette
+Fashion designer - Stylish clothing, sketchpad, fabric swatches
+Model - Fashionable attire, high heels or dress shoes, makeup, styled hair
+Photographer - Camera, lenses, bag, press pass or ID badge
+Journalist - Notepad, pen, recorder, press pass or ID badge
+Security guard - Uniform, badge, hat, flashlight, duty belt
+Taxi driver - Uniform or casual clothing, ID badge, car keys
+Bus driver - Uniform, hat, ID badge, bus keys
+Train conductor - Uniform, hat, ticket punch, whistle
+Cowboy/Cowgirl - Cowboy hat, boots, jeans, plaid shirt, bandana
+Fitness instructor - Athletic clothing, sneakers, whistle, water bottle
+Yoga instructor - Yoga pants, tank top or fitted shirt, yoga mat
+Librarian - Glasses, cardigan or blazer, book, ID badge
+Scientist - Lab coat, safety goggles, gloves, ID badge
+Archaeologist - Khaki clothing, wide-brimmed hat, boots, digging tools
+Astronomer - Lab coat or casual clothing, telescope, star charts
+Baker - Apron, chef's hat, oven mitts, rolling pin
+Butcher - Apron, white shirt, cleaver, cutting gloves
+Barista - Uniform or apron, nametag, coffee equipment
+Florist - Apron, gardening gloves, flower shears, flowers
+Gardener - Overalls, gloves, wide-brimmed hat, gardening tools
+Janitor - Uniform, nametag, cleaning supplies, mop or broom
+Plumber - Overalls, tool belt, wrench, pipe fittings
+Electrician - Uniform, tool belt, safety goggles, multimeter
+Mechanic - Jumpsuit or coveralls, tool belt, wrench, car parts
+Carpenter - Tool belt, safety goggles, gloves, woodworking tools
+Welder - Welding helmet, protective clothing, welding gloves, welding torch
+Sailor - Nautical attire, cap, boat shoes, navigation tools
+Scuba diver - Wetsuit, diving mask, snorkel, fins
+Ski instructor - Ski suit, ski boots, skis, poles, goggles, helmet
+Mountain guide - Hiking attire, boots, backpack, climbing gear
+Geologist - Field clothing, boots, rock hammer, sample bags
+Meteorologist - Weather-appropriate attire, weather instruments, microphone
+Pharmacist - Lab coat, ID badge, prescription pad, pill bottles
+Nutritionist - Lab coat or business casual attire, food pyramid or dietary guidelines
+Optometrist - Lab coat, ID badge, eye chart, glasses or contact lenses
+Physical therapist - Athletic clothing, sneakers, exercise equipment
+Real estate agent - Business suit, briefcase, property listings
+Travel agent - Business attire, brochures, travel posters, computer
+Receptionist - Business casual attire, telephone, appointment book, computer
+Cashier - Uniform, nametag, cash register, barcode scanner
+Retail salesperson - Uniform or branded clothing, nametag, pricing gun
+Bank teller - Business attire, nametag, cash drawer, computer
+Bartender - Uniform or casual clothing, apron, cocktail shaker, bar tools
+Casino dealer - Uniform, nametag, deck of cards or casino chips
+Personal trainer - Athletic clothing, sneakers, stopwatch, exercise equipment
+Sports coach - Team-branded clothing, hat, whistle, clipboard
+Mascot - Costume representing a team or organization, oversized shoes
+Actor/Actress - Stage or film costume, makeup, script
+Singer - Performance attire, microphone, sheet music or lyrics
+Musician - Performance attire, musical instrument, sheet music
+DJ - Headphones, turntables or mixing equipment, music collection
+Radio host - Headphones, microphone, radio station branding, script
+TV presenter - Business or casual attire, microphone, cue cards
+News anchor - Business attire, microphone, news desk, teleprompter
+Film director - Casual clothing, director's chair, megaphone, clapboard
+Animator - Casual clothing, drawing tablet, stylus, animation software
+Architect - Business casual attire, blueprints, drafting tools
+Graphic designer - Casual clothing, drawing tablet, stylus, design software
+Illustrator - Casual clothing, sketchpad, pencils, paintbrushes
+Interior designer - Business casual attire, fabric swatches, color samples, mood board
+Landscape architect - Casual clothing, blueprints, plants, soil samples
+Fashion stylist - Stylish attire, clothing racks, accessories, lookbook
+Make-up artist - Apron or smock, makeup brushes, makeup palette
+Hair stylist - Smock or apron, scissors, comb, hairbrush
+Manicurist - Nail technician uniform, nail polish, nail tools
+Massage therapist - Uniform or scrubs, massage table, oils, lotions
+Acupuncturist - Lab coat or traditional attire, acupuncture needles, chart of meridians
+Chiropractor - Lab coat or business casual attire, adjustment table, anatomical chart
+Occupational therapist - Casual or athletic attire, therapy tools, adaptive equipment
+Social worker - Business casual attire, case files, counseling resources
+Tour guide - Uniform or branded clothing, ID badge, map, microphone
+Interpreter - Business attire, ID badge, headphones, notepad
+Flight dispatcher - Uniform, headset, computer, flight schedules
+Air traffic controller - Uniform, headset, radar screen, computer
+Zookeeper - Uniform or khaki attire, hat, animal care tools
+Marine biologist - Wetsuit or casual clothing, marine equipment, research tools
+Wildlife ranger - Uniform, hat, binoculars, GPS, animal tracking equipment
+Park ranger - Uniform, hat, binoculars, GPS, first aid kit
+Forensic scientist - Lab coat, gloves, safety goggles, crime scene kit
+Detective - Plainclothes or suit, badge, notepad, pen, handcuffs
+Paramedic - Uniform, stethoscope, medical bag, gloves
+EMT - Uniform, stethoscope, medical bag, gloves
+Dental hygienist - Scrubs, mask, safety goggles, dental instruments
+Postal worker - Uniform, hat, mailbag, scanner
+Customs officer - Uniform, badge, hat, ID badge
+Border patrol agent - Uniform, hat, badge, ID badge, duty belt
+Security consultant - Business attire, ID badge, computer, security equipment
+Private investigator - Plainclothes or suit, notepad, pen, camera
+Driving instructor - Casual clothing, clipboard, driver's education car
+Ski patrol - Ski suit, skis, poles, avalanche safety equipment
+Lifeguard instructor - Red or yellow shirt or swimsuit, whistle, hat, sunglasses, rescue equipment
+Environmental scientist - Field clothing, boots, sampling equipment, research tools
+Tax consultant - Business attire, calculator, tax forms, computer
+Insurance agent - Business attire, briefcase, insurance documents
+Pharmacist technician - Lab coat, ID badge, prescription pad, pill bottles
+Court reporter - Business attire, stenotype machine, notepad, pen
+Sommelier - Formal attire, wine key, tasting glass, wine list
+Personal shopper - Stylish attire, shopping bags, clothing rack, lookbook
+Concierge - Uniform, name badge, hotel or building logo, information stand
+Stagehand - Black clothing, gloves, headset, stage equipment
+Puppeteer - Casual clothing, puppets, puppet stage, puppetry tools
+Voice actor - Casual clothing, headphones, microphone, script
+Event planner - Business casual attire, clipboard, event schedule, decorations
+Wedding planner - Business casual attire, wedding magazines, planning binder, color samples
+Curator - Business attire, ID badge, artwork or artifacts, exhibit materials
+Librarian assistant - Cardigan or blazer, books, ID badge
+Orthodontist - Lab coat, ID badge, dental instruments, braces materials
+School counselor - Business casual attire, counseling resources, office setting
+Athletic trainer - Athletic clothing, sneakers, first aid kit, medical supplies
+Sports referee - Striped shirt, whistle, cap, penalty cards or flags
+Usher - Uniform, flashlight, ticket scanner, seating chart
+Valet - Uniform, hat, nametag, car keys
+Bellhop - Uniform, hat, luggage cart, nametag
+Housekeeper - Uniform, cleaning supplies, nametag
+Makeup counter salesperson - Stylish attire, nametag, makeup counter, makeup samples
+Perfumer - Lab coat, perfume samples, fragrance materials, scent strips
+Dog trainer - Casual clothing, dog treats, clicker, leash
+Animal control officer - Uniform, badge, animal catching equipment, vehicle
+Pest control technician - Uniform, safety goggles, gloves, pest control equipment
+Locksmith - Uniform, tool belt, lock picking tools, keys
+Watchmaker - Lab coat, magnifying glass, precision tools, timepieces
+Cobbler - Apron, leatherworking tools, shoe polish, shoes
+Tailor - Tape measure, scissors, sewing machine, fabric samples
+Seamstress - Tape measure, scissors, sewing machine, fabric samples
+Costume designer - Sketchpad, fabric swatches, sewing machine, costume pieces
+Props master - Casual clothing, prop-making tools, prop storage area, stage or film props
+Set designer - Casual clothing, blueprints, set pieces, paintbrushes
+Sound engineer - Headphones, mixing console, microphones, cables
+Lighting technician - Casual clothing, lighting console, light fixtures, ladder
+Grip - Casual clothing, gloves, headset, film equipment
+Gaffer - Casual clothing, gloves, headset, lighting equipment
+Roadie - Casual clothing, gloves, headset, instrument cases
+Talent agent - Business attire, talent roster, contracts, phone
+Literary agent - Business attire, manuscripts, contracts, phone
+Art dealer - Business attire, artwork, catalog, sales materials
+Auctioneer - Business attire, gavel, auction catalog, bidder paddles
