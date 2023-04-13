@@ -1,0 +1,102 @@
+Car
+Bus
+Train
+Subway
+Tram/streetcar
+Cable car
+Trolleybus
+Bicycle
+Motorcycle
+Scooter
+Skateboard
+Rollerblades
+Wheelchair
+Boat
+Ferry
+Ship
+Yacht
+Sailboat
+Jet ski
+Kayak
+Canoe
+Raft
+Helicopter
+Airplane
+Hot air balloon
+Paraglider
+Hang glider
+Zip line
+Ski lift
+Cable car
+Gondola
+Horse-drawn carriage
+Sled/dog sled
+Snowmobile
+Camel
+Elephant
+Donkey/mule
+Carriage ride
+Segway
+Electric scooter
+Hoverboard
+Electric bike
+Motorboat
+Catamaran
+Submarine
+Glider plane
+Seaplane
+Zeppelin
+Airship
+Kiteboarding gear
+Parasailing gear
+Hang-glider
+Ultra-light airplane
+Jetpack
+Skydiving equipment
+Bungee jumping equipment
+Roller coaster
+Ferris wheel
+Merry-go-round
+Cable car
+Aerial tramway
+Ski gondola
+Ski chairlift
+Snowcat
+Zipline
+Roller skates
+Heelys
+Electric unicycle
+Electric skateboard
+Snowshoes
+Cross-country skis
+Downhill skis
+Snowboard
+Kick scooter
+Tricycle
+Quad bike
+Golf cart
+Tour bus
+Party bus
+Limousine
+Taxi
+Uber/Lyft
+Car-sharing service
+Car rental
+RV/motorhome
+Camper van
+Horseback riding
+Ox cart
+Rickshaw
+Pedicab
+Wheelbarrow
+Tandem bicycle
+Cargo bike
+Trailer bike
+Stand-up paddleboard
+Surfboard
+Water skis
+Wakeboard
+Kneeboard
+Jet boat
+Airboat
+Amphibious vehicle
