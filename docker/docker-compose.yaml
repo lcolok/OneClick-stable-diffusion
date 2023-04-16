@@ -1,0 +1,17 @@
+version: '3'
+services:
+  sd:
+    build:
+          context: .
+          dockerfile: Dockerfile
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - "33333:33333"
+      - "7860:7860"
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+    stdin_open: true
+    tty: true 
