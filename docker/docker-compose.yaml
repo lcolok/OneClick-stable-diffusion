@@ -5,7 +5,7 @@ services:
           context: .
           dockerfile: Dockerfile
           args:
-            app_env: sdwebui
+            sdwebui: "true"
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
@@ -15,5 +15,7 @@ services:
       - "8888:8888"
     volumes:
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/:/home/stable-diffusion-webui/models
+      - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/embeddings/:/home/stable-diffusion-webui/embeddings
+      # - /mnt/assets/Linux_install/repos/sd/repositories/:/home/stable-diffusion-webui/repositories
     stdin_open: true
     tty: true 

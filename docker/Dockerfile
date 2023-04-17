@@ -65,27 +65,59 @@ RUN pip3 install torch torchvision torchaudio --index-url https://download.pytor
 FROM py_builder AS env_builder
 
 # 如果参数是 sdwebui，则克隆 stable-diffusion-webui 项目到 NOTEBOOK_DIR 目录下，并安装依赖
-ARG app_env
-ENV APP_ENV ${app_env}
+ARG sdwebui=false
 
 # 如果参数是 sdwebui，则克隆 stable-diffusion-webui 项目到 NOTEBOOK_DIR 目录下
-RUN if [ "$APP_ENV" = "sdwebui" ]; then \
+RUN if [ $sdwebui = true ]; then \
         cd $NOTEBOOK_DIR && \
         git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git; \
     fi
 
 # 如果参数是 sdwebui，则安装项目依赖
-RUN if [ "$APP_ENV" = "sdwebui" ]; then \
+RUN if [ $sdwebui = true ]; then \
         cd $NOTEBOOK_DIR/stable-diffusion-webui && \
         conda activate py3.10.6 && \
         pip install -r requirements.txt && \
         cd /; \
     fi
 
-RUN if [ "$APP_ENV" = "sdwebui" ]; then \
+# 如果参数是 sdwebui，则克隆项目
+RUN if [ $sdwebui = true ]; then \
+        cd $NOTEBOOK_DIR/stable-diffusion-webui/ && \
+        mkdir repositories && \
+        cd repositories && \
+        git clone https://github.com/Stability-AI/stablediffusion.git stable-diffusion-stability-ai && \
+        git -C stable-diffusion-stability-ai checkout cf1d67a6fd5ea1aa600c4df58e5b47da45f6bdbf && \
+        git clone https://github.com/CompVis/taming-transformers.git && \
+        git -C taming-transformers checkout 24268930bf1dce879235a7fddd0b2355b84d7ea6 && \
+        git clone https://github.com/crowsonkb/k-diffusion.git && \
+        git -C k-diffusion checkout 5b3af030dd83e0297272d861c19477735d0317ec && \
+        git clone https://github.com/sczhou/CodeFormer.git && \
+        git -C CodeFormer checkout c5b4593074ba6214284d6acd5f1719b6c5d739af && \
+        git clone https://github.com/salesforce/BLIP.git && \
+        git -C BLIP checkout 48211a1594f1321b00f14c9f7a5b4813144b2fb9; \
+    fi
+
+# 如果参数是 sdwebui，则安装项目依赖
+RUN if [ $sdwebui = true ]; then \
+        cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && \
+        conda activate py3.10.6 && \
+        pip install -r CodeFormer/requirements.txt; \
+    fi
+
+# 如果参数是 sdwebui，则安装项目依赖
+RUN if [ $sdwebui = true ]; then \
+        cd $NOTEBOOK_DIR/stable-diffusion-webui && \
+        conda activate py3.10.6 && \
+        pip install git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b && \
+        pip install git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 && \
+        cd /; \
+    fi
+
+RUN if [ $sdwebui = true ]; then \
         apt-get install -y libgl1-mesa-glx libglu1-mesa libxi-dev libglib2.0-0; \
     fi
-    
+
 # 设置默认 shell 为 bash，并使用“-i”选项启动shell
 SHELL ["/bin/bash", "-c", "-i"]
 
