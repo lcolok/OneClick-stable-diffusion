@@ -14,6 +14,6 @@ services:
       - "7860:7860"
       - "8888:8888"
     volumes:
-      - ./notebooks:/app/notebooks
+      - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/:/home/stable-diffusion-webui/models
     stdin_open: true
     tty: true 

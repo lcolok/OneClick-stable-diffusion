@@ -1,5 +1,5 @@
 # 第一阶段：构建JupyterLab环境
-FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04 AS jupyter_env_builder
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 AS jupyter_env_builder
 
 ENV NOTEBOOK_DIR /home
 
@@ -59,7 +59,7 @@ WORKDIR $NOTEBOOK_DIR
 RUN conda create -y -n py3.10.6 python=3.10.6 && \
     echo "conda activate py3.10.6" >> ~/.bashrc
 
-RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+RUN pip3 install torch torchvision torchaudio --index-url https://mirrors.tencent.com/pypi/simple
 
 # 第三阶段：根据输入的参数创建不同的环境镜像
 FROM py_builder AS env_builder
