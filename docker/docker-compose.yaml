@@ -1,9 +1,11 @@
-version: '3'
+version: '3.8'
 services:
   sd:
     build:
           context: .
           dockerfile: Dockerfile
+          args:
+            app_env: sdwebui
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all

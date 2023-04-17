@@ -1,11 +1,14 @@
-FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+# 第一阶段：构建JupyterLab环境
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04 AS jupyter_env_builder
+
+ENV NOTEBOOK_DIR /home
 
 # 设置默认 shell 为 bash，并使用“-i”选项启动shell
 SHELL ["/bin/bash", "-c", "-i"]
 
 # 安装curl和xz-utils
 RUN apt-get update && \
-    apt-get install -y curl xz-utils
+    apt-get install -y curl xz-utils git
 
 # 配置容器中的环境
 
@@ -49,9 +52,43 @@ RUN echo "c.NotebookApp.terminado_settings = {'shell_command': ['/bin/bash']}" >
 RUN sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/' ~/.bashrc
 RUN echo 'force_color_prompt=yes' >> ~/.bashrc
 
-# 设置默认Shell为Bash
+# 第二阶段：创建名为py3.10.6的Python环境，安装PyTorch 2.0.0环境
+FROM jupyter_env_builder AS py_builder
+
+WORKDIR $NOTEBOOK_DIR
+RUN conda create -y -n py3.10.6 python=3.10.6 && \
+    echo "conda activate py3.10.6" >> ~/.bashrc
+
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# 第三阶段：根据输入的参数创建不同的环境镜像
+FROM py_builder AS env_builder
+
+# 如果参数是 sdwebui，则克隆 stable-diffusion-webui 项目到 NOTEBOOK_DIR 目录下，并安装依赖
+ARG app_env
+ENV APP_ENV ${app_env}
+
+# 如果参数是 sdwebui，则克隆 stable-diffusion-webui 项目到 NOTEBOOK_DIR 目录下
+RUN if [ "$APP_ENV" = "sdwebui" ]; then \
+        cd $NOTEBOOK_DIR && \
+        git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git; \
+    fi
+
+# 如果参数是 sdwebui，则安装项目依赖
+RUN if [ "$APP_ENV" = "sdwebui" ]; then \
+        cd $NOTEBOOK_DIR/stable-diffusion-webui && \
+        pip install -r requirements.txt && \
+        cd /; \
+    fi
+
+# 如果参数是 sdwebui，则安装OpenGL
+RUN if [ "$APP_ENV" = "sdwebui" ]; then \
+        apt-get install -y libgl1-mesa-glx libglu1-mesa libxi-dev libglib2.0-0; \
+    fi
+    
+# 设置默认 shell 为 bash，并使用“-i”选项启动shell
 SHELL ["/bin/bash", "-c", "-i"]
 
 # 启动Jupyter Notebook服务器
 CMD conda activate base && \
-    jupyter lab --ip 0.0.0.0 --port 33333 --no-browser --allow-root --notebook-dir=/home
+    jupyter lab --ip 0.0.0.0 --port 33333 --no-browser --allow-root --notebook-dir=$NOTEBOOK_DIR
