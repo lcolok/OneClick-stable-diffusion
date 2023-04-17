@@ -59,7 +59,7 @@ WORKDIR $NOTEBOOK_DIR
 RUN conda create -y -n py3.10.6 python=3.10.6 && \
     echo "conda activate py3.10.6" >> ~/.bashrc
 
-RUN pip3 install torch torchvision torchaudio --index-url https://mirrors.tencent.com/pypi/simple
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # 第三阶段：根据输入的参数创建不同的环境镜像
 FROM py_builder AS env_builder
@@ -77,11 +77,11 @@ RUN if [ "$APP_ENV" = "sdwebui" ]; then \
 # 如果参数是 sdwebui，则安装项目依赖
 RUN if [ "$APP_ENV" = "sdwebui" ]; then \
         cd $NOTEBOOK_DIR/stable-diffusion-webui && \
+        conda activate py3.10.6 && \
         pip install -r requirements.txt && \
         cd /; \
     fi
 
-# 如果参数是 sdwebui，则安装OpenGL
 RUN if [ "$APP_ENV" = "sdwebui" ]; then \
         apt-get install -y libgl1-mesa-glx libglu1-mesa libxi-dev libglib2.0-0; \
     fi
