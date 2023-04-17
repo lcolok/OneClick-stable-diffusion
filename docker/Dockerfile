@@ -102,7 +102,7 @@ RUN if [ $sdwebui = true ]; then \
 RUN if [ $sdwebui = true ]; then \
         cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && \
         conda activate py3.10.6 && \
-        pip install -r CodeFormer/requirements.txt; \
+        pip install -r CodeFormer/requirements.txt;\
     fi
 
 # 如果参数是 sdwebui，则安装项目依赖
