@@ -45,6 +45,8 @@ RUN jupyter lab --generate-config && \
 
 # 添加以下命令以更改Jupyter的默认shell为bash
 RUN echo "c.NotebookApp.terminado_settings = {'shell_command': ['/bin/bash']}" >> ~/.jupyter/jupyter_notebook_config.py
+# 将设置环境变量 SHELL，IPython 内核将使用该变量的值作为 shell
+ENV SHELL=/bin/bash
 
 # 启用颜色支持
 # RUN echo 'export PS1="\[\e[36m\]\u\[\e[m\]@\[\e[32m\]\h:\[\e[33m\]\w\[\e[m\]\$ "' >> ~/.bashrc
