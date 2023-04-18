@@ -121,6 +121,16 @@ RUN if [ $sdwebui = true ]; then \
 # 设置默认 shell 为 bash，并使用“-i”选项启动shell
 SHELL ["/bin/bash", "-c", "-i"]
 
-# 启动Jupyter Notebook服务器
-CMD conda activate base && \
-    jupyter lab --ip 0.0.0.0 --port 33333 --no-browser --allow-root --notebook-dir=$NOTEBOOK_DIR
+# 复制models--openai--clip-vit-large-patch14到/root/.cache/huggingface/hub
+COPY /dependencies/models--openai--clip-vit-large-patch14 /root/.cache/huggingface/hub/models--openai--clip-vit-large-patch14
+
+# 删除launch.py中的pip安装依赖的命令
+RUN sed -i '/run_pip(f"install -r \\\"{requirements_file}\\\"", "requirements for Web UI")/d' $NOTEBOOK_DIR/stable-diffusion-webui/launch.py
+
+
+# 复制启动脚本到容器中
+COPY /scripts/*.sh /scripts/
+RUN chmod +x /scripts/*.sh
+
+# 启动startup脚本
+ENTRYPOINT /scripts/startup.sh
