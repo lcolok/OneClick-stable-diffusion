@@ -44,6 +44,45 @@ COPY /dependencies/models--openai--clip-vit-large-patch14 /root/.cache/huggingfa
 # 删除launch.py中的pip安装依赖的命令
 RUN sed -i '/run_pip(f"install -r \\\"{requirements_file}\\\"", "requirements for Web UI")/d' $NOTEBOOK_DIR/stable-diffusion-webui/launch.py
 
+# 插件安装
+
+# 设置工作目录
+WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui/extensions/
+# 安装中文语言包
+RUN git clone --depth=1 https://github.com/dtlnor/stable-diffusion-webui-localization-zh_CN.git
+# 安装图库浏览器
+RUN git clone --depth=1 https://github.com/AlUlkesh/stable-diffusion-webui-images-browser.git
+# 安装Wildcards
+RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
+## 映射wildcards预设文件夹到拓展目录下
+# RUN mkdir -p /app/stable-diffusion-webui-localization-zh_CN/configs/wildcards_lib
+# RUN ln -s /app/stable-diffusion-webui-localization-zh_CN/configs/wildcards_lib /app/stable-diffusion-webui-images-browser/extensions/stable-diffusion-webui-wildcards/wildcards
+# 安装sd_save_intermediate_images插件(保存预测过程的中间图像)
+RUN git clone --depth=1 https://github.com/AlUlkesh/sd_save_intermediate_images.git
+# 安装openpose-editor
+RUN git clone --depth=1 https://github.com/fkunn1326/openpose-editor.git
+# 安装CLIP Interrogator extension
+RUN git clone --depth=1 https://github.com/pharmapsychotic/clip-interrogator-ext.git
+# 安装Additonal-Networks
+RUN git clone --depth=1 https://github.com/kohya-ss/sd-webui-additional-networks.git
+# 安装sd_web_ui_preset_utils并载入预设
+RUN git clone --depth=1 https://github.com/Gerschel/sd_web_ui_preset_utils.git
+# RUN mkdir -p /app/OneClick-stable-diffusion/configs/sd_web_ui_preset_utils
+# RUN ln -s /app/Gerschel/sd_web_ui_preset_utils/presets.json /app/OneClick-stable-diffusion/configs/sd_web_ui_preset_utils/presets.json
+# 安装sd-webui-ar
+RUN git clone --depth=1 https://github.com/alemelis/sd-webui-ar.git
+# 安装 Aspect Ratio Helper
+RUN git clone --depth=1 https://github.com/thomasasfk/sd-webui-aspect-ratio-helper.git
+# 安装depthmap2mask
+RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://github.com/isl-org/MiDaS midas && cd midas && git checkout b845b78
+RUN git clone --depth=1 https://github.com/Extraltodeus/depthmap2mask.git
+# 安装ControlNet插件
+RUN conda activate py3.10.6 && \
+    pip install mediapipe==0.9.1.0 svglib fvcore opencv-python
+RUN git clone --depth=1 https://github.com/Mikubill/sd-webui-controlnet.git
+
+WORKDIR $NOTEBOOK_DIR
+
 # 复制启动脚本到容器中
 COPY /scripts/*.sh /scripts/
 RUN chmod +x /scripts/*.sh
