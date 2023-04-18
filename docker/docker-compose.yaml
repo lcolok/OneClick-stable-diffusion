@@ -3,7 +3,7 @@ services:
   sd:
     build:
           context: .
-          dockerfile: ./dockerfile/Dockerfile.sdwebui
+          dockerfile: ./dockerfile/Dockerfile.launch_base
           args:
             sdwebui: "true"
     runtime: nvidia
