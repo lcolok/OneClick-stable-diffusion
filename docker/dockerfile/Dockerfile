@@ -8,7 +8,8 @@ SHELL ["/bin/bash", "-c", "-i"]
 
 # 安装curl和xz-utils
 RUN apt-get update && \
-    apt-get install -y curl xz-utils git
+    apt-get install -y curl xz-utils git && \
+    apt-get install -y libgl1-mesa-glx libglu1-mesa libxi-dev libglib2.0-0
 
 # 配置容器中的环境
 
@@ -112,10 +113,6 @@ RUN if [ $sdwebui = true ]; then \
         pip install git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b && \
         pip install git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 && \
         cd /; \
-    fi
-
-RUN if [ $sdwebui = true ]; then \
-        apt-get install -y libgl1-mesa-glx libglu1-mesa libxi-dev libglib2.0-0; \
     fi
 
 # 设置默认 shell 为 bash，并使用“-i”选项启动shell

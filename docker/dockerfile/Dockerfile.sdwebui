@@ -1,0 +1,52 @@
+# 第三阶段：根据输入的参数创建不同的环境镜像
+FROM py:3.10.6-torch2.0.0
+
+ENV NOTEBOOK_DIR /home
+
+# 设置默认 shell 为 bash，并使用“-i”选项启动shell
+SHELL ["/bin/bash", "-c", "-i"]
+
+RUN cd $NOTEBOOK_DIR && \
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git; 
+
+RUN cd $NOTEBOOK_DIR/stable-diffusion-webui && \
+conda activate py3.10.6 && \
+pip install -r requirements.txt && \
+cd /; 
+
+RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/ && \
+mkdir repositories && \
+cd repositories && \
+git clone https://github.com/Stability-AI/stablediffusion.git stable-diffusion-stability-ai && \
+git -C stable-diffusion-stability-ai checkout cf1d67a6fd5ea1aa600c4df58e5b47da45f6bdbf && \
+git clone https://github.com/CompVis/taming-transformers.git && \
+git -C taming-transformers checkout 24268930bf1dce879235a7fddd0b2355b84d7ea6 && \
+git clone https://github.com/crowsonkb/k-diffusion.git && \
+git -C k-diffusion checkout 5b3af030dd83e0297272d861c19477735d0317ec && \
+git clone https://github.com/sczhou/CodeFormer.git && \
+git -C CodeFormer checkout c5b4593074ba6214284d6acd5f1719b6c5d739af && \
+git clone https://github.com/salesforce/BLIP.git && \
+git -C BLIP checkout 48211a1594f1321b00f14c9f7a5b4813144b2fb9; 
+
+RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && \
+    conda activate py3.10.6 && \
+    pip install -r CodeFormer/requirements.txt
+
+RUN cd $NOTEBOOK_DIR/stable-diffusion-webui && \
+    conda activate py3.10.6 && \
+    pip install git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b && \
+    pip install git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 && \
+    cd /;
+
+# 复制models--openai--clip-vit-large-patch14到/root/.cache/huggingface/hub
+COPY /dependencies/models--openai--clip-vit-large-patch14 /root/.cache/huggingface/hub/models--openai--clip-vit-large-patch14
+
+# 删除launch.py中的pip安装依赖的命令
+RUN sed -i '/run_pip(f"install -r \\\"{requirements_file}\\\"", "requirements for Web UI")/d' $NOTEBOOK_DIR/stable-diffusion-webui/launch.py
+
+# 复制启动脚本到容器中
+COPY /scripts/*.sh /scripts/
+RUN chmod +x /scripts/*.sh
+
+# 启动startup脚本
+ENTRYPOINT /scripts/startup.sh

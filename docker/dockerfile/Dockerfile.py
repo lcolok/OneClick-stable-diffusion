@@ -1,0 +1,8 @@
+# 第二阶段：创建名为py3.10.6的Python环境，安装PyTorch 2.0.0环境
+FROM conda:jupyter AS py
+
+WORKDIR $NOTEBOOK_DIR
+RUN conda create -y -n py3.10.6 python=3.10.6 && \
+    echo "conda activate py3.10.6" >> ~/.bashrc
+
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
