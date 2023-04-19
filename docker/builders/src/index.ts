@@ -41,7 +41,7 @@ async function main(): Promise<void> {
     await printDockerImages(selectedConfig);
   }
 
-  outro("You're all set!");
+  outro(pc.bold(pc.yellow("构建完成")));
 }
 
 main().catch(console.error);
