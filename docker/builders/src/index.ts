@@ -12,38 +12,21 @@ import {
 
 import { setTimeout as sleep } from "node:timers/promises";
 import pc from "picocolors";
-import { buildConfig } from "./config";
+import { buildConfig, projectOptions } from "./config";
 import { buildImagesRecursively } from "./build";
 import { printDockerImages } from "./print";
 
 async function main(): Promise<void> {
-  console.log();
   intro(pc.inverse(" 简易构建容器镜像 "));
 
-  const projectType: string | symbol | null = await select({
-    message: "选择一个构建方案：",
-    options: [
-      {
-        value: "conda_build",
-        label: "构建Conda镜像",
-        hint: "基于nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04镜像，包含MiniConda、JupyterLab、Openbayes主题",
-      },
-      {
-        value: "py_build",
-        label: "构建Python镜像",
-        hint: "包含Python3.10.6和Pytorch2.0.0",
-      },
-      {
-        value: "sdwebui_base_build",
-        label: "构建Stable Diffusion WebUI基本镜像",
-      },
-      {
-        value: "sdwebui_ext_build",
-        label: "构建Stable Diffusion WebUI附带常用插件的镜像",
-        hint: "包含汉化、图库浏览器、ControlNet等",
-      },
-    ],
-  });
+  // 选择构建方案的函数
+  async function selectProjectType(): Promise<string | symbol | null> {
+    return await select({
+      message: "选择一个构建方案：",
+      options: projectOptions,
+    });
+  }
+  const projectType: string | symbol | null = await selectProjectType();
 
   if (isCancel(projectType)) {
     cancel("操作取消");
