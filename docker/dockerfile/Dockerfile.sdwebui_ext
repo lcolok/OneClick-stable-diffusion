@@ -4,6 +4,7 @@ FROM sdwebui:rtx4090
 
 # 设置工作目录
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui/extensions/
+
 # 安装中文语言包
 RUN git clone --depth=1 https://github.com/dtlnor/stable-diffusion-webui-localization-zh_CN.git
 # 安装图库浏览器
@@ -33,8 +34,13 @@ RUN git clone --depth=1 https://github.com/thomasasfk/sd-webui-aspect-ratio-help
 RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://github.com/isl-org/MiDaS midas && cd midas && git checkout b845b78
 RUN git clone --depth=1 https://github.com/Extraltodeus/depthmap2mask.git
 # 安装ControlNet插件
-RUN conda activate py3.10.6 && \
-    pip install mediapipe==0.9.1.0 svglib fvcore opencv-python
+RUN pip install mediapipe==0.9.1.0 svglib fvcore opencv-python
 RUN git clone --depth=1 https://github.com/Mikubill/sd-webui-controlnet.git
+# 安装SadTalker
+RUN git clone --depth=1 https://github.com/Winfredy/SadTalker && \
+    cd SadTalker && \
+    pip install -r requirements.txt
+RUN conda install ffmpeg
 
+# 还原工作目录
 WORKDIR $NOTEBOOK_DIR

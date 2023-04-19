@@ -8,6 +8,7 @@ conda activate py3.10.6
 cd $NOTEBOOK_DIR/stable-diffusion-webui
 python launch.py \
     --api \
+    --disable-safe-unpickle \
     --opt-sdp-attention \
     --listen \
     --skip-install \
