@@ -1,0 +1,14 @@
+{
+  "name": "@clack/prompts-docker-builders",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "tsc && node dist/index.js"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.2.0",
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11"
+  }
+}

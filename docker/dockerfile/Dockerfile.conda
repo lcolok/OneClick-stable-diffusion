@@ -20,10 +20,10 @@ RUN conda init
 
 # 安装jupyterlab
 RUN conda install -y jupyter
-    # jupyter notebook --generate-config && \
-    # echo "c.NotebookApp.ip = '*'" >> ~/.jupyter/jupyter_notebook_config.py && \
-    # echo "c.NotebookApp.open_browser = False" >> ~/.jupyter/jupyter_notebook_config.py && \
-    # echo "c.NotebookApp.password = ''" >> ~/.jupyter/jupyter_notebook_config.py
+# jupyter notebook --generate-config && \
+# echo "c.NotebookApp.ip = '*'" >> ~/.jupyter/jupyter_notebook_config.py && \
+# echo "c.NotebookApp.open_browser = False" >> ~/.jupyter/jupyter_notebook_config.py && \
+# echo "c.NotebookApp.password = ''" >> ~/.jupyter/jupyter_notebook_config.py
 
 # 安装Node.js
 RUN curl -LO https://nodejs.org/dist/v18.16.0/node-v18.16.0-linux-x64.tar.xz && \

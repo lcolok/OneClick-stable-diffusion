@@ -266,3 +266,5 @@ bin/
 *.safetensors
 *.pth
 *.pt
+
+node_modules/

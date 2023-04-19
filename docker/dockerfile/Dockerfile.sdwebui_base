@@ -7,26 +7,26 @@ ENV NOTEBOOK_DIR /home
 SHELL ["/bin/bash", "-c", "-i"]
 
 RUN cd $NOTEBOOK_DIR && \
-git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git; 
+    git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git; 
 
 RUN cd $NOTEBOOK_DIR/stable-diffusion-webui && \
-conda activate py3.10.6 && \
-pip install -r requirements.txt && \
-cd /; 
+    conda activate py3.10.6 && \
+    pip install -r requirements.txt && \
+    cd /; 
 
 RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/ && \
-mkdir repositories && \
-cd repositories && \
-git clone https://github.com/Stability-AI/stablediffusion.git stable-diffusion-stability-ai && \
-git -C stable-diffusion-stability-ai checkout cf1d67a6fd5ea1aa600c4df58e5b47da45f6bdbf && \
-git clone https://github.com/CompVis/taming-transformers.git && \
-git -C taming-transformers checkout 24268930bf1dce879235a7fddd0b2355b84d7ea6 && \
-git clone https://github.com/crowsonkb/k-diffusion.git && \
-git -C k-diffusion checkout 5b3af030dd83e0297272d861c19477735d0317ec && \
-git clone https://github.com/sczhou/CodeFormer.git && \
-git -C CodeFormer checkout c5b4593074ba6214284d6acd5f1719b6c5d739af && \
-git clone https://github.com/salesforce/BLIP.git && \
-git -C BLIP checkout 48211a1594f1321b00f14c9f7a5b4813144b2fb9; 
+    mkdir repositories && \
+    cd repositories && \
+    git clone https://github.com/Stability-AI/stablediffusion.git stable-diffusion-stability-ai && \
+    git -C stable-diffusion-stability-ai checkout cf1d67a6fd5ea1aa600c4df58e5b47da45f6bdbf && \
+    git clone https://github.com/CompVis/taming-transformers.git && \
+    git -C taming-transformers checkout 24268930bf1dce879235a7fddd0b2355b84d7ea6 && \
+    git clone https://github.com/crowsonkb/k-diffusion.git && \
+    git -C k-diffusion checkout 5b3af030dd83e0297272d861c19477735d0317ec && \
+    git clone https://github.com/sczhou/CodeFormer.git && \
+    git -C CodeFormer checkout c5b4593074ba6214284d6acd5f1719b6c5d739af && \
+    git clone https://github.com/salesforce/BLIP.git && \
+    git -C BLIP checkout 48211a1594f1321b00f14c9f7a5b4813144b2fb9; 
 
 RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && \
     conda activate py3.10.6 && \

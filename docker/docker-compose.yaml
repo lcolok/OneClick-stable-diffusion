@@ -2,10 +2,10 @@ version: '3.8'
 services:
   sd:
     build:
-          context: .
-          dockerfile: ./dockerfile/Dockerfile.launch_base
-          args:
-            sdwebui: "true"
+      context: .
+      dockerfile: ./dockerfile/Dockerfile.launch_base
+      args:
+        sdwebui: "true"
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
@@ -18,4 +18,4 @@ services:
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/embeddings/:/home/stable-diffusion-webui/embeddings
       # - /mnt/assets/Linux_install/repos/sd/repositories/:/home/stable-diffusion-webui/repositories
     stdin_open: true
-    tty: true 
+    tty: true
