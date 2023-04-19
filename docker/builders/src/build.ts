@@ -16,7 +16,7 @@ import { BuildConfigType, buildConfig } from "./config";
 // 创建一个通用函数用于构建镜像
 export async function buildImage(
   tag: string,
-  dockerfile: string
+  dockerfilepath: string
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const buildProcess = spawn("docker", [
@@ -24,7 +24,7 @@ export async function buildImage(
       "-t",
       tag,
       "-f",
-      `../dockerfile/${dockerfile}`,
+      dockerfilepath,
       "../",
     ]);
 
@@ -67,7 +67,7 @@ export async function buildImagesRecursively(
   const s = spinner();
   s.start(`通过 Docker 构建 ${selectedConfig.tag} 镜像`);
   try {
-    await buildImage(selectedConfig.tag, selectedConfig.dockerfile);
+    await buildImage(selectedConfig.tag, selectedConfig.dockerfilePath!);
     s.stop(`${selectedConfig.tag} 镜像已成功通过 Docker 构建`);
   } catch (error: any) {
     console.error(pc.red(error.message));
