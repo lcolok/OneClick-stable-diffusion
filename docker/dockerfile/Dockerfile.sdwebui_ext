@@ -41,6 +41,10 @@ RUN git clone --depth=1 https://github.com/Winfredy/SadTalker && \
     cd SadTalker && \
     pip install -r requirements.txt
 RUN conda install ffmpeg
+# 安装Locon插件(LyCORIS、LoCon、Loha都能读取)
+RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-locon
+# 安装LyCORIS插件
+RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris
 
 # 还原工作目录
 WORKDIR $NOTEBOOK_DIR

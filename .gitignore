@@ -268,3 +268,4 @@ bin/
 *.pt
 
 node_modules/
+*.temp.*

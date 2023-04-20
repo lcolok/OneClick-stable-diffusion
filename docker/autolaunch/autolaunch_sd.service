@@ -1,0 +1,12 @@
+[Unit]
+Description=Auto launch sdwebui_ext Docker container
+After=docker.service
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker stop autolaunch_sd
+ExecStartPre=-/usr/bin/docker rm autolaunch_sd
+ExecStart=/usr/bin/docker run --name autolaunch_sd sdwebui_ext
+
+[Install]
+WantedBy=multi-user.target
