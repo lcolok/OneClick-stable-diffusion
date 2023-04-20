@@ -38,7 +38,8 @@ def run_docker_compose_with_temporary_yaml(yaml_content, file_suffix):
         temp_yaml.flush()
 
         # 通过 -f 指定临时 yaml 文件的路径
-        os.system(f"docker-compose -f {temp_yaml.name} up --build")
+        # os.system(f"docker-compose -f {temp_yaml.name} up --build")
+        os.system(f"docker-compose -f {temp_yaml.name} up")
 
     # os.remove(temp_yaml_path)
 
