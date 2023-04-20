@@ -1,5 +1,3 @@
-# 全称：Docker Adaptive Service Handler.py 即根据指定的容器名称或随机名称灵活地处理 Docker 服务
-
 import sys
 import random
 import string
@@ -19,17 +17,30 @@ def update_container_names(yaml_content, custom_name=None):
 
         yaml_content['services'][service_name]['container_name'] = container_name
 
+        # 如果有 context 字段，则将其路径改为脚本所在目录下的 temp 文件夹
+        if 'build' in yaml_content['services'][service_name]:
+            if 'context' in yaml_content['services'][service_name]['build']:
+                context = yaml_content['services'][service_name]['build']['context']
+                context_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), context)
+                yaml_content['services'][service_name]['build']['context'] = context_path
+
     return yaml_content
 
 def run_docker_compose_with_temporary_yaml(yaml_content, file_suffix):
-    script_directory = os.path.dirname(os.path.realpath(__file__))
+    # 临时文件的路径为当前脚本目录下的 temp 文件夹
+    script_directory = os.path.join(os.getcwd(), os.path.dirname(__file__), 'temp')
+    if not os.path.exists(script_directory):
+        os.makedirs(script_directory)
     temp_yaml_path = os.path.join(script_directory, f"{file_suffix}")
+
     with open(temp_yaml_path, 'w') as temp_yaml:
         yaml.safe_dump(yaml_content, temp_yaml, default_flow_style=False)
         temp_yaml.flush()
+
+        # 通过 -f 指定临时 yaml 文件的路径
         os.system(f"docker-compose -f {temp_yaml.name} up --build")
 
-    os.remove(temp_yaml_path)
+    # os.remove(temp_yaml_path)
 
 def find_yaml_file():
     if os.path.isfile('docker-compose.yml'):
