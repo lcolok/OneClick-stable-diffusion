@@ -9,10 +9,11 @@ services:
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
+      - JUPYTER_PORT=33333
+      - SDWEBUI_PORT=7860
     ports:
       - "33333:33333"
       - "7860:7860"
-      - "8888:8888"
     volumes:
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models:/home/stable-diffusion-webui/models
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/embeddings:/home/stable-diffusion-webui/embeddings

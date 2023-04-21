@@ -1,5 +1,8 @@
 FROM sdwebui_base:rtx4090
 
+ENV SDWEBUI_PORT=${SDWEBUI_PORT}
+ENV JUPYTER_PORT=${JUPYTER_PORT}
+
 # 复制启动脚本到容器中
 COPY /scripts/*.sh /scripts/
 RUN chmod +x /scripts/*.sh

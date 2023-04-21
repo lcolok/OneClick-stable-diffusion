@@ -7,6 +7,7 @@ conda activate py3.10.6
 # 运行 Python 脚本
 cd $NOTEBOOK_DIR/stable-diffusion-webui
 python launch.py \
+    --port ${SDWEBUI_PORT} \
     --api \
     --disable-safe-unpickle \
     --opt-sdp-attention \
