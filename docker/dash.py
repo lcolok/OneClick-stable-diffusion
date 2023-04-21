@@ -15,6 +15,14 @@ def update_container_names(yaml_content, custom_name=None):
             random_string = generate_random_string(8)
             container_name = f'{service_name}_{random_string}'
 
+        # 更新所有端口加1
+        if 'ports' in yaml_content['services'][service_name]:
+            for i, port in enumerate(yaml_content['services'][service_name]['ports']):
+                port_parts = port.split(':')
+                host_port = int(port_parts[0]) + 1
+                container_port = int(port_parts[1]) + 1
+                yaml_content['services'][service_name]['ports'][i] = f"{host_port}:{container_port}"
+
         yaml_content['services'][service_name]['container_name'] = container_name
 
         # 如果有 context 字段，则将其路径改为脚本所在目录下的 temp 文件夹
