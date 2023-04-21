@@ -1,9 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# 全称：Docker Adaptive Service Handler.py 即根据指定的容器名称或随机名称灵活地处理 Docker 服务
+# 该脚本用于根据给定的自定义名称或随机名称，以及给定的端口增量值来更新 docker-compose.yaml 文件。
+# 这将允许您在不更改原始 docker-compose 文件的情况下运行具有自定义名称和端口的容器。
+# 脚本将生成一个临时的 docker-compose.yaml 文件，并使用它来启动 Docker Compose。
+
 import sys
 import random
 import string
 import yaml
 import os
 import re
+import argparse
 
 def generate_random_string(length):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
@@ -87,8 +96,14 @@ def find_yaml_file():
 
 
 if __name__ == "__main__":
-    custom_name = sys.argv[1] if len(sys.argv) > 1 else None
-    n = int(sys.argv[2]) if len(sys.argv) > 2 else 1
+    parser = argparse.ArgumentParser(description="Launch Docker Compose with custom container names and incremented ports.")
+    parser.add_argument('--name', type=str, help="Custom name for containers", default=None)
+    parser.add_argument('--port_increment', type=int, help="Increment value for ports", default=1)
+
+    args = parser.parse_args()
+    custom_name = args.name
+    n = args.port_increment
+    
     yaml_file = find_yaml_file()
     with open(yaml_file, 'r') as file:
         content = yaml.safe_load(file)

@@ -17,7 +17,7 @@ After=docker.service
 [Service]
 Restart=always
 WorkingDirectory={current_directory}
-ExecStart=/usr/bin/python3 dash.py autolaunch 1
+ExecStart=/usr/bin/python3 dash.py --name autolaunch --port_increment 1
 
 [Install]
 WantedBy=multi-user.target
