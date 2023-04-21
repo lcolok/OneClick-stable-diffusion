@@ -1,28 +1,8 @@
 import { select, isCancel, cancel } from "@clack/prompts";
 import path from "path";
-import { spawn } from "child_process";
 import * as pc from "picocolors";
-import * as yaml from 'js-yaml';
-import * as fs from 'fs';
+import { runCommand } from "../utils/runCommand";
 
-async function runCommand(command: string, args: string[], cwd?: string): Promise<void> {
-    const options = cwd ? { cwd } : undefined;
-    const child = spawn(command, args, options);
-
-    child.stdout.on("data", (data) => {
-        console.log(pc.green(data.toString()));
-    });
-
-    child.stderr.on("data", (data) => {
-        console.error(pc.red(data.toString()));
-    });
-
-    child.on("close", (code) => {
-        if (code !== 0) {
-            console.error(`${command} 进程退出码：${code}`);
-        }
-    });
-}
 
 async function startTestImage(): Promise<void> {
     const composeFilePath = path.join(process.cwd(), "../", "docker-compose.yaml");
@@ -46,7 +26,7 @@ async function startProductionImage(): Promise<void> {
     const command = "python3";
     const args = ["./dash.py", "--name", "autolaunch", "--port_increment", "1"];
 
-    await runCommand(command, args, dashFilePath);
+    await runCommand(command, args, { cwd: dashFilePath });
 }
 
 
@@ -55,8 +35,8 @@ export async function start(): Promise<void> {
         return await select({
             message: "请选择要启动的镜像类型：",
             options: [
-                { label: "启动测试镜像", value: "test" },
-                { label: "启动生产镜像", value: "production" },
+                { label: "🧪测试镜像", value: "test" },
+                { label: "🏭生产镜像", value: "production", hint: "(部署服务面向用户)" },
             ],
         });
     }
