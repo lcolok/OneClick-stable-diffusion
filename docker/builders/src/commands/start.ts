@@ -36,7 +36,7 @@ export async function start(): Promise<void> {
             message: "请选择要启动的镜像类型：",
             options: [
                 { label: "🧪测试镜像", value: "test" },
-                { label: "🏭生产镜像", value: "production", hint: "(部署服务面向用户)" },
+                { label: "🏭生产镜像", value: "production", hint: "部署服务面向用户" },
             ],
         });
     }

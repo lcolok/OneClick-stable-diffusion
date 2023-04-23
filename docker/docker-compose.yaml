@@ -19,6 +19,11 @@ services:
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/embeddings:/home/stable-diffusion-webui/embeddings
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/SadTalker/checkpoints/:/home/stable-diffusion-webui/extensions/SadTalker/checkpoints/
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/outputs:/home/stable-diffusion-webui/outputs
+      - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/models:/home/stable-diffusion-webui/extensions/sd-webui-controlnet/models
+      - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/annotator:/home/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator
+      - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/cache.json:/home/stable-diffusion-webui/cache.json
+      - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/config.json:/home/stable-diffusion-webui/config.json
+      - ../configs/wildcards_lib:/home/stable-diffusion-webui/extensions/stable-diffusion-webui-wildcards/wildcards
       # - /mnt/assets/Linux_install/repos/sd/repositories/:/home/stable-diffusion-webui/repositories
     stdin_open: true
     tty: true

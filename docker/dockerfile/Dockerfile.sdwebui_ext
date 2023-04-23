@@ -30,11 +30,8 @@ RUN git clone --depth=1 https://github.com/Gerschel/sd_web_ui_preset_utils.git
 RUN git clone --depth=1 https://github.com/alemelis/sd-webui-ar.git
 # 安装 Aspect Ratio Helper
 RUN git clone --depth=1 https://github.com/thomasasfk/sd-webui-aspect-ratio-helper.git
-# 安装depthmap2mask
-RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://github.com/isl-org/MiDaS midas && cd midas && git checkout b845b78
-RUN git clone --depth=1 https://github.com/Extraltodeus/depthmap2mask.git
 # 安装ControlNet插件
-RUN pip install mediapipe==0.9.1.0 svglib fvcore opencv-python
+RUN pip install mediapipe==0.9.1.0 svglib fvcore opencv-python timm
 RUN git clone --depth=1 https://github.com/Mikubill/sd-webui-controlnet.git
 # 安装SadTalker
 RUN git clone --depth=1 https://github.com/Winfredy/SadTalker && \
@@ -45,6 +42,16 @@ RUN conda install ffmpeg
 RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-locon
 # 安装LyCORIS插件
 RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris
+# 安装depthmap2mask
+RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://github.com/isl-org/MiDaS midas && cd midas && git checkout b845b78
 
 # 还原工作目录
 WORKDIR $NOTEBOOK_DIR
+
+# 进行一次安装，以便将插件的依赖安装到容器中
+# 通过修改 launch.py 文件，将 start() 函数注释掉，避免启动服务
+# 将 launch.py 复制到 launch_for_install.py
+RUN cp $NOTEBOOK_DIR/stable-diffusion-webui/launch.py $NOTEBOOK_DIR/stable-diffusion-webui/launch_for_install.py
+# 修改 launch_for_install.py 文件，找到 if __name__ == "__main__": 那一行，并去掉 start()
+RUN sed -i '/if __name__ == "__main__":/,/start()/ {/start()/ s/start()//}' $NOTEBOOK_DIR/stable-diffusion-webui/launch_for_install.py
+RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/ && python launch_for_install.py --skip-torch-cuda-test
