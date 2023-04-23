@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "tsc && npm run copy-files && node dist/index.js",
-    "copy-files": "cpx \"src/**/*.yaml\" dist"
+    "copy-files": "cpx \"src/**/*.yaml\" dist",
+    "build": "tsc && npm run copy-files && pkg . -t node14 -C gzip --out-path bin && 7z a -t7z -m0=lzma2 -mx=9 -mmt=on ./bin/prompts-docker-builders.7z ./bin/prompts-docker-builders"
   },
   "dependencies": {
     "@clack/prompts": "^0.2.0",
@@ -13,6 +14,8 @@
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "^18.15.11"
-  }
+    "@types/node": "^18.15.11",
+    "pkg": "^5.8.1"
+  },
+  "bin": "./dist/index.js"
 }
