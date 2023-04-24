@@ -1,5 +1,5 @@
-import { buildConfig, projectOptions } from "../config";
-import { buildImagesRecursively } from "../build";
+import { buildConfig, projectOptions } from "../utils/configReader";
+import { buildImagesRecursively } from "../modules/imageBuilder";
 import { printDockerImages } from "../print";
 import { select, isCancel, cancel } from "@clack/prompts";
 

@@ -1,4 +1,4 @@
-import { BuildConfigType, buildConfig } from "./config";
+import { BuildConfigType, buildConfig } from "./utils/configReader";
 import pc from "picocolors";
 import { promisify } from "util";
 import { exec as execCallback } from "child_process";

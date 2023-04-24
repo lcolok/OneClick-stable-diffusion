@@ -12,7 +12,7 @@ import {
 import { setTimeout as sleep } from "node:timers/promises";
 import pc from "picocolors";
 import { build } from "./commands/build";
-import { start } from "./commands/start";
+import { start } from "./commands/launch";
 import { install } from "./commands/install";
 import { clean } from "./commands/clean";
 

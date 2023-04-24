@@ -1,4 +1,4 @@
-dockerfilesPath: "../dockerfile"
+dockerfilesPath: "./dockerfile"
 
 baseBuildConfig:
   conda_build:
@@ -9,7 +9,7 @@ baseBuildConfig:
 
   py_build:
     tag: "py:3.10.6-torch2.0.0"
-    dockerfile: "Dockerfile.py"
+    dockerfile: "Dockerfile.pytorch"
     label: "🔥构建Pytorch2.0镜像"
     hint: "包含Python3.10.6和Pytorch2.0.0"
     dependencies: ["conda_build"]

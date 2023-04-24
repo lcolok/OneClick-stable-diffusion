@@ -1,5 +1,5 @@
 # 第一阶段：构建JupyterLab环境
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 AS conda
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 
 # 设置默认 shell 为 bash，并使用“-i”选项启动shell
 SHELL ["/bin/bash", "-c", "-i"]

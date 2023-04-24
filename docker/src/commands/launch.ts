@@ -5,7 +5,7 @@ import { runCommand } from "../utils/runCommand";
 
 
 async function startTestImage(): Promise<void> {
-    const composeFilePath = path.join(process.cwd(), "../", "docker-compose.yaml");
+    const composeFilePath = path.join(process.cwd(), "./", "docker-compose.yaml");
 
     // 停止并删除旧的 Docker 容器
     console.log("正在停止并删除旧的 Docker 容器...");
@@ -22,7 +22,7 @@ async function startTestImage(): Promise<void> {
 }
 
 async function startProductionImage(): Promise<void> {
-    const dashFilePath = path.join(process.cwd(), "../");
+    const dashFilePath = path.join(process.cwd(), "./");
     const command = "python3";
     const args = ["./dash.py", "--name", "autolaunch", "--port_increment", "1"];
 

@@ -1,4 +1,4 @@
-FROM sdwebui:rtx4090
+FROM sdwebui_base:rtx4090
 
 # 插件安装
 
@@ -50,7 +50,7 @@ RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://gi
 
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui
 ENV COMMANDLINE_ARGS --skip-torch-cuda-test
-RUN python -c "import launch; launch.prepare_environment();"
+RUN python -c "import launch;launch.prepare_environment();"
 
 # # 通过修改 launch.py 文件，将 start() 函数注释掉，避免启动服务
 # # 将 launch.py 复制到 launch_for_install.py
