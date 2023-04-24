@@ -33,10 +33,10 @@ async function startProductionImage(): Promise<void> {
 export async function start(): Promise<void> {
     async function selectStartOption(): Promise<string | symbol | null> {
         return await select({
-            message: "请选择要启动的镜像类型：",
+            message: "请选择要启动的容器类型：",
             options: [
-                { label: "🧪测试镜像", value: "test" },
-                { label: "🏭生产镜像", value: "production", hint: "部署服务面向用户" },
+                { label: "🧪测试容器", value: "test" },
+                { label: "🏭生产容器", value: "production", hint: "部署服务面向用户" },
             ],
         });
     }

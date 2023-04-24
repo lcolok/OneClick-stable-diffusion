@@ -23,7 +23,7 @@ services:
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/annotator:/home/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/cache.json:/home/stable-diffusion-webui/cache.json
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/config.json:/home/stable-diffusion-webui/config.json
-      - ../configs/wildcards_lib:/home/stable-diffusion-webui/extensions/stable-diffusion-webui-wildcards/wildcards
+      - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:/home/stable-diffusion-webui/extensions/stable-diffusion-webui-wildcards/wildcards
       # - /mnt/assets/Linux_install/repos/sd/repositories/:/home/stable-diffusion-webui/repositories
     stdin_open: true
     tty: true

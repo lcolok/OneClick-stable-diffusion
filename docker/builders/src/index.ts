@@ -23,7 +23,7 @@ async function main(): Promise<void> {
     return await select({
       message: "请选择一个操作：",
       options: [
-        { label: "🚀启动镜像", value: "start", hint: pc.bold(pc.yellow("执行docker-compose.yaml")) },
+        { label: "🚀启动容器", value: "start", hint: pc.bold(pc.yellow("执行docker-compose.yaml")) },
         { label: "🛠️构建镜像", value: "build", hint: pc.bold(pc.yellow("推荐")) },
         { label: "🔌安装开机自启服务", value: "install", hint: pc.bold(pc.yellow("运行autolaunch.py")) },
         { label: "🧹清理多余的镜像", value: "clean" }
