@@ -38,8 +38,8 @@ RUN cd $NOTEBOOK_DIR/stable-diffusion-webui && \
     pip install git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 && \
     cd /;
 
-# 复制models--openai--clip-vit-large-patch14到/root/.cache/huggingface/hub
-COPY /dependencies/models--openai--clip-vit-large-patch14 /root/.cache/huggingface/hub/models--openai--clip-vit-large-patch14
+# # 复制models--openai--clip-vit-large-patch14到/root/.cache/huggingface/hub
+# COPY /dependencies/models--openai--clip-vit-large-patch14 /root/.cache/huggingface/hub/models--openai--clip-vit-large-patch14
 
-# 删除launch.py中的pip安装依赖的命令
-RUN sed -i '/run_pip(f"install -r \\\"{requirements_file}\\\"", "requirements for Web UI")/d' $NOTEBOOK_DIR/stable-diffusion-webui/launch.py
+# #删除launch.py中的pip安装依赖的命令
+# RUN sed -i '/run_pip(f"install -r \\\"{requirements_file}\\\"", "requirements for Web UI")/d' $NOTEBOOK_DIR/stable-diffusion-webui/launch.py
