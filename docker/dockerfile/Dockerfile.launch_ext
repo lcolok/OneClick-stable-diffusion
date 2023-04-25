@@ -4,7 +4,7 @@ ENV SDWEBUI_PORT=${SDWEBUI_PORT}
 ENV JUPYTER_PORT=${JUPYTER_PORT}
 
 # 复制启动脚本到容器中
-COPY /dockerfile/scripts/*.sh /scripts/
+COPY /context/scripts/*.sh /scripts/
 RUN chmod +x /scripts/*.sh
 
 # 启动startup脚本

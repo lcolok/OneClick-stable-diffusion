@@ -2,7 +2,8 @@ import { select, isCancel, cancel } from "@clack/prompts";
 import path from "path";
 import * as pc from "picocolors";
 import { runCommand } from "../utils/runCommand";
-
+import { buildConfig } from "../utils/configReader";
+import { buildAction } from "./build";
 
 async function startTestImage(): Promise<void> {
     const composeFilePath = path.join(process.cwd(), "./", "docker-compose.yaml");
@@ -14,8 +15,12 @@ async function startTestImage(): Promise<void> {
     await runCommand(downCommand, downArgs);
     console.log("旧的 Docker 容器已停止并删除。");
 
-    // 启动新的测试镜像
-    console.log("正在启动新的测试镜像...");
+    // 构建新的镜像
+    const selectedConfig = buildConfig["sdwebui_ext_build"];
+    await buildAction(selectedConfig);
+
+    // 启动新的测试容器
+    console.log("正在启动新的测试容器...");
     const upCommand = "docker-compose";
     const upArgs = ["-f", composeFilePath, "up", "--build"];
     await runCommand(upCommand, upArgs);
@@ -30,7 +35,7 @@ async function startProductionImage(): Promise<void> {
 }
 
 
-export async function start(): Promise<void> {
+export async function launchContainer(): Promise<void> {
     async function selectStartOption(): Promise<string | symbol | null> {
         return await select({
             message: "请选择要启动的容器类型：",
