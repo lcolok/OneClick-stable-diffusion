@@ -11,7 +11,7 @@ import {
 
 import { spawn } from "child_process";
 import pc from "picocolors";
-import { BuildConfigType, buildConfig } from "../utils/configReader";
+import { BuildConfigType, buildConfig } from "../utils/imageBuildConfigReader";
 
 // 创建一个通用函数用于构建镜像
 export async function buildImage(

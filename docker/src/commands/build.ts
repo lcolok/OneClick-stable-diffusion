@@ -1,6 +1,6 @@
-import { buildConfig, projectOptions } from "../utils/configReader";
+import { buildConfig, projectOptions } from "../utils/imageBuildConfigReader";
 import { buildImagesRecursively } from "../modules/imageBuilder";
-import { printDockerImages } from "../print";
+import { printDockerImages } from "../utils/print";
 import { select, isCancel, cancel } from "@clack/prompts";
 
 export async function buildImageSelection(): Promise<void> {

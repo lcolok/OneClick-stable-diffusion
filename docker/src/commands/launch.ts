@@ -2,7 +2,7 @@ import { select, isCancel, cancel } from "@clack/prompts";
 import path from "path";
 import * as pc from "picocolors";
 import { runCommand } from "../utils/runCommand";
-import { buildConfig } from "../utils/configReader";
+import { buildConfig } from "../utils/imageBuildConfigReader";
 import { buildAction } from "./build";
 
 async function startTestImage(): Promise<void> {
