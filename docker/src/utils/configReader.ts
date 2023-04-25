@@ -9,12 +9,14 @@ const configFile = path.join(__dirname, "./image_build_config.yaml");
 // 读取配置文件并解析为 TypeScript 类型
 const config = yaml.load(fs.readFileSync(configFile, "utf8")) as {
   dockerfilesPath: string; // Dockerfile 路径
+  contextPath: string; // 构建上下文路径
   baseBuildConfig: BuildConfigType; // 构建配置对象
 };
 
 // 从配置文件中获取 Dockerfile 路径和构建配置对象
 const dockerfilesPath = config.dockerfilesPath;
 const baseBuildConfig = config.baseBuildConfig;
+const contextPath = config.contextPath;
 
 // 定义构建配置类型
 export type BuildConfigType = {
@@ -22,6 +24,7 @@ export type BuildConfigType = {
     tag: string; // 镜像标签
     dockerfile: string; // Dockerfile 文件名
     dockerfilePath?: string; // Dockerfile 文件路径
+    contextPath?: string; // 构建上下文路径
     label: string; // 项目标签
     hint?: string; // 项目提示
     dependencies?: string[]; // 依赖列表
@@ -44,6 +47,7 @@ function generateBuildConfigWithDockerfilePath(
     newConfig[key] = {
       ...config[key],
       dockerfilePath: generateDockerfilePath(path, config[key].dockerfile),
+      contextPath: contextPath,
     };
   }
 

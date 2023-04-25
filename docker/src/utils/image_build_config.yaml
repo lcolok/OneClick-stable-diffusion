@@ -1,4 +1,5 @@
 dockerfilesPath: "./dockerfile"
+contextPath: "./context"
 
 baseBuildConfig:
   conda_build:
