@@ -9,7 +9,7 @@ import {
   text,
 } from "@clack/prompts";
 
-import { spawn } from "child_process";
+import { spawn, SpawnOptions } from "child_process";
 import pc from "picocolors";
 import { BuildConfigType, buildConfig } from "../utils/imageBuildConfigReader";
 
@@ -19,25 +19,18 @@ export async function buildImage(
   dockerfilepath: string,
   contextpath: string
 ): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const buildProcess = spawn("docker", [
-      "build",
-      "-t",
-      tag,
-      "-f",
-      dockerfilepath,
-      contextpath,
-    ]);
+  return new Promise<void>((resolve, reject) => {
+    const spawnOptions: SpawnOptions = {
+      stdio: ["pipe", "inherit", "inherit"],
+    };
 
-    buildProcess.stdout.on("data", (data) => {
-      console.log(data.toString());
-    });
+    const buildProcess = spawn(
+      "docker",
+      ["build", "-t", tag, "-f", dockerfilepath, contextpath],
+      spawnOptions
+    );
 
-    buildProcess.stderr.on("data", (data) => {
-      console.error(pc.green(data.toString()));
-    });
-
-    buildProcess.on("exit", (code) => {
+    buildProcess.on("exit", (code: number) => {
       if (code === 0) {
         resolve();
       } else {
@@ -68,7 +61,7 @@ export async function buildImagesRecursively(
   const s = spinner();
   s.start(`通过 Docker 构建 ${selectedConfig.tag} 镜像`);
   try {
-    await buildImage(selectedConfig.tag, selectedConfig.dockerfilePath!,selectedConfig.contextPath!);
+    await buildImage(selectedConfig.tag, selectedConfig.dockerfilePath!, selectedConfig.contextPath!);
     s.stop(`${selectedConfig.tag} 镜像已成功通过 Docker 构建`);
   } catch (error: any) {
     console.error(pc.red(error.message));
