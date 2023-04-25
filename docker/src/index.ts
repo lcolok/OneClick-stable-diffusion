@@ -16,6 +16,7 @@ import { launchContainer } from "./commands/launch";
 import { install } from "./commands/install";
 import { clean } from "./commands/clean";
 import { selectMenu } from "./utils/menuSelection";
+import { gpuMonitor } from "./commands/gpu";
 
 async function main(): Promise<void> {
   intro(pc.inverse(" 简易构建容器镜像 "));
@@ -41,6 +42,10 @@ async function main(): Promise<void> {
       {
         label: "🧹清理多余的镜像",
         action: clean,
+      },
+      {
+        label: "📈查看GPU运行状况",
+        action: gpuMonitor,
       },
     ],
   });
