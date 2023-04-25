@@ -1,5 +1,7 @@
+import { installAutoLauncher } from '../modules/installAutoLauncher';
+
 export async function install(): Promise<void> {
-    // 在这里添加安装开机自动服务的逻辑
-    console.log('Hello!');
-  }
-  
+  installAutoLauncher()
+    .then(() => console.log('Auto launcher installed successfully.'))
+    .catch((error) => console.error(`Error installing auto launcher: ${error}`));
+}
