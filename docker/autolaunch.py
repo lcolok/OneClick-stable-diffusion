@@ -17,7 +17,8 @@ After=docker.service
 [Service]
 Restart=always
 RemainAfterExit=yes
-ExecStart=/usr/bin/screen -S sd -dm bash -c 'cd "{current_directory}" && /usr/bin/python3 dash.py --name autolaunch --port_increment 1'
+WorkingDirectory={current_directory}
+ExecStart=/usr/bin/screen -S sd -dm /usr/bin/python3 dash.py --name autolaunch --port_increment 1
 ExecStop=/usr/bin/screen -S sd -X quit
 
 [Install]
