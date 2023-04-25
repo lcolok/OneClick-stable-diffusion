@@ -7,7 +7,7 @@ async function checkAndInstallNvitop(): Promise<void> {
   } catch (error) {
     console.log('Nvitop is not installed. Installing now...');
     try {
-      await runCommand('python', ['-m', 'pip', 'install', 'nvitop']);
+      await runCommand('python3', ['-m', 'pip', 'install', 'nvitop']);
       console.log('Nvitop successfully installed.');
     } catch (installError) {
       console.error('Failed to install Nvitop.');
