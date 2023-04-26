@@ -2,18 +2,19 @@ import { buildConfig, projectOptions } from "../utils/imageBuildConfigReader";
 import { buildImagesRecursively } from "../modules/imageBuilder";
 import { printDockerImages } from "../utils/print";
 import { select, isCancel, cancel } from "@clack/prompts";
+import i18next from '../i18n';
 
 export async function buildImageSelection(): Promise<void> {
   async function selectProjectType(): Promise<string | symbol | null> {
     return await select({
-      message: "选择一个构建方案：",
+      message: i18next.t("SELECT_PROJECT_TYPE"),
       options: projectOptions,
     });
   }
   const projectType: string | symbol | null = await selectProjectType();
 
   if (isCancel(projectType)) {
-    cancel("操作取消");
+    cancel(i18next.t("OPERATION_CANCELLED")!);
     return process.exit(0);
   }
 

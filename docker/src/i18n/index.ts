@@ -27,4 +27,6 @@ i18next.init({
   resources,
 });
 
+i18next.changeLanguage('en_US');
+
 export default i18next;

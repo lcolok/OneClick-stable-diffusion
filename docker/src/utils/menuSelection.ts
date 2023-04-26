@@ -1,5 +1,6 @@
 // 导入所需的模块
 import { select, isCancel, cancel } from "@clack/prompts";
+import i18next from '../i18n';
 
 /**
  * selectMenu 是一个通用的菜单选择函数，用于在命令行界面中展示一个选项列表供用户选择。
@@ -30,7 +31,7 @@ export async function selectMenu<T>({
   // 检查用户是否取消了选择
   if (isCancel(selectedItem)) {
     // 如果用户取消选择，显示取消信息并返回 null
-    cancel("操作取消");
+    cancel(i18next.t("OPERATION_CANCELLED")!);
     return null;
   }
 

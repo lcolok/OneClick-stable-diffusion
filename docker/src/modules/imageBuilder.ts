@@ -12,6 +12,7 @@ import {
 import { spawn, SpawnOptions } from "child_process";
 import pc from "picocolors";
 import { BuildConfigType, buildConfig } from "../utils/imageBuildConfigReader";
+import i18next from '../i18n';
 
 // 创建一个通用函数用于构建镜像
 export async function buildImage(
@@ -34,7 +35,7 @@ export async function buildImage(
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`镜像 ${tag} 构建失败`));
+        reject(new Error(`${i18next.t("IMAGE_BUILD_FAILED", { tag })}`));
       }
     });
   });
@@ -59,13 +60,13 @@ export async function buildImagesRecursively(
 
   // 构建当前方案
   const s = spinner();
-  s.start(`通过 Docker 构建 ${selectedConfig.tag} 镜像`);
+  s.start(`${i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
   try {
     await buildImage(selectedConfig.tag, selectedConfig.dockerfilePath!, selectedConfig.contextPath!);
-    s.stop(`${selectedConfig.tag} 镜像已成功通过 Docker 构建`);
+    s.stop(`${i18next.t("IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
   } catch (error: any) {
     console.error(pc.red(error.message));
-    cancel(`${selectedConfig.tag} 镜像构建失败`);
+    cancel(`${i18next.t("IMAGE_BUILD_FAILED", { tag: pc.red(pc.inverse(` ${selectedConfig.tag} `)) })}`);
     return process.exit(1);
   }
 }

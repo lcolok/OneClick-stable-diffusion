@@ -1,29 +1,29 @@
-dockerfilesPath: "./dockerfile"
-contextPath: "./context"
+dockerfilesPath: ./dockerfile
+contextPath: ./context
 
 baseBuildConfig:
   conda_build:
-    tag: "conda:jupyter"
-    dockerfile: "Dockerfile.conda"
-    label: "🐍构建Conda镜像"
-    hint: "基于nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04镜像，包含MiniConda、JupyterLab、Openbayes主题"
+    tag: conda:jupyter
+    dockerfile: Dockerfile.conda
+    label: CONDA_IMAGE_LABEL
+    hint: CONDA_IMAGE_HINT
 
   py_build:
-    tag: "py:3.10.6-torch2.0.0"
-    dockerfile: "Dockerfile.pytorch"
-    label: "🔥构建Pytorch2.0镜像"
-    hint: "包含Python3.10.6和Pytorch2.0.0"
-    dependencies: ["conda_build"]
+    tag: py:3.10.6-torch2.0.0
+    dockerfile: Dockerfile.pytorch
+    label: PYTORCH_IMAGE_LABEL
+    hint: PYTORCH_IMAGE_HINT
+    dependencies: [conda_build]
 
   sdwebui_base_build:
-    tag: "sdwebui_base:rtx4090"
-    dockerfile: "Dockerfile.sdwebui_base"
-    label: "🕹️构建Stable Diffusion WebUI基本镜像"
-    dependencies: ["conda_build", "py_build"]
+    tag: sdwebui_base:rtx4090
+    dockerfile: Dockerfile.sdwebui_base
+    label: SDWEBUI_BASE_IMAGE_LABEL
+    dependencies: [conda_build, py_build]
 
   sdwebui_ext_build:
-    tag: "sdwebui_ext:rtx4090"
-    dockerfile: "Dockerfile.sdwebui_ext"
-    label: "🧩构建Stable Diffusion WebUI附带常用插件的镜像"
-    hint: "包含汉化、图库浏览器、ControlNet等"
-    dependencies: ["conda_build", "py_build", "sdwebui_base_build"]
+    tag: sdwebui_ext:rtx4090
+    dockerfile: Dockerfile.sdwebui_ext
+    label: SDWEBUI_EXT_IMAGE_LABEL
+    hint: SDWEBUI_EXT_IMAGE_HINT
+    dependencies: [conda_build, py_build, sdwebui_base_build]

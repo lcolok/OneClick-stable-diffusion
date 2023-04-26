@@ -1,18 +1,19 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { exec, execSync } from 'child_process';
+import i18next from '../i18n';
 
 // 检查并安装 screen
 async function checkAndInstallScreen(): Promise<void> {
     try {
         execSync('screen --version', { stdio: 'ignore' });
     } catch (error) {
-        console.log('未检测到 screen，现在将自动安装...');
+        console.log(i18next.t("SCREEN_NOT_FOUND"));
         try {
             execSync('sudo apt-get update && sudo apt-get install -y screen', { stdio: 'inherit' });
-            console.log('已成功安装 screen。');
+            console.log(i18next.t("SCREEN_INSTALLED_SUCCESSFULLY"));
         } catch (installError) {
-            console.error('安装 screen 时出错，请手动安装。');
+            console.error(i18next.t("SCREEN_INSTALLATION_FAILED"));
             throw installError;
         }
     }
@@ -62,14 +63,14 @@ function startServiceAndShowStatus() {
 
     exec('sudo systemctl status autolaunch_sd.service', (error, stdout, stderr) => {
         if (error) {
-            console.error(`错误: ${error.message}`);
+            console.error(`${i18next.t("ERROR")}: ${error.message}`);
             return;
         }
         if (stderr) {
-            console.error(`标准错误: ${stderr}`);
+            console.error(`${i18next.t("STD_ERR")}: ${stderr}`);
             return;
         }
-        console.log(`标准输出: ${stdout}`);
+        console.log(`${i18next.t("STD_OUT")}: ${stdout}`);
     });
 }
 
@@ -87,7 +88,7 @@ async function installAutoLauncher(): Promise<void> {
     const serviceFilePath = createAndSaveServiceFile(currentDirectory, tempDirectory);
 
     // 输出提示信息
-    console.log("服务文件 'autolaunch_sd.service' 已在 'temp' 目录创建并复制到 /etc/systemd/system.");
+    console.log(i18next.t("SERVICE_FILE_CREATED", {filename: "autolaunch_sd.service", directory: "temp"}));
 
     // 复制服务文件到 systemd 目录
     copyServiceFileToSystemd(serviceFilePath);

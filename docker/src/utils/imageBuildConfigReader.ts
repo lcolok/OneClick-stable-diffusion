@@ -2,6 +2,7 @@
 import * as fs from "fs";
 import * as yaml from "js-yaml";
 import * as path from "path";
+import i18next from '../i18n';
 
 // 获取配置文件路径
 const configFile = path.join(__dirname,"../configs", "./imageBuildConfig.yaml");
@@ -48,11 +49,14 @@ function generateBuildConfigWithDockerfilePath(
       ...config[key],
       dockerfilePath: generateDockerfilePath(path, config[key].dockerfile),
       contextPath: contextPath,
+      label: i18next.t(config[key].label) as string, // 使用翻译字符串并断言为 string 类型
+      ...(config[key].hint && { hint: i18next.t(config[key].hint as string) as string }), // 添加翻译后的 hint 并断言为 string 类型
     };
   }
 
   return newConfig;
 }
+
 
 // 根据 Dockerfile 路径生成新的构建配置对象
 export const buildConfig = generateBuildConfigWithDockerfilePath(

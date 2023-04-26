@@ -6,21 +6,22 @@ import { buildConfig } from "../utils/imageBuildConfigReader";
 import { buildAction } from "./build";
 import { selectMenu } from "../utils/menuSelection";
 import { dockerComposeDown, dockerComposeUp } from "../utils/dockerUtils";
+import i18next from '../i18n';
 
 async function launchTestImage(): Promise<void> {
     const composeFilePath = path.join(process.cwd(), "./", "docker-compose.yaml");
 
     // 停止并删除旧的 Docker 容器
-    console.log("正在停止并删除旧的 Docker 容器...");
+    console.log(i18next.t("STOPPING_AND_REMOVING_DOCKER_CONTAINERS"));
     await dockerComposeDown(composeFilePath);
-    console.log("旧的 Docker 容器已停止并删除。");
+    console.log(i18next.t("DOCKER_CONTAINERS_STOPPED_AND_REMOVED"));
 
     // 构建新的镜像
     const selectedConfig = buildConfig["sdwebui_ext_build"];
     await buildAction(selectedConfig);
 
     // 启动新的测试容器
-    console.log("正在启动新的测试容器...");
+    console.log(i18next.t("STARTING_NEW_TEST_CONTAINER"));
     await dockerComposeUp(composeFilePath, true);
 }
 
@@ -34,15 +35,15 @@ async function launchProductionImage(): Promise<void> {
 
 export async function launchContainer(): Promise<void> {
     const selectedOperation = await selectMenu({
-        message: "要启动哪个容器呢?",
+        message: i18next.t("SELECT_CONTAINER_TO_LAUNCH"),
         operations: [
             {
-                label: "🧪测试容器",
+                label: i18next.t("TEST_CONTAINER.LABEL"),
                 action: launchTestImage,
             },
             {
-                label: "🏭生产容器",
-                hint: pc.bold(pc.yellow("部署服务面向用户")),
+                label: i18next.t("PRODUCTION_CONTAINER.LABEL"),
+                hint: pc.bold(pc.yellow(i18next.t("PRODUCTION_CONTAINER.HINT"))),
                 action: launchProductionImage,
             },
         ],
