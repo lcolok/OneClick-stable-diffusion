@@ -4,7 +4,7 @@ import * as yaml from "js-yaml";
 import * as path from "path";
 
 // 获取配置文件路径
-const configFile = path.join(__dirname, "./image_build_config.yaml");
+const configFile = path.join(__dirname,"../configs", "./imageBuildConfig.yaml");
 
 // 读取配置文件并解析为 TypeScript 类型
 const config = yaml.load(fs.readFileSync(configFile, "utf8")) as {
