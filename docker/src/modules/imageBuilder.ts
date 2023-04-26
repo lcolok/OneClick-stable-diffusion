@@ -25,6 +25,8 @@ export async function buildImage(
       stdio: ["pipe", "inherit", "inherit"],
     };
 
+    console.log('\n',`docker build -t ${tag} -f ${dockerfilepath} ${contextpath}`, '\n');
+
     const buildProcess = spawn(
       "docker",
       ["build", "-t", tag, "-f", dockerfilepath, contextpath],

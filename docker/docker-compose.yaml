@@ -15,8 +15,10 @@ services:
       - "33333:33333"
       - "7860:7860"
     volumes:
+      - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache # 无论Clip,BLIP模型和倒推提示词都会把文件缓存到root下的.cache
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models:/home/stable-diffusion-webui/models
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/embeddings:/home/stable-diffusion-webui/embeddings
+      - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/interrogate:/home/stable-diffusion-webui/interrogate
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/SadTalker/checkpoints/:/home/stable-diffusion-webui/extensions/SadTalker/checkpoints/
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/SadTalker/gfpgan/:/home/stable-diffusion-webui/extensions/SadTalker/gfpgan/
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/outputs:/home/stable-diffusion-webui/outputs
