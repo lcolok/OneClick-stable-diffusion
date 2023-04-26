@@ -2,6 +2,8 @@ import { BuildConfigType, buildConfig } from "./imageBuildConfigReader";
 import pc from "picocolors";
 import { promisify } from "util";
 import { exec as execCallback } from "child_process";
+import i18next from '../i18n';
+
 const exec = promisify(execCallback);
 
 export async function printDockerImages(
@@ -9,7 +11,7 @@ export async function printDockerImages(
 ) {
   const { stdout, stderr } = await exec("docker images");
   console.log();
-  console.log(pc.bold("所有 Docker 镜像列表："));
+  console.log(pc.bold(i18next.t("ALL_DOCKER_IMAGES_LIST")));
   const images = stdout.split("\n").slice(1).filter(Boolean);
   images.forEach((image) => {
     const [repository, tag, imageId, created, size] = image.split(/\s+/);

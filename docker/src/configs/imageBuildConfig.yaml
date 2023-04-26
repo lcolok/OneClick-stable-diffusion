@@ -5,25 +5,25 @@ baseBuildConfig:
   conda_build:
     tag: conda:jupyter
     dockerfile: Dockerfile.conda
-    label: CONDA_IMAGE_LABEL
-    hint: CONDA_IMAGE_HINT
+    label: CONDA_IMAGE.LABEL
+    hint: CONDA_IMAGE.HINT
 
   py_build:
     tag: py:3.10.6-torch2.0.0
     dockerfile: Dockerfile.pytorch
-    label: PYTORCH_IMAGE_LABEL
-    hint: PYTORCH_IMAGE_HINT
+    label: PYTORCH_IMAGE.LABEL
+    hint: PYTORCH_IMAGE.HINT
     dependencies: [conda_build]
 
   sdwebui_base_build:
     tag: sdwebui_base:rtx4090
     dockerfile: Dockerfile.sdwebui_base
-    label: SDWEBUI_BASE_IMAGE_LABEL
+    label: SDWEBUI_BASE_IMAGE.LABEL
     dependencies: [conda_build, py_build]
 
   sdwebui_ext_build:
     tag: sdwebui_ext:rtx4090
     dockerfile: Dockerfile.sdwebui_ext
-    label: SDWEBUI_EXT_IMAGE_LABEL
-    hint: SDWEBUI_EXT_IMAGE_HINT
+    label: SDWEBUI_EXT_IMAGE.LABEL
+    hint: SDWEBUI_EXT_IMAGE.HINT
     dependencies: [conda_build, py_build, sdwebui_base_build]

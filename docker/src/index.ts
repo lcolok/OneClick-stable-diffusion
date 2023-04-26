@@ -20,7 +20,7 @@ import { selectMenu } from "./utils/menuSelection";
 import { gpuMonitor } from "./commands/gpu";
 
 async function main(): Promise<void> {
-  intro(pc.inverse(i18next.t("INTRO")));
+  intro(pc.inverse(` ${i18next.t("TOOL_NAME")} `));
 
   const selectedOperation = await selectMenu({
     message: i18next.t("SELECT_OPERATION"),

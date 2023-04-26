@@ -1,4 +1,4 @@
-INTRO: "Simple Container Image Builder"
+TOOL_NAME: "Simple Container Image Builder"
 SELECT_OPERATION: "Please select an operation:"
 START_CONTAINER:
   LABEL: "🚀 Launch container"
@@ -33,13 +33,17 @@ NVITOP_ALREADY_INSTALLED: "Nvitop is already installed."
 INSTALLING_NVITOP: "Nvitop is not installed. Installing now..."
 NVITOP_SUCCESSFULLY_INSTALLED: "Nvitop successfully installed."
 NVITOP_INSTALLATION_FAILED: "Failed to install Nvitop."
-CONDA_IMAGE_LABEL: "🐍Build Conda image"
-CONDA_IMAGE_HINT: "Based on nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 image, including MiniConda, JupyterLab, and Openbayes theme"
-PYTORCH_IMAGE_LABEL: "🔥Build Pytorch 2.0 image"
-PYTORCH_IMAGE_HINT: "Includes Python 3.10.6 and Pytorch 2.0.0"
-SDWEBUI_BASE_IMAGE_LABEL: "🕹️Build Stable Diffusion WebUI base image"
-SDWEBUI_EXT_IMAGE_LABEL: "🧩Build Stable Diffusion WebUI image with commonly used plugins"
-SDWEBUI_EXT_IMAGE_HINT: "Includes Chinese localization, image browser, ControlNet, etc."
+CONDA_IMAGE:
+  LABEL: "🐍 Build Conda image"
+  HINT: "Based on nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 image, including MiniConda, JupyterLab, and Openbayes theme"
+PYTORCH_IMAGE:
+  LABEL: "🔥 Build Pytorch 2.0 image"
+  HINT: "Includes Python 3.10.6 and Pytorch 2.0.0"
+SDWEBUI_BASE_IMAGE:
+  LABEL: "🕹️ Build Stable Diffusion WebUI base image"
+SDWEBUI_EXT_IMAGE:
+  LABEL: "🧩 Build Stable Diffusion WebUI image with commonly used plugins"
+  HINT: "Includes Chinese localization, image browser, ControlNet, etc."
 SCREEN_NOT_FOUND: "Screen not found. Installing now..."
 SCREEN_INSTALLED_SUCCESSFULLY: "Screen installed successfully."
 SCREEN_INSTALLATION_FAILED: "Error installing screen. Please install manually."
@@ -50,3 +54,7 @@ SERVICE_FILE_CREATED: "Service file '{{filename}}' has been created in the '{{di
 BUILDING_IMAGE_VIA_DOCKER: "Building image {{tag}} via Docker"
 IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER: "Image {{tag}} successfully built via Docker"
 IMAGE_BUILD_FAILED: "Image {{tag}} build failed"
+ALL_DOCKER_IMAGES_LIST: "All Docker images list:"
+TERMINATING_CHILD_PROCESS: "❗Received ⌃C, terminating child process..."
+CHILD_PROCESS_TERMINATED: "⛔ Child process terminated"
+CHILD_PROCESS_EXITED: "Child process exited with code:"

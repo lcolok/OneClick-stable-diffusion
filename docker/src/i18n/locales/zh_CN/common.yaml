@@ -1,18 +1,18 @@
-INTRO: "简易构建容器镜像"
+TOOL_NAME: "简易构建容器镜像"
 SELECT_OPERATION: "请选择一个操作："
 START_CONTAINER:
-  LABEL: "🚀启动容器"
+  LABEL: "🚀 启动容器"
   HINT: "执行docker-compose.yaml"
 BUILD_IMAGE:
-  LABEL: "🛠️构建镜像"
+  LABEL: "🛠️ 构建镜像"
   HINT: "推荐"
 INSTALL_SERVICE:
-  LABEL: "🔌安装开机自启服务"
+  LABEL: "🔌 安装开机自启服务"
   HINT: "运行autolaunch.py"
 CLEAN_IMAGE:
-  LABEL: "🧹清理多余的镜像"
+  LABEL: "🧹 清理多余的镜像"
 GPU_STATUS:
-  LABEL: "📈查看GPU运行状况"
+  LABEL: "📈 查看GPU运行状况"
 SELECT_PROJECT_TYPE: "选择一个构建方案："
 OPERATION_CANCELLED: "操作已取消。"
 CLEANING_DOCKER_RESOURCES: "正在清理无用的 Docker 资源..."
@@ -20,9 +20,9 @@ DOCKER_RESOURCES_CLEANED_SUCCESSFULLY: "🧹🔜👌 Docker 资源清理完毕�
 ERROR_CLEANING_DOCKER_RESOURCES: "清理 Docker 资源时出错"
 SELECT_CONTAINER_TO_LAUNCH: "要启动哪个容器呢?"
 TEST_CONTAINER:
-  LABEL: "🧪测试容器"
+  LABEL: "🧪 测试容器"
 PRODUCTION_CONTAINER:
-  LABEL: "🏭生产容器"
+  LABEL: "🏭 生产容器"
   HINT: "部署服务面向用户"
 STOPPING_AND_REMOVING_DOCKER_CONTAINERS: "正在停止并删除旧的 Docker 容器..."
 DOCKER_CONTAINERS_STOPPED_AND_REMOVED: "旧的 Docker 容器已停止并删除。"
@@ -33,13 +33,17 @@ NVITOP_ALREADY_INSTALLED: "Nvitop已经安装。"
 INSTALLING_NVITOP: "Nvitop未安装。正在安装..."
 NVITOP_SUCCESSFULLY_INSTALLED: "Nvitop安装成功。"
 NVITOP_INSTALLATION_FAILED: "安装Nvitop失败。"
-CONDA_IMAGE_LABEL: "🐍构建Conda镜像"
-CONDA_IMAGE_HINT: "基于nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04镜像，包含MiniConda、JupyterLab、Openbayes主题"
-PYTORCH_IMAGE_LABEL: "🔥构建Pytorch2.0镜像"
-PYTORCH_IMAGE_HINT: "包含Python3.10.6和Pytorch2.0.0"
-SDWEBUI_BASE_IMAGE_LABEL: "🕹️构建Stable Diffusion WebUI基本镜像"
-SDWEBUI_EXT_IMAGE_LABEL: "🧩构建Stable Diffusion WebUI附带常用插件的镜像"
-SDWEBUI_EXT_IMAGE_HINT: "包含汉化、图库浏览器、ControlNet等"
+CONDA_IMAGE: 
+  LABEL: "🐍 构建Conda镜像"
+  HINT: "基于nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04镜像，包含MiniConda、JupyterLab、Openbayes主题"
+PYTORCH_IMAGE:
+  LABEL: "🔥 构建Pytorch2.0镜像"
+  HINT: "包含Python3.10.6和Pytorch2.0.0"
+SDWEBUI_BASE_IMAGE:
+  LABEL: "🕹️ 构建Stable Diffusion WebUI基本镜像"
+SDWEBUI_EXT_IMAGE:
+  LABEL: "🧩 构建Stable Diffusion WebUI附带常用插件的镜像"
+  HINT: "包含汉化、图库浏览器、ControlNet等"
 SCREEN_NOT_FOUND: "未检测到 screen，现在将自动安装..."
 SCREEN_INSTALLED_SUCCESSFULLY: "已成功安装 screen。"
 SCREEN_INSTALLATION_FAILED: "安装 screen 时出错，请手动安装。"
@@ -50,3 +54,7 @@ SERVICE_FILE_CREATED: "服务文件 '{{filename}}' 已在 '{{directory}}' 目录
 BUILDING_IMAGE_VIA_DOCKER: "通过 Docker 构建镜像 {tag}"
 IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER: "镜像 {tag} 通过 Docker 构建成功"
 IMAGE_BUILD_FAILED: "镜像 {tag} 构建失败"
+ALL_DOCKER_IMAGES_LIST: "所有 Docker 镜像列表："
+TERMINATING_CHILD_PROCESS: "❗收到 ⌃C，正在终止子进程..."
+CHILD_PROCESS_TERMINATED: "⛔ 已终止子进程"
+CHILD_PROCESS_EXITED: "子进程退出，返回码："

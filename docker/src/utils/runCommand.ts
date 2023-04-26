@@ -1,16 +1,17 @@
 import { spawn, SpawnOptions } from "child_process";
-import { outro,cancel } from "@clack/prompts";
+import { outro, cancel } from "@clack/prompts";
 import pc from "picocolors";
+import i18next from '../i18n';
 
 export async function runCommand(command: string, args: string[], options?: SpawnOptions): Promise<void> {
     return new Promise((resolve, reject) => {
         const childProcess = spawn(command, args, { stdio: "inherit", ...options });
 
-        // 处理 Ctrl+C（SIGINT）信号
+        // Handle Ctrl+C (SIGINT) signal
         process.on("SIGINT", () => {
-            console.log("\n❗收到 ⌃C，正在终止子进程...");
+            console.log(`\n${pc.bold(i18next.t("TERMINATING_CHILD_PROCESS"))}`);
             childProcess.kill();
-            cancel("⛔ 已终止子进程");
+            cancel(i18next.t("CHILD_PROCESS_TERMINATED") as string);
             process.exit(0);
         });
 
@@ -18,7 +19,7 @@ export async function runCommand(command: string, args: string[], options?: Spaw
             if (code === 0) {
                 resolve();
             } else {
-                reject(new Error(`子进程退出，返回码：${code}`));
+                reject(new Error(`${i18next.t("CHILD_PROCESS_EXITED")} ${code}`));
             }
         });
 
