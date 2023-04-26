@@ -18,6 +18,7 @@ services:
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models:/home/stable-diffusion-webui/models
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/embeddings:/home/stable-diffusion-webui/embeddings
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/SadTalker/checkpoints/:/home/stable-diffusion-webui/extensions/SadTalker/checkpoints/
+      - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/SadTalker/gfpgan/:/home/stable-diffusion-webui/extensions/SadTalker/gfpgan/
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/outputs:/home/stable-diffusion-webui/outputs
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/models:/home/stable-diffusion-webui/extensions/sd-webui-controlnet/models
       - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/annotator:/home/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator
