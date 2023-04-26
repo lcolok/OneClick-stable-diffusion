@@ -9,6 +9,7 @@ import {
   text,
 } from "@clack/prompts";
 
+import i18next from './utils/i18n';
 import { setTimeout as sleep } from "node:timers/promises";
 import pc from "picocolors";
 import { buildImageSelection } from "./commands/build";
@@ -17,6 +18,8 @@ import { install } from "./commands/install";
 import { clean } from "./commands/clean";
 import { selectMenu } from "./utils/menuSelection";
 import { gpuMonitor } from "./commands/gpu";
+
+console.log(i18next.t('greetings'));
 
 async function main(): Promise<void> {
   intro(pc.inverse(" 简易构建容器镜像 "));
