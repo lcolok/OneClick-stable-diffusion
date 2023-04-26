@@ -9,7 +9,7 @@ import {
   text,
 } from "@clack/prompts";
 
-import i18next from './utils/i18n';
+import i18next from './i18n';
 import { setTimeout as sleep } from "node:timers/promises";
 import pc from "picocolors";
 import { buildImageSelection } from "./commands/build";
@@ -19,35 +19,33 @@ import { clean } from "./commands/clean";
 import { selectMenu } from "./utils/menuSelection";
 import { gpuMonitor } from "./commands/gpu";
 
-console.log(i18next.t('greetings'));
-
 async function main(): Promise<void> {
-  intro(pc.inverse(" 简易构建容器镜像 "));
+  intro(pc.inverse(i18next.t("INTRO")));
 
   const selectedOperation = await selectMenu({
-    message: "请选择一个操作：",
+    message: i18next.t("SELECT_OPERATION"),
     operations: [
       {
-        label: "🚀启动容器",
-        hint: pc.bold(pc.yellow("执行docker-compose.yaml")),
+        label: i18next.t("START_CONTAINER.LABEL"),
+        hint: pc.bold(pc.yellow(i18next.t("START_CONTAINER.HINT"))),
         action: launchContainer,
       },
       {
-        label: "🛠️构建镜像",
-        hint: pc.bold(pc.yellow("推荐")),
+        label: i18next.t("BUILD_IMAGE.LABEL"),
+        hint: pc.bold(pc.yellow(i18next.t("BUILD_IMAGE.HINT"))),
         action: buildImageSelection,
       },
       {
-        label: "🔌安装开机自启服务",
-        hint: pc.bold(pc.yellow("运行autolaunch.py")),
+        label: i18next.t("INSTALL_SERVICE.LABEL"),
+        hint: pc.bold(pc.yellow(i18next.t("INSTALL_SERVICE.HINT"))),
         action: install,
       },
       {
-        label: "🧹清理多余的镜像",
+        label: i18next.t("CLEAN_IMAGE.LABEL"),
         action: clean,
       },
       {
-        label: "📈查看GPU运行状况",
+        label: i18next.t("GPU_STATUS.LABEL"),
         action: gpuMonitor,
       },
     ],

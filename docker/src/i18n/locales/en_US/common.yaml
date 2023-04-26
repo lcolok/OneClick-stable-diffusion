@@ -1,0 +1,15 @@
+INTRO: "Simple Container Image Builder"
+SELECT_OPERATION: "Please select an operation:"
+START_CONTAINER:
+  LABEL: "🚀 Launch container"
+  HINT: "execute docker-compose.yaml"
+BUILD_IMAGE:
+  LABEL: "🛠️ Build image"
+  HINT: "recommended"
+INSTALL_SERVICE:
+  LABEL: "🔌 Install autolaunch service"
+  HINT: "run autolaunch.py"
+CLEAN_IMAGE:
+  LABEL: "🧹 Clean unused images"
+GPU_STATUS:
+  LABEL: "📈 View GPU status"

@@ -1,0 +1,15 @@
+INTRO: "简易构建容器镜像"
+SELECT_OPERATION: "请选择一个操作："
+START_CONTAINER:
+  LABEL: "🚀启动容器"
+  HINT: "执行docker-compose.yaml"
+BUILD_IMAGE:
+  LABEL: "🛠️构建镜像"
+  HINT: "推荐"
+INSTALL_SERVICE:
+  LABEL: "🔌安装开机自启服务"
+  HINT: "运行autolaunch.py"
+CLEAN_IMAGE:
+  LABEL: "🧹清理多余的镜像"
+GPU_STATUS:
+  LABEL: "📈查看GPU运行状况"
