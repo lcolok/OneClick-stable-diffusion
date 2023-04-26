@@ -4,15 +4,15 @@ import * as pc from "picocolors";
 import { runCommand } from "../utils/runCommand";
 import { buildConfig } from "../utils/imageBuildConfigReader";
 import { buildAction } from "./build";
+import { selectMenu } from "../utils/menuSelection";
+import { dockerComposeDown, dockerComposeUp } from "../utils/dockerUtils";
 
-async function startTestImage(): Promise<void> {
+async function launchTestImage(): Promise<void> {
     const composeFilePath = path.join(process.cwd(), "./", "docker-compose.yaml");
 
     // 停止并删除旧的 Docker 容器
     console.log("正在停止并删除旧的 Docker 容器...");
-    const downCommand = "docker-compose";
-    const downArgs = ["-f", composeFilePath, "down"];
-    await runCommand(downCommand, downArgs);
+    await dockerComposeDown(composeFilePath);
     console.log("旧的 Docker 容器已停止并删除。");
 
     // 构建新的镜像
@@ -21,12 +21,10 @@ async function startTestImage(): Promise<void> {
 
     // 启动新的测试容器
     console.log("正在启动新的测试容器...");
-    const upCommand = "docker-compose";
-    const upArgs = ["-f", composeFilePath, "up", "--build"];
-    await runCommand(upCommand, upArgs);
+    await dockerComposeUp(composeFilePath, true);
 }
 
-async function startProductionImage(): Promise<void> {
+async function launchProductionImage(): Promise<void> {
     const dashFilePath = path.join(process.cwd(), "./");
     const command = "python3";
     const args = ["./dash.py", "--name", "autolaunch", "--port_increment", "1"];
@@ -34,33 +32,23 @@ async function startProductionImage(): Promise<void> {
     await runCommand(command, args, { cwd: dashFilePath });
 }
 
-
 export async function launchContainer(): Promise<void> {
-    async function selectStartOption(): Promise<string | symbol | null> {
-        return await select({
-            message: "请选择要启动的容器类型：",
-            options: [
-                { label: "🧪测试容器", value: "test" },
-                { label: "🏭生产容器", value: "production", hint: "部署服务面向用户" },
-            ],
-        });
-    }
+    const selectedOperation = await selectMenu({
+        message: "要启动哪个容器呢?",
+        operations: [
+            {
+                label: "🧪测试容器",
+                action: launchTestImage,
+            },
+            {
+                label: "🏭生产容器",
+                hint: pc.bold(pc.yellow("部署服务面向用户")),
+                action: launchProductionImage,
+            },
+        ],
+    });
 
-    const startOption: string | symbol | null = await selectStartOption();
-
-    if (isCancel(startOption)) {
-        cancel("操作取消");
-        return process.exit(0);
-    }
-
-    type StartOptionKey = 'test' | 'production';
-    const startActions: Record<StartOptionKey, () => Promise<void>> = {
-        test: startTestImage,
-        production: startProductionImage,
-    };
-
-    const startAction = startActions[startOption as StartOptionKey];
-    if (startAction) {
-        await startAction();
+    if (selectedOperation?.action) {
+        await selectedOperation.action();
     }
 }
