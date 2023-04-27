@@ -15,5 +15,7 @@ python webui.py \
     --opt-sdp-attention \
     --listen \
     --skip-install \
-    --ckpt ./models/Stable-diffusion/revAnimated_v11.safetensors
+    --disable-nan-check \
+    --no-half-vae
+    # --ckpt ./models/Stable-diffusion/revAnimated_v11.safetensors
     # --nowebui \
