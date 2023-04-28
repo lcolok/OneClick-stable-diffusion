@@ -7,6 +7,7 @@ import {
   isCancel,
   cancel,
   text,
+  multiselect
 } from "@clack/prompts";
 
 import { spawn, SpawnOptions } from "child_process";
@@ -15,31 +16,52 @@ import { BuildConfigType, buildConfig } from "../utils/imageBuildConfigReader";
 import i18next from '../i18n';
 
 // 创建一个通用函数用于构建镜像
-export async function buildImage(
-  tag: string,
-  dockerfilepath: string,
-  contextpath: string
-): Promise<void> {
+
+interface BuildImageOptions {
+  tag: string;
+  dockerfilePath: string;
+  contextPath: string;
+  flags?: string[];
+}
+
+// 创建一个通用函数用于构建镜像
+export async function buildImage({
+  tag,
+  dockerfilePath,
+  contextPath,
+  flags = [],
+}: BuildImageOptions): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     const spawnOptions: SpawnOptions = {
       stdio: ["pipe", "inherit", "inherit"],
     };
 
-    console.log('\n',`docker build -t ${tag} -f ${dockerfilepath} ${contextpath}`, '\n');
+    const dockerCommand = ["build", "-t", tag, "-f", dockerfilePath, contextPath, ...flags];
 
-    const buildProcess = spawn(
-      "docker",
-      ["build", "-t", tag, "-f", dockerfilepath, contextpath],
-      spawnOptions
-    );
+    console.log("\n", `docker ${dockerCommand.join(" ")}`, "\n");
+
+    const buildProcess = spawn("docker", dockerCommand, spawnOptions);
 
     buildProcess.on("exit", (code: number) => {
+      // 移除 SIGINT 事件监听器
+      process.removeListener("SIGINT", handleSigInt);
+
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`${i18next.t("IMAGE_BUILD_FAILED", { tag })}`));
+        reject(new Error(i18next.t("IMAGE_BUILD_FAILED", { tag }) as string));
       }
     });
+
+    // 将 SIGINT 事件处理程序定义为单独的函数，以便在需要时移除
+    function handleSigInt() {
+      buildProcess.kill();
+      // 显示取消消息
+      reject(new Error(i18next.t("OPERATION_CANCELLED") as string));
+    }
+
+    // 监听 SIGINT 事件，结束构建进程
+    process.on("SIGINT", handleSigInt);
   });
 }
 
@@ -64,7 +86,11 @@ export async function buildImagesRecursively(
   const s = spinner();
   s.start(`${i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
   try {
-    await buildImage(selectedConfig.tag, selectedConfig.dockerfilePath!, selectedConfig.contextPath!);
+    await buildImage({
+      tag: selectedConfig.tag,
+      dockerfilePath: selectedConfig.dockerfilePath!,
+      contextPath: selectedConfig.contextPath!,
+    });
     s.stop(`${i18next.t("IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
   } catch (error: any) {
     console.error(pc.red(error.message));

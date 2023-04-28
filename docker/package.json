@@ -2,13 +2,13 @@
   "name": "@clack/prompts-docker-builders",
   "version": "0.0.0",
   "scripts": {
-    "start": "npm run clean && tsc && npm run copy-files && node dist/index.js",
+    "start": "npx ts-node src/index.ts",
     "copy-files": "cpx \"src/**/*.{yaml,json}\" dist",
     "build": "npm run clean && tsc && npm run copy-files && pkg . -t node14 -C gzip --out-path bin && 7z a -t7z -m0=lzma2 -mx=9 -mmt=on ./bin/prompts-docker-builders.7z ./bin/prompts-docker-builders",
     "clean": "del-cli dist"
   },
   "dependencies": {
-    "@clack/prompts": "^0.2.0",
+    "@clack/prompts": "^0.6.3",
     "cpx": "^1.5.0",
     "i18next": "^22.4.15",
     "js-yaml": "^4.1.0",
@@ -21,7 +21,8 @@
     "@types/node": "^18.16.1",
     "@types/progress": "^2.0.5",
     "del-cli": "^5.0.0",
-    "pkg": "^5.8.1"
+    "pkg": "^5.8.1",
+    "ts-node": "^10.9.1"
   },
   "bin": "./dist/index.js"
 }

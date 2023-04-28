@@ -6,7 +6,7 @@ import {
   spinner,
   isCancel,
   cancel,
-  text,
+  text, multiselect
 } from "@clack/prompts";
 
 import i18next from './i18n';

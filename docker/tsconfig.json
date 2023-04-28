@@ -1,15 +1,17 @@
 {
   "compilerOptions": {
+    "target": "ES2022",
     "module": "CommonJS",
-    "ignoreDeprecations": "5.0",
+    "lib": ["ES2022", "dom"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "outDir": "dist",
     "rootDir": "src",
-    "strict": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
