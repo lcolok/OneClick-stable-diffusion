@@ -25,9 +25,6 @@ export async function printDockerImages(
   // 获取表头
   const header = images[0];
   
-  // 使用正则表达式匹配表头格式并获取项目间隔
-  const separator = header.match(/\s+/g)?.[0] ?? '  ';
-  
   // 打印表头
   console.log(pc.inverse(`${header}  `));
   
@@ -35,10 +32,10 @@ export async function printDockerImages(
   const filteredImages = images.slice(1).filter((image) => !image.startsWith('<none>'));
   
   filteredImages.forEach((image) => {
-    const [repository, tag, imageId, created, size] = image.split(separator);
+    const [repository, tag, imageId, created, size] = image.split(/\s+/);
     const name = `${repository}:${tag}`;
     if (name === selectedConfig.tag) {
-      console.log(pc.bold(pc.cyan(image)));
+      console.log(pc.bold(pc.cyan(pc.inverse(image))));
     } else {
       console.log(image);
     }

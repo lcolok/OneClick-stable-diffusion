@@ -30,7 +30,7 @@ export async function buildImage({
   contextPath,
   flags = [],
 }: BuildImageOptions): Promise<void> {
-  await runCommand("docker", ["build", "-t", tag, "-f", dockerfilePath, contextPath, ...flags], { shell: true });
+  await runCommand("docker", ["build", "-t", tag, "-f", dockerfilePath, contextPath, ...flags]);
 }
 
 export async function buildImagesRecursively(
