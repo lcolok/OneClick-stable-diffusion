@@ -1,5 +1,5 @@
 import { buildConfig, projectOptions } from "../utils/imageBuildConfigReader";
-import { buildImagesRecursively } from "../modules/imageBuilder";
+import { selectDependenciesAndBuildImages } from "../modules/imageBuilder";
 import { printDockerImages } from "../utils/print";
 import { select, isCancel, cancel, outro } from "@clack/prompts";
 import i18next from '../i18n';
@@ -32,7 +32,7 @@ export async function buildImageSelection(): Promise<void> {
  */
 export async function buildAction(selectedConfig: any): Promise<void> {
   // 构建镜像
-  await buildImagesRecursively(selectedConfig);
+  await selectDependenciesAndBuildImages(selectedConfig);
   // 打印镜像信息
   await printDockerImages(selectedConfig);
   outro(i18next.t("BUILD_SUCCESSFULLY")!);
