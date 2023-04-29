@@ -14,6 +14,7 @@ import pc from "picocolors";
 import { BuildConfigType, buildConfig, projectOptions } from "@utils/imageBuildConfigReader";
 import i18next from '@i18n';
 import { runCommand } from '@utils/runCommand';
+import { spawn } from "child_process";
 
 // 创建一个通用函数用于构建镜像
 
@@ -24,13 +25,41 @@ interface BuildImageOptions {
   flags?: string[];
 }
 
-export async function buildImage({
-  tag,
-  dockerfilePath,
-  contextPath,
-  flags = [],
-}: BuildImageOptions): Promise<void> {
-  await runCommand("docker", ["build", "-t", tag, "-f", dockerfilePath, contextPath, ...flags]);
+// 创建一个通用函数用于构建镜像
+export async function buildImage(
+  { tag,
+    dockerfilePath,
+    contextPath,
+    flags = []
+  }: BuildImageOptions
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const buildProcess = spawn("docker", [
+      "build",
+      "-t",
+      tag,
+      "-f",
+      dockerfilePath,
+      contextPath,
+      ...flags
+    ]);
+
+    buildProcess.stdout.on("data", (data) => {
+      console.log(data.toString());
+    });
+
+    buildProcess.stderr.on("data", (data) => {
+      console.error(pc.green(data.toString()));
+    });
+
+    buildProcess.on("exit", (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`镜像 ${tag} 构建失败`));
+      }
+    });
+  });
 }
 
 interface BuildImagesRecursivelyOptions {
