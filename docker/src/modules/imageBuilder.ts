@@ -88,7 +88,7 @@ export async function buildImagesRecursively({
   const s = spinner();
   let noCacheFlag: string[] = [];
   if (buildFromScratchDependencies.has(selectedConfig.tag)) {
-    console.log(pc.red(pc.inverse(` 需要重新构建${selectedConfig.tag}! `)));
+    console.log(pc.red(pc.inverse(` ${i18next.t('NEED_REBUILD', { tag: selectedConfig.tag })} `)));
     noCacheFlag = ["--no-cache"];
   }
 

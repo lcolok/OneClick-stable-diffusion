@@ -67,3 +67,4 @@ ERROR_PRINT: 'Error: {{err}}'
 BUILD_SUCCESSFULLY: 🛠️👌 Build successfully.
 SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: 'Select dependencies to build from scratch:'
 CURRENT_CHOICE: 'Current choice'
+NEED_REBUILD: Need to rebuild {{tag}}!

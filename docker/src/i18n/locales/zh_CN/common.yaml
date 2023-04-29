@@ -33,7 +33,7 @@ NVITOP_ALREADY_INSTALLED: Nvitop已经安装。
 INSTALLING_NVITOP: Nvitop未安装。正在安装...
 NVITOP_SUCCESSFULLY_INSTALLED: Nvitop安装成功。
 NVITOP_INSTALLATION_FAILED: 安装Nvitop失败。
-CONDA_IMAGE: 
+CONDA_IMAGE:
   LABEL: 🐍 构建Conda镜像
   HINT: 基于nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04镜像，包含MiniConda、JupyterLab、Openbayes主题
 PYTORCH_IMAGE:
@@ -67,3 +67,4 @@ ERROR_PRINT: 错误：{{err}}
 BUILD_SUCCESSFULLY: 🎉🎉🎉 构建成功！
 SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: 请选择要从头构建的依赖项：
 CURRENT_CHOICE: 当前选择
+NEED_REBUILD: 需要重新构建 {{tag}}！
