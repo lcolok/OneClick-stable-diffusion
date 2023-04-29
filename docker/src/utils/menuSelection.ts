@@ -1,6 +1,6 @@
 // 导入所需的模块
 import { select, isCancel, cancel } from "@clack/prompts";
-import i18next from '../i18n';
+import i18next from '@i18n';
 
 /**
  * selectMenu 是一个通用的菜单选择函数，用于在命令行界面中展示一个选项列表供用户选择。

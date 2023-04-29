@@ -1,5 +1,5 @@
-import { runCommand } from '../utils/runCommand';
-import i18next from '../i18n';
+import { runCommand } from '@utils/runCommand';
+import i18next from '@i18n';
 
 async function checkAndInstallNvitop(): Promise<void> {
   try {

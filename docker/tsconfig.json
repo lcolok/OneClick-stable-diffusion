@@ -26,6 +26,9 @@
       "@utils/*": [
         "src/utils/*"
       ],
+      "@i18n": [
+        "src/i18n/index.ts"
+      ],
       "*": [
         "*",
         "src/@types/*"

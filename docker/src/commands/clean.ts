@@ -1,8 +1,8 @@
 import { outro } from "@clack/prompts";
 import pc from "picocolors";
 
-import { runCommand } from "../utils/runCommand";
-import i18next from '../i18n';
+import { runCommand } from "@utils/runCommand";
+import i18next from '@i18n';
 
 export async function clean(): Promise<void> {
   console.log(i18next.t("CLEANING_DOCKER_RESOURCES"));

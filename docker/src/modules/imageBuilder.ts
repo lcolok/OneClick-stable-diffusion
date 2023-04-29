@@ -11,9 +11,9 @@ import {
 } from "@clack/prompts";
 
 import pc from "picocolors";
-import { BuildConfigType, buildConfig, projectOptions } from "../utils/imageBuildConfigReader";
-import i18next from '../i18n';
-import { runCommand } from '../utils/runCommand';
+import { BuildConfigType, buildConfig, projectOptions } from "@utils/imageBuildConfigReader";
+import i18next from '@i18n';
+import { runCommand } from '@utils/runCommand';
 
 // 创建一个通用函数用于构建镜像
 

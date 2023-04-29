@@ -1,12 +1,12 @@
 import { select, isCancel, cancel } from "@clack/prompts";
 import path from "path";
 import * as pc from "picocolors";
-import { runCommand } from "../utils/runCommand";
-import { buildConfig } from "../utils/imageBuildConfigReader";
+import { runCommand } from "@utils/runCommand";
+import { buildConfig } from "@utils/imageBuildConfigReader";
 import { buildAction } from "./build";
-import { selectMenu } from "../utils/menuSelection";
-import { dockerComposeDown, dockerComposeUp } from "../utils/dockerUtils";
-import i18next from '../i18n';
+import { selectMenu } from "@utils/menuSelection";
+import { dockerComposeDown, dockerComposeUp } from "@utils/dockerUtils";
+import i18next from '@i18n';
 
 async function launchTestImage(): Promise<void> {
     const composeFilePath = path.join(process.cwd(), "./", "docker-compose.yaml");

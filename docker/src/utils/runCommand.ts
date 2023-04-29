@@ -1,7 +1,7 @@
 import { spawn, ChildProcess } from "child_process";
 import { cancel } from "@clack/prompts";
 import { Writable } from "stream";
-import i18next from '../i18n';
+import i18next from '@i18n';
 
 const childProcesses = new Set<ChildProcess>();
 

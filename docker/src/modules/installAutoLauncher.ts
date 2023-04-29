@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { exec, execSync, spawn, SpawnOptions } from 'child_process';
-import i18next from '../i18n';
+import i18next from '@i18n';
 
 // 检查并安装 screen
 async function checkAndInstallScreen(): Promise<void> {

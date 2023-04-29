@@ -1,8 +1,8 @@
-import { buildConfig, projectOptions, BuildConfigType } from "../utils/imageBuildConfigReader";
-import { selectDependenciesAndBuildImages } from "../modules/imageBuilder";
-import { printDockerImages } from "../utils/print";
+import { buildConfig, projectOptions, BuildConfigType } from "@utils/imageBuildConfigReader";
+import { selectDependenciesAndBuildImages } from "@modules/imageBuilder";
+import { printDockerImages } from "@utils/print";
 import { select, isCancel, cancel, outro } from "@clack/prompts";
-import i18next from '../i18n';
+import i18next from '@i18n';
 
 interface BuildActionParams {
   selectedConfig: BuildConfigType[keyof BuildConfigType];
