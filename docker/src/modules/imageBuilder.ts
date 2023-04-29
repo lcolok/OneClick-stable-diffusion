@@ -33,11 +33,24 @@ export async function buildImage({
   await runCommand("docker", ["build", "-t", tag, "-f", dockerfilePath, contextPath, ...flags]);
 }
 
-export async function buildImagesRecursively(
-  selectedConfig: BuildConfigType[keyof BuildConfigType],
-  buildFromScratchDependencies: Set<string>,
-  builtDependencies: Set<string> = new Set() // 添加一个新参数，用于记录已经构建的依赖项
-): Promise<void | null> {
+interface BuildImagesRecursivelyOptions {
+  selectedConfig: BuildConfigType[keyof BuildConfigType];
+  buildFromScratchDependencies: Set<string>;
+  builtDependencies?: Set<string>;
+}
+
+/**
+ * 递归构建镜像。
+ * 
+ * @param selectedConfig 选定的构建配置
+ * @param buildFromScratchDependencies 需要从头构建的依赖项集合
+ * @param builtDependencies 已经构建的依赖项集合，默认为空集合
+ */
+export async function buildImagesRecursively({
+  selectedConfig,
+  buildFromScratchDependencies,
+  builtDependencies = new Set(),
+}: BuildImagesRecursivelyOptions): Promise<void | null> {
   if (!selectedConfig) {
     return;
   }
@@ -46,8 +59,13 @@ export async function buildImagesRecursively(
   if (selectedConfig.dependencies) {
     for (const dependency of selectedConfig.dependencies) {
       const depConfig = buildConfig[dependency];
-      if (depConfig && !builtDependencies.has(dependency)) { // 检查依赖项是否已经构建过
-        await buildImagesRecursively(depConfig, buildFromScratchDependencies, builtDependencies);
+      if (depConfig && !builtDependencies.has(dependency)) {
+        // 如果依赖项未被构建，则递归构建依赖项
+        await buildImagesRecursively({
+          selectedConfig: depConfig,
+          buildFromScratchDependencies,
+          builtDependencies,
+        });
         builtDependencies.add(dependency); // 将已经构建过的依赖项添加到集合中
       }
     }
@@ -60,17 +78,21 @@ export async function buildImagesRecursively(
     noCacheFlag = ["--no-cache"];
   }
 
+  // 使用 Spinner 提示正在构建的镜像
   s.start(`${i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
   try {
+    // 调用 buildImage 函数构建镜像
     await buildImage({
       tag: selectedConfig.tag,
       dockerfilePath: selectedConfig.dockerfilePath!,
       contextPath: selectedConfig.contextPath!,
       flags: noCacheFlag,
     });
+    // 使用 Spinner 提示镜像构建成功
     s.stop(`${i18next.t("IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
   } catch (error: any) {
     console.error(pc.red(error.message));
+    // 如果构建失败，则提示用户并返回 null
     cancel(`${i18next.t("IMAGE_BUILD_FAILED", { tag: pc.red(pc.inverse(` ${selectedConfig.tag} `)) })}`);
     return process.exit(1);
   }
@@ -113,7 +135,11 @@ export async function selectDependenciesAndBuildImages({ selectedConfig, selecte
       return reject();
     }
 
-    const buildFromScratchDependencies = new Set(selectedDependencies as string[]);
-    resolve(await buildImagesRecursively(selectedConfig, buildFromScratchDependencies));
+    resolve(
+      await buildImagesRecursively({
+        selectedConfig,
+        buildFromScratchDependencies: new Set(selectedDependencies as string[]),
+      })
+    );
   });
 }
