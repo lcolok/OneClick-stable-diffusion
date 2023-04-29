@@ -13,7 +13,7 @@ import {
 import pc from "picocolors";
 import { BuildConfigType, buildConfig, projectOptions } from "@utils/imageBuildConfigReader";
 import i18next from '@i18n';
-import { runCommand } from '@utils/runCommand';
+import { runCommand, runProcess } from '@utils/runCommand';
 import { spawn } from "child_process";
 
 // 创建一个通用函数用于构建镜像
@@ -33,8 +33,9 @@ export async function buildImage(
     flags = []
   }: BuildImageOptions
 ): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const buildProcess = spawn("docker", [
+  await runProcess({
+    args: [
+      "docker",
       "build",
       "-t",
       tag,
@@ -42,23 +43,7 @@ export async function buildImage(
       dockerfilePath,
       contextPath,
       ...flags
-    ]);
-
-    buildProcess.stdout.on("data", (data) => {
-      console.log(data.toString());
-    });
-
-    buildProcess.stderr.on("data", (data) => {
-      console.error(pc.green(data.toString()));
-    });
-
-    buildProcess.on("exit", (code) => {
-      if (code === 0) {
-        resolve();
-      } else {
-        reject(new Error(`镜像 ${tag} 构建失败`));
-      }
-    });
+    ],
   });
 }
 
