@@ -35,7 +35,8 @@ export async function buildImage({
 
 export async function buildImagesRecursively(
   selectedConfig: BuildConfigType[keyof BuildConfigType],
-  buildFromScratchDependencies: Set<string>
+  buildFromScratchDependencies: Set<string>,
+  builtDependencies: Set<string> = new Set() // 添加一个新参数，用于记录已经构建的依赖项
 ): Promise<void | null> {
   if (!selectedConfig) {
     return;
@@ -45,15 +46,20 @@ export async function buildImagesRecursively(
   if (selectedConfig.dependencies) {
     for (const dependency of selectedConfig.dependencies) {
       const depConfig = buildConfig[dependency];
-      if (depConfig) {
-        await buildImagesRecursively(depConfig, buildFromScratchDependencies);
+      if (depConfig && !builtDependencies.has(dependency)) { // 检查依赖项是否已经构建过
+        await buildImagesRecursively(depConfig, buildFromScratchDependencies, builtDependencies);
+        builtDependencies.add(dependency); // 将已经构建过的依赖项添加到集合中
       }
     }
   }
 
-  // 构建当前方案
   const s = spinner();
-  const noCacheFlag = buildFromScratchDependencies.has(selectedConfig.tag) ? ["--no-cache"] : [];
+  let noCacheFlag: string[] = [];
+  if (buildFromScratchDependencies.has(selectedConfig.tag)) {
+    console.log(pc.red(pc.inverse(` 需要重新构建${selectedConfig.tag}! `)));
+    noCacheFlag = ["--no-cache"];
+  }
+
   s.start(`${i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
   try {
     await buildImage({
@@ -70,12 +76,6 @@ export async function buildImagesRecursively(
   }
 }
 
-function handleSigInt(reject: (reason?: any) => void) {
-  // 显示取消消息
-  console.log(i18next.t("OPERATION_CANCELLED")!);
-  process.exit(1);
-}
-
 interface SelectDependenciesAndBuildImagesParams {
   selectedConfig: BuildConfigType[keyof BuildConfigType];
   selectedConfigKey: string;
@@ -90,9 +90,10 @@ export async function selectDependenciesAndBuildImages({ selectedConfig, selecte
     ...selectedConfig.dependencies,
     selectedConfigKey,
   ].map(dep => {
+    const tag = buildConfig[dep].tag;
     const label = buildConfig[dep].label;
     return {
-      value: dep,
+      value: tag,
       label: label,
       hint: dep === selectedConfigKey ? pc.yellow(i18next.t('CURRENT_CHOICE')) : undefined, // Add a hint for the selected config
     };
