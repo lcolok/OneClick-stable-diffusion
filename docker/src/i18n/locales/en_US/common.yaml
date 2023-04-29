@@ -44,6 +44,9 @@ SDWEBUI_BASE_IMAGE:
 SDWEBUI_EXT_IMAGE:
   LABEL: 🧩 Build Stable Diffusion WebUI Extended Image
   HINT: Includes localization, image browser, ControlNet, etc.
+GEN_DOCKER_COMPOSE:
+  LABEL: 📝 Generate docker-compose.yaml
+  HINT: Generate docker-compose.yaml from template
 SCREEN_NOT_FOUND: screen not found, now installing...
 SCREEN_INSTALLED_SUCCESSFULLY: screen installed successfully.
 SCREEN_INSTALLATION_FAILED: Error installing screen, please install manually.

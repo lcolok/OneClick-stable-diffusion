@@ -44,6 +44,9 @@ SDWEBUI_BASE_IMAGE:
 SDWEBUI_EXT_IMAGE:
   LABEL: 🧩 构建Stable Diffusion WebUI附带常用插件的镜像
   HINT: 包含汉化、图库浏览器、ControlNet等
+GEN_DOCKER_COMPOSE:
+  LABEL: 📝 生成docker-compose.yaml
+  HINT: 生成docker-compose.yaml文件
 SCREEN_NOT_FOUND: 未检测到 screen，现在将自动安装...
 SCREEN_INSTALLED_SUCCESSFULLY: 已成功安装 screen。
 SCREEN_INSTALLATION_FAILED: 安装 screen 时出错，请手动安装。

@@ -18,6 +18,7 @@ import { install } from "./commands/install";
 import { clean } from "./commands/clean";
 import { selectMenu } from "./utils/menuSelection";
 import { gpuMonitor } from "./commands/gpu";
+import { gen } from "./commands/docker_compose_gen";
 
 async function main(): Promise<void> {
   intro(pc.inverse(` ${i18next.t("TOOL_NAME")} `));
@@ -48,6 +49,10 @@ async function main(): Promise<void> {
         label: i18next.t("GPU_STATUS.LABEL"),
         action: gpuMonitor,
       },
+      {
+        label: i18next.t("GEN_DOCKER_COMPOSE.LABEL"),
+        action: gen
+      }
     ],
   });
 

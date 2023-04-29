@@ -26,6 +26,7 @@ export async function printDockerImages(
   const header = images[0];
   
   // 打印表头
+  console.log(); // 加一个空行
   console.log(pc.inverse(`${header}  `));
   
   // 过滤掉名称或标签为<none>的镜像
