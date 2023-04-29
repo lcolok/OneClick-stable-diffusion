@@ -17,8 +17,9 @@ async function launchTestImage(): Promise<void> {
     console.log(i18next.t("DOCKER_CONTAINERS_STOPPED_AND_REMOVED"));
 
     // 构建新的镜像
-    const selectedConfig = buildConfig["sdwebui_ext_build"];
-    await buildAction(selectedConfig);
+    const selectedConfigKey = "sdwebui_ext_build"
+    const selectedConfig = buildConfig[selectedConfigKey];
+    await buildAction({ selectedConfig, selectedConfigKey });
 
     // 启动新的测试容器
     console.log(i18next.t("STARTING_NEW_TEST_CONTAINER"));

@@ -11,7 +11,7 @@ import {
 } from "@clack/prompts";
 
 import pc from "picocolors";
-import { BuildConfigType, buildConfig } from "../utils/imageBuildConfigReader";
+import { BuildConfigType, buildConfig, projectOptions } from "../utils/imageBuildConfigReader";
 import i18next from '../i18n';
 import { runCommand } from '../utils/runCommand';
 
@@ -76,21 +76,24 @@ function handleSigInt(reject: (reason?: any) => void) {
   process.exit(1);
 }
 
-export async function selectDependenciesAndBuildImages(
-  selectedConfig: BuildConfigType[keyof BuildConfigType]
-): Promise<void | null> {
+interface SelectDependenciesAndBuildImagesParams {
+  selectedConfig: BuildConfigType[keyof BuildConfigType];
+  selectedConfigKey: string;
+}
+
+export async function selectDependenciesAndBuildImages({ selectedConfig, selectedConfigKey }: SelectDependenciesAndBuildImagesParams) {
   if (!selectedConfig || !selectedConfig.dependencies) {
     return;
   }
 
   const dependencyOptions = [
     ...selectedConfig.dependencies,
-    selectedConfig.tag,
+    selectedConfigKey,
   ].map(dep => {
-    const imageName = dep.split(':')[0]; // Extract the name of the image from the tag
+    const label = buildConfig[dep].label;
     return {
       value: dep,
-      label: imageName,
+      label: label,
       hint: dep === selectedConfig.tag ? pc.yellow(i18next.t('CURRENT_CHOICE')) : undefined, // Add a hint for the selected config
     };
   });

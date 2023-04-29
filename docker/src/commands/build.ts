@@ -1,8 +1,13 @@
-import { buildConfig, projectOptions } from "../utils/imageBuildConfigReader";
+import { buildConfig, projectOptions, BuildConfigType } from "../utils/imageBuildConfigReader";
 import { selectDependenciesAndBuildImages } from "../modules/imageBuilder";
 import { printDockerImages } from "../utils/print";
 import { select, isCancel, cancel, outro } from "@clack/prompts";
 import i18next from '../i18n';
+
+interface BuildActionParams {
+  selectedConfig: BuildConfigType[keyof BuildConfigType];
+  selectedConfigKey: string;
+}
 
 export async function buildImageSelection(): Promise<void> {
   async function selectProjectType(): Promise<string | symbol | null> {
@@ -11,28 +16,23 @@ export async function buildImageSelection(): Promise<void> {
       options: projectOptions,
     });
   }
-  const projectType: string | symbol | null = await selectProjectType();
+  const selectedConfigKey = await selectProjectType() as string;
 
-  if (isCancel(projectType)) {
+  if (isCancel(selectedConfigKey)) {
     cancel(i18next.t("OPERATION_CANCELLED")!);
     return process.exit(0);
   }
 
-  const selectedConfig = buildConfig[projectType as string];
+  const selectedConfig = buildConfig[selectedConfigKey];
 
-
-  if (selectedConfig) {
-    await buildAction(selectedConfig)
+  if (selectedConfig && selectedConfigKey) {
+    await buildAction({ selectedConfig, selectedConfigKey });
   }
 }
 
-/**
- * 真正的构建动作函数
- * @param selectedConfig 选定的构建配置对象
- */
-export async function buildAction(selectedConfig: any): Promise<void> {
+export async function buildAction({ selectedConfig, selectedConfigKey }: BuildActionParams): Promise<void> {
   // 构建镜像
-  await selectDependenciesAndBuildImages(selectedConfig);
+  await selectDependenciesAndBuildImages({ selectedConfig, selectedConfigKey });
   // 打印镜像信息
   await printDockerImages(selectedConfig);
   outro(i18next.t("BUILD_SUCCESSFULLY")!);
