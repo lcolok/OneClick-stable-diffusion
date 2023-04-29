@@ -94,7 +94,7 @@ export async function selectDependenciesAndBuildImages({ selectedConfig, selecte
     return {
       value: dep,
       label: label,
-      hint: dep === selectedConfig.tag ? pc.yellow(i18next.t('CURRENT_CHOICE')) : undefined, // Add a hint for the selected config
+      hint: dep === selectedConfigKey ? pc.yellow(i18next.t('CURRENT_CHOICE')) : undefined, // Add a hint for the selected config
     };
   });
 
