@@ -61,3 +61,6 @@ CHILD_PROCESS_EXITED: 子进程退出，返回码：
 STOP_RELOAD_START: 正在停止、重新加载和启动服务...
 CLOSED_WITH_CODE: 子进程退出，返回代码 {{code}}
 ERROR_PRINT: 错误：{{err}}
+BUILD_SUCCESSFULLY: 🎉🎉🎉 构建成功！
+SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: 请选择要从头构建的依赖项：
+CURRENT_CHOICE: 当前选择

@@ -61,3 +61,6 @@ CHILD_PROCESS_EXITED: 'Child process exited with code:'
 STOP_RELOAD_START: Stopping, reloading, and starting service...
 CLOSED_WITH_CODE: Child process exited with code {{code}}
 ERROR_PRINT: 'Error: {{err}}'
+BUILD_SUCCESSFULLY: 🛠️👌 Build successfully.
+SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: 'Select dependencies to build from scratch:'
+CURRENT_CHOICE: 'Current choice'

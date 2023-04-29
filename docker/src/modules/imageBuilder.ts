@@ -86,10 +86,14 @@ export async function selectDependenciesAndBuildImages(
   const dependencyOptions = [
     ...selectedConfig.dependencies,
     selectedConfig.tag,
-  ].map(dep => ({
-    value: dep,
-    label: dep, // 根据您的项目情况修改 label
-  }));
+  ].map(dep => {
+    const imageName = dep.split(':')[0]; // Extract the name of the image from the tag
+    return {
+      value: dep,
+      label: imageName,
+      hint: dep === selectedConfig.tag ? pc.yellow(i18next.t('CURRENT_CHOICE')) : undefined, // Add a hint for the selected config
+    };
+  });
 
   return new Promise(async (resolve, reject) => {
     const selectedDependencies = await multiselect({
