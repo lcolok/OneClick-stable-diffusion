@@ -15,6 +15,7 @@ import { BuildConfigType, buildConfig, projectOptions } from "@utils/imageBuildC
 import i18next from '@i18n';
 import { runCommand, runProcess } from '@utils/runCommand';
 import { spawn } from "child_process";
+import { logImageBuildStatus } from "@utils/print";
 
 // 创建一个通用函数用于构建镜像
 
@@ -88,9 +89,9 @@ export async function buildImagesRecursively({
   }
 
   // 提示正在构建的镜像
-  console.log(pc.gray('|'));
-  console.log(`${pc.green('◇')} ${i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
-  console.log(pc.gray('|'));
+  logImageBuildStatus(
+    i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) }),
+  )
 
   try {
     // 调用 buildImage 函数构建镜像
@@ -101,10 +102,10 @@ export async function buildImagesRecursively({
       flags: noCacheFlag,
     });
     // 提示镜像构建成功
-    console.log(pc.gray('|'));
-    console.log(`${pc.green('◇')} ${i18next.t("IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
-    console.log(pc.gray('|'));
-
+    logImageBuildStatus(
+      i18next.t("IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })
+    );
+    
   } catch (error: any) {
     console.error(pc.red(error.message));
     // 如果构建失败，则提示用户并返回 null
