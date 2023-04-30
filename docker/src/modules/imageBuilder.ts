@@ -33,18 +33,14 @@ export async function buildImage(
     flags = []
   }: BuildImageOptions
 ): Promise<void> {
-  await runProcess({
-    args: [
-      "docker",
-      "build",
-      "-t",
-      tag,
-      "-f",
-      dockerfilePath,
-      contextPath,
-      ...flags
-    ],
-  });
+  await runCommand("docker", ["build",
+    "-t",
+    tag,
+    "-f",
+    dockerfilePath,
+    contextPath,
+    ...flags
+  ],);
 }
 
 interface BuildImagesRecursivelyOptions {
@@ -85,15 +81,17 @@ export async function buildImagesRecursively({
     }
   }
 
-  const s = spinner();
   let noCacheFlag: string[] = [];
   if (buildFromScratchDependencies.has(selectedConfig.tag)) {
     console.log(pc.red(pc.inverse(` ${i18next.t('NEED_REBUILD', { tag: selectedConfig.tag })} `)));
     noCacheFlag = ["--no-cache"];
   }
 
-  // 使用 Spinner 提示正在构建的镜像
-  s.start(`${i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
+  // 提示正在构建的镜像
+  console.log(pc.gray('|'));
+  console.log(`${pc.green('◇')} ${i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
+  console.log(pc.gray('|'));
+
   try {
     // 调用 buildImage 函数构建镜像
     await buildImage({
@@ -102,8 +100,11 @@ export async function buildImagesRecursively({
       contextPath: selectedConfig.contextPath!,
       flags: noCacheFlag,
     });
-    // 使用 Spinner 提示镜像构建成功
-    s.stop(`${i18next.t("IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
+    // 提示镜像构建成功
+    console.log(pc.gray('|'));
+    console.log(`${pc.green('◇')} ${i18next.t("IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })}`);
+    console.log(pc.gray('|'));
+
   } catch (error: any) {
     console.error(pc.red(error.message));
     // 如果构建失败，则提示用户并返回 null

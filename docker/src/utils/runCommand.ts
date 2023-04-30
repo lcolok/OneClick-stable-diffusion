@@ -17,29 +17,27 @@ export async function runCommand(
 ): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         const childProcess = spawn(command, args, {
-            stdio: ["pipe", "inherit", "inherit"],
+            stdio: ["inherit", "inherit", "inherit"],
             cwd: options?.cwd,
         });
 
         childProcesses.add(childProcess);
 
-        if (process.stdin.isTTY) {
-            process.stdin.setRawMode(true);
-            process.stdin.pipe(childProcess.stdin as Writable);
-            process.stdin.on("data", (data) => {
-                if (data.toString() === "\x03") {
-                    process.stdin.unpipe(childProcess.stdin as Writable);
-                    childProcess.stdin && childProcess.stdin.destroy();
-                    console.log(`\n${i18next.t("TERMINATING_CHILD_PROCESS")}`);
-                    childProcesses.forEach((cp) => cp.kill());
-                    cancel(i18next.t("CHILD_PROCESS_TERMINATED") as string);
-                    process.exit(0);
-                }
-            });
-        }
+        const onSigInt = () => {
+            console.log(`\n${i18next.t("TERMINATING_CHILD_PROCESS")}`);
+            childProcesses.forEach((cp) => cp.kill("SIGINT"));
+            process.removeListener("SIGINT", onSigInt);
+            setTimeout(() => {
+                cancel(i18next.t("CHILD_PROCESS_TERMINATED") as string);
+                process.exit(0);
+            }, 500);
+        };
+
+        process.on("SIGINT", onSigInt);
 
         childProcess.on("close", (code) => {
             childProcesses.delete(childProcess);
+            process.removeListener("SIGINT", onSigInt);
 
             if (code === 0) {
                 resolve();
