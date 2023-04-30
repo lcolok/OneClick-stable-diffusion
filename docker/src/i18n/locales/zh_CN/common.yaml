@@ -55,6 +55,7 @@ STD_ERR: 标准错误
 STD_OUT: 标准输出
 SERVICE_FILE_CREATED: 服务文件 '{{filename}}' 已在 '{{directory}}' 目录创建并复制到 /etc/systemd/system。
 BUILDING_IMAGE_VIA_DOCKER: 通过 Docker 构建镜像 {{tag}}
+REBUILDING_IMAGE_VIA_DOCKER: 通过 Docker 重新构建镜像 {{tag}}
 IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER: 镜像 {{tag}} 通过 Docker 构建成功
 IMAGE_BUILD_FAILED: 镜像 {{tag}} 构建失败
 ALL_DOCKER_IMAGES_LIST: 所有 Docker 镜像列表：
@@ -67,4 +68,3 @@ ERROR_PRINT: 错误：{{err}}
 BUILD_SUCCESSFULLY: 🎉🎉🎉 构建成功！
 SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: 请选择要从头构建的依赖项：
 CURRENT_CHOICE: 当前选择
-NEED_REBUILD: 需要重新构建 {{tag}}！

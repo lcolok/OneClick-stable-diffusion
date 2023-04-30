@@ -30,7 +30,7 @@ export async function runCommand(
             setTimeout(() => {
                 cancel(i18next.t("CHILD_PROCESS_TERMINATED") as string);
                 process.exit(0);
-            }, 500);
+            }, 200);
         };
 
         process.on("SIGINT", onSigInt);

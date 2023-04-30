@@ -55,6 +55,7 @@ STD_ERR: Standard Error
 STD_OUT: Standard Output
 SERVICE_FILE_CREATED: Service file '{{filename}}' created in '{{directory}}' and copied to /etc/systemd/system.
 BUILDING_IMAGE_VIA_DOCKER: Building image {{tag}} via Docker
+REBUILDING_IMAGE_VIA_DOCKER: Rebuilding image {{tag}} via Docker
 IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER: Image {{tag}} built successfully via Docker.
 IMAGE_BUILD_FAILED: Failed to build image {{tag}}.
 ALL_DOCKER_IMAGES_LIST: 'All Docker images list:'
@@ -67,4 +68,3 @@ ERROR_PRINT: 'Error: {{err}}'
 BUILD_SUCCESSFULLY: 🛠️👌 Build successfully.
 SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: 'Select dependencies to build from scratch:'
 CURRENT_CHOICE: 'Current choice'
-NEED_REBUILD: Need to rebuild {{tag}}!

@@ -44,7 +44,7 @@ export async function printDockerImages(
 }
 
 export async function logImageBuildStatus(input: string) {
-  console.log(pc.gray('|'));
+  // console.log(pc.gray('│'));
   console.log(`${pc.green('◇')} ${input}`);
-  console.log(pc.gray('|'));
+  console.log(pc.gray('│'));
 }

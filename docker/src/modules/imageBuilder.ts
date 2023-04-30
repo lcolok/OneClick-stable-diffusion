@@ -84,14 +84,20 @@ export async function buildImagesRecursively({
 
   let noCacheFlag: string[] = [];
   if (buildFromScratchDependencies.has(selectedConfig.tag)) {
-    console.log(pc.red(pc.inverse(` ${i18next.t('NEED_REBUILD', { tag: selectedConfig.tag })} `)));
     noCacheFlag = ["--no-cache"];
+    logImageBuildStatus(
+      pc.cyan(pc.inverse(` ${i18next.t('REBUILDING_IMAGE_VIA_DOCKER',
+        { tag: pc.yellow(pc.inverse(` ${selectedConfig.tag} `)) }
+      )}`))
+    )
+  } else {
+    logImageBuildStatus(
+      i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })
+    )
   }
 
   // 提示正在构建的镜像
-  logImageBuildStatus(
-    i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) }),
-  )
+
 
   try {
     // 调用 buildImage 函数构建镜像
@@ -105,7 +111,7 @@ export async function buildImagesRecursively({
     logImageBuildStatus(
       i18next.t("IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })
     );
-    
+
   } catch (error: any) {
     console.error(pc.red(error.message));
     // 如果构建失败，则提示用户并返回 null
