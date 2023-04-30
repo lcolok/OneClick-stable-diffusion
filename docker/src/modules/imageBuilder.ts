@@ -138,7 +138,7 @@ export async function selectDependenciesAndBuildImages({ selectedConfig, selecte
     const label = buildConfig[dep].label;
     return {
       value: tag,
-      label: label,
+      label: pc.cyan('🔄' + label),
       hint: dep === selectedConfigKey ? pc.yellow(i18next.t('CURRENT_CHOICE')) : undefined, // Add a hint for the selected config
     };
   });
