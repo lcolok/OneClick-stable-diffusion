@@ -5,7 +5,9 @@ import { path as projectRootDir } from 'app-root-path';
 
 interface DockerComposeGenOptions {
   ymlOutputDist: string;
+  serviceName: string;
   containerName: string;
+  networkName: string;
   host_sdwebui_dir: string;
   container_sdwebui_dir: string;
   portMappings: Record<string, number>;
@@ -13,7 +15,9 @@ interface DockerComposeGenOptions {
 
 export function dockerComposeGen({
   ymlOutputDist,
+  serviceName,
   containerName,
+  networkName,
   host_sdwebui_dir,
   container_sdwebui_dir,
   portMappings,
@@ -93,7 +97,7 @@ export function dockerComposeGen({
   const config: DockerComposeConfig = {
     version: '3.8',
     services: {
-      sd: {
+      [serviceName]: {
         container_name: containerName,
         build: {
           context: projectRootDir,
@@ -108,7 +112,11 @@ export function dockerComposeGen({
         volumes: generateVolumes({ host_sdwebui_dir, container_sdwebui_dir }),
         stdin_open: true,
         tty: true,
+        networks: [networkName],
       },
+    },
+    networks: {
+      [networkName]: {},
     },
   };
 
