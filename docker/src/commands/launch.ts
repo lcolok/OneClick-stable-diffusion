@@ -19,7 +19,7 @@ async function launchTestImage(): Promise<void> {
   const selectedConfig = buildConfig[selectedConfigKey];
   await buildAction({ selectedConfig, selectedConfigKey });
 
-  const projectName = 'sd_test_deployment';
+  const projectName = 'sd_test';
   const serviceName = 'sd_test_service';
   const containerName = 'sd_test_container';
   const networkName = 'sd_test_network';
@@ -56,15 +56,16 @@ async function launchTestImage(): Promise<void> {
 
 async function launchProductionImage(): Promise<void> {
   const composeFilePath = path.join('temp', 'docker-compose.prod.temp.yaml');
-  const projectName = 'sd_prod_deployment';
+  const projectName = 'sd_prod';
   const serviceName = 'sd_prod_service';
   const containerName = 'sd_prod_container';
   const networkName = 'sd_prod_network';
 
-  //   // 停止并删除旧的 Docker 容器
-  //   console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
-  //   await dockerComposeDown(composeFilePath);
-  //   console.log(i18next.t('DOCKER_CONTAINERS_STOPPED_AND_REMOVED'));
+  // 停止并删除旧的 Docker 容器
+  console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
+  await dockerComposeDown({ composeFilePath, projectName });
+  await removeOldContainer({ containerName });
+  console.log(i18next.t('DOCKER_CONTAINERS_STOPPED_AND_REMOVED'));
 
   dockerComposeGen({
     ymlOutputDist: composeFilePath,
@@ -81,7 +82,7 @@ async function launchProductionImage(): Promise<void> {
   });
   // 启动新的测试容器
   console.log(pc.inverse(pc.green(i18next.t('STARTING_NEW_PROD_CONTAINER'))));
-  await dockerComposeUp({ composeFilePath, projectName });
+  await dockerComposeUp({ composeFilePath, projectName, build: true });
 }
 
 export async function launchContainer(): Promise<void> {

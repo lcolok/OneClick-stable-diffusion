@@ -1,85 +1,65 @@
-import { spawn, ChildProcess } from "child_process";
-import { cancel } from "@clack/prompts";
-import { Writable } from "stream";
+import { spawn, ChildProcess } from 'child_process';
+import { cancel } from '@clack/prompts';
+import { Writable } from 'stream';
 import i18next from '@i18n';
-import pc from "picocolors";
+import pc from 'picocolors';
 
 const childProcesses = new Set<ChildProcess>();
 
 interface RunCommandOptions {
-    cwd?: string;
+  cwd?: string;
+  captureOutput?: boolean;
 }
 
 export async function runCommand(
-    command: string,
-    args: string[],
-    options?: RunCommandOptions
-): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-        const childProcess = spawn(command, args, {
-            stdio: ["inherit", "inherit", "inherit"],
-            cwd: options?.cwd,
-        });
+  command: string,
+  args: string[],
+  options?: RunCommandOptions,
+): Promise<string | void> {
+  return new Promise<string | void>((resolve, reject) => {
+    const captureOutput = options?.captureOutput ?? false;
 
-        childProcesses.add(childProcess);
+    const stdoutStream: Writable = captureOutput
+      ? new Writable({
+          write(chunk, encoding, callback) {
+            resolve(chunk.toString());
+            callback();
+          },
+        })
+      : process.stdout;
 
-        const onSigInt = () => {
-            console.log(`\n${i18next.t("TERMINATING_CHILD_PROCESS")}`);
-            childProcesses.forEach((cp) => cp.kill("SIGINT"));
-            process.removeListener("SIGINT", onSigInt);
-            setTimeout(() => {
-                cancel(i18next.t("CHILD_PROCESS_TERMINATED") as string);
-                process.exit(0);
-            }, 200);
-        };
-
-        process.on("SIGINT", onSigInt);
-
-        childProcess.on("close", (code) => {
-            childProcesses.delete(childProcess);
-            process.removeListener("SIGINT", onSigInt);
-
-            if (code === 0) {
-                resolve();
-            } else {
-                reject(new Error(`${i18next.t("CHILD_PROCESS_EXITED")} ${code}`));
-            }
-        });
+    const childProcess = spawn(command, args, {
+      stdio: ['inherit', captureOutput ? 'pipe' : 'inherit', 'inherit'],
+      cwd: options?.cwd,
     });
-}
 
-export interface RunProcessOptions {
-    args: string[];
-    cwd?: string;
-    onStdOut?: (data: string) => void;
-    onStdErr?: (data: string) => void;
-}
+    if (captureOutput) {
+      childProcess.stdout?.pipe(stdoutStream);
+    }
 
-export function runProcess({
-    args,
-    cwd,
-    onStdOut = console.log,
-    onStdErr = console.error,
-}: RunProcessOptions): Promise<void> {
-    return new Promise((resolve, reject) => {
-        const process: ChildProcess = spawn(args[0], args.slice(1), {
-            cwd,
-        });
+    childProcesses.add(childProcess);
 
-        process.stdout?.on("data", (data) => {
-            onStdOut(data.toString());
-        });
+    const onSigInt = () => {
+      console.log(`\n${i18next.t('TERMINATING_CHILD_PROCESS')}`);
+      childProcesses.forEach((cp) => cp.kill('SIGINT'));
+      process.removeListener('SIGINT', onSigInt);
+      setTimeout(() => {
+        cancel(i18next.t('CHILD_PROCESS_TERMINATED') as string);
+        process.exit(0);
+      }, 200);
+    };
 
-        process.stderr?.on("data", (data) => {
-            onStdErr(pc.blue(data.toString()));
-        });
+    process.on('SIGINT', onSigInt);
 
-        process.on("close", (code) => {
-            if (code === 0) {
-                resolve();
-            } else {
-                reject(new Error(`The command "${args.join(" ")}" failed with exit code ${code}`));
-            }
-        });
+    childProcess.on('close', (code) => {
+      childProcesses.delete(childProcess);
+      process.removeListener('SIGINT', onSigInt);
+
+      if (code === 0) {
+        resolve(captureOutput ? undefined : '');
+      } else {
+        reject(new Error(`${i18next.t('CHILD_PROCESS_EXITED')} ${code}`));
+      }
     });
+  });
 }

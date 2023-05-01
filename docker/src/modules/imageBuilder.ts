@@ -13,7 +13,7 @@ import {
 import pc from "picocolors";
 import { BuildConfigType, buildConfig, projectOptions } from "@utils/imageBuildConfigReader";
 import i18next from '@i18n';
-import { runCommand, runProcess } from '@utils/runCommand';
+import { runCommand } from '@utils/runCommand';
 import { spawn } from "child_process";
 import { logImageBuildStatus } from "@utils/print";
 
