@@ -1,13 +1,31 @@
 import path from 'path';
 import { runCommand } from './runCommand';
 
+interface RemoveContainerOptions {
+  containerName: string;
+}
+
+async function containerExists(containerName: string): Promise<boolean> {
+  try {
+    await runCommand('docker', ['inspect', containerName]);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function removeOldContainer(
+  options: RemoveContainerOptions,
+): Promise<void> {
+  if (await containerExists(options.containerName)) {
+    await runCommand('docker', ['rm', '-f', options.containerName]);
+  }
+}
+
 interface DockerComposeOptions {
   composeFilePath: string;
   projectName: string;
-}
-
-export async function removeOldContainer(containerName: string): Promise<void> {
-  await runCommand('docker', ['rm', '-f', containerName]);
+  build?: boolean;
 }
 
 export async function dockerComposeDown(
@@ -26,7 +44,6 @@ export async function dockerComposeDown(
 
 export async function dockerComposeUp(
   options: DockerComposeOptions,
-  build: boolean = false,
 ): Promise<void> {
   const upCommand = 'docker-compose';
   const upArgs = [
@@ -36,7 +53,7 @@ export async function dockerComposeUp(
     options.projectName,
     'up',
   ];
-  if (build) {
+  if (options.build) {
     upArgs.push('--build');
   }
   await runCommand(upCommand, upArgs);

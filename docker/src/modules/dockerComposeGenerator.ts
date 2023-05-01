@@ -6,7 +6,7 @@ import { path as projectRootDir } from 'app-root-path';
 interface DockerComposeGenOptions {
   ymlOutputDist: string;
   serviceName: string;
-  containerName: string;
+  containerName?: string;
   networkName: string;
   host_sdwebui_dir: string;
   container_sdwebui_dir: string;
@@ -98,7 +98,8 @@ export function dockerComposeGen({
     version: '3.8',
     services: {
       [serviceName]: {
-        container_name: containerName,
+        // 仅在提供 containerName 时添加 container_name 属性
+        ...(containerName ? { container_name: containerName } : {}),
         build: {
           context: projectRootDir,
           dockerfile: `${dockerfileDir}/Dockerfile.launch_ext`,
