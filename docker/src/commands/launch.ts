@@ -10,12 +10,21 @@ import { dockerComposeGen } from '@modules/dockerComposeGenerator';
 import i18next from '@i18n';
 
 async function launchTestImage(): Promise<void> {
-    
   const composeFilePath = path.join(
     'temp',
     'docker-compose.standard.temp.yaml',
   );
-  dockerComposeGen(composeFilePath); // 生成 docker-compose.yaml 文件
+  dockerComposeGen({
+    ymlOutputDist: composeFilePath,
+    containerName: 'test_sdwebui',
+    host_sdwebui_dir:
+      '/mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master',
+    container_sdwebui_dir: '/home/stable-diffusion-webui',
+    portMappings: {
+      JUPYTER_PORT: 33333,
+      SDWEBUI_PORT: 7860,
+    },
+  });
 
   // 停止并删除旧的 Docker 容器
   console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));

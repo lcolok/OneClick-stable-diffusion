@@ -3,18 +3,23 @@ import { writeDockerComposeYamlToFile } from '@utils/yamlGenUtils';
 import * as path from 'path';
 import { path as projectRootDir } from 'app-root-path';
 
-export function dockerComposeGen(ymlOutputDist: string) {
+interface DockerComposeGenOptions {
+  ymlOutputDist: string;
+  containerName: string;
+  host_sdwebui_dir: string;
+  container_sdwebui_dir: string;
+  portMappings: Record<string, number>;
+}
+
+export function dockerComposeGen({
+  ymlOutputDist,
+  containerName,
+  host_sdwebui_dir,
+  container_sdwebui_dir,
+  portMappings,
+}: DockerComposeGenOptions): void {
   const repoRootDir = path.join(projectRootDir, '..');
   const dockerfileDir = path.join(projectRootDir, 'dockerfile');
-
-  const host_sdwebui_dir =
-    '/mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master';
-  const container_sdwebui_dir = '/home/stable-diffusion-webui';
-
-  const portMappings = {
-    JUPYTER_PORT: 33333,
-    SDWEBUI_PORT: 7860,
-  };
 
   function generateEnvironmentAndPorts(portMappings: Record<string, number>) {
     const environment = Object.entries(portMappings).map(
@@ -89,6 +94,7 @@ export function dockerComposeGen(ymlOutputDist: string) {
     version: '3.8',
     services: {
       sd: {
+        container_name: containerName,
         build: {
           context: projectRootDir,
           dockerfile: `${dockerfileDir}/Dockerfile.launch_ext`,
