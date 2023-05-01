@@ -69,3 +69,6 @@ ERROR_PRINT: 'Error: {{err}}'
 BUILD_SUCCESSFULLY: 🛠️👌 Build successfully.
 SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: 'Select dependencies to build from scratch:'
 CURRENT_CHOICE: 'Current choice'
+SCREEN_SESSION_ALREADY_RUNNING: A screen session with the same project name is already running. Do you want to restart the container?
+RESTART: Restart
+DO_NOT_RESTART: Do not restart

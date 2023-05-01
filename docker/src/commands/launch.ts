@@ -9,6 +9,7 @@ import {
   dockerComposeDown,
   dockerComposeUp,
   removeOldContainer,
+  handleExistingScreenSession,
 } from '@utils/dockerUtils';
 import { dockerComposeGen } from '@modules/dockerComposeGenerator';
 import i18next from '@i18n';
@@ -41,7 +42,7 @@ async function launchTestImage(): Promise<void> {
 
   // 停止并删除旧的 Docker 容器
   console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
-  await dockerComposeDown({ composeFilePath, projectName });
+  await dockerComposeDown({ composeFilePath, containerName, projectName });
   await removeOldContainer({ containerName });
   console.log(i18next.t('DOCKER_CONTAINERS_STOPPED_AND_REMOVED'));
 
@@ -50,6 +51,7 @@ async function launchTestImage(): Promise<void> {
   await dockerComposeUp({
     composeFilePath,
     projectName,
+    containerName,
     // build: true
   });
 }
@@ -61,11 +63,11 @@ async function launchProductionImage(): Promise<void> {
   const containerName = 'sd_prod_container';
   const networkName = 'sd_prod_network';
 
-  // 停止并删除旧的 Docker 容器
-  console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
-  await dockerComposeDown({ composeFilePath, projectName });
-  await removeOldContainer({ containerName });
-  console.log(i18next.t('DOCKER_CONTAINERS_STOPPED_AND_REMOVED'));
+  //   // 停止并删除旧的 Docker 容器
+  //   console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
+  //   await dockerComposeDown({ composeFilePath, projectName });
+  //   await removeOldContainer({ containerName });
+  //   console.log(i18next.t('DOCKER_CONTAINERS_STOPPED_AND_REMOVED'));
 
   dockerComposeGen({
     ymlOutputDist: composeFilePath,
@@ -82,7 +84,13 @@ async function launchProductionImage(): Promise<void> {
   });
   // 启动新的测试容器
   console.log(pc.inverse(pc.green(i18next.t('STARTING_NEW_PROD_CONTAINER'))));
-  await dockerComposeUp({ composeFilePath, projectName, build: true });
+
+  await handleExistingScreenSession({
+    composeFilePath,
+    projectName,
+    containerName,
+    build: true,
+  });
 }
 
 export async function launchContainer(): Promise<void> {

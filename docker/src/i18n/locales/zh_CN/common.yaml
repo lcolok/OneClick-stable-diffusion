@@ -69,3 +69,6 @@ ERROR_PRINT: 错误：{{err}}
 BUILD_SUCCESSFULLY: 🎉🎉🎉 构建成功！
 SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: 请选择要从头构建的依赖项：
 CURRENT_CHOICE: 当前选择
+SCREEN_SESSION_ALREADY_RUNNING: 一个具有相同项目名称的screen会话已经在运行中。您是否想要重新启动容器？
+RESTART: 重启
+DO_NOT_RESTART: 不重启
