@@ -20,52 +20,58 @@ function generateEnvironmentAndPorts(portMappings: Record<string, number>) {
 }
 
 function generateVolumes() {
-  const host_sd_dir =
+  const host_sdwebui_dir =
     '/mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master';
-  const container_sd_dir = '/home/stable-diffusion-webui';
+  const container_sdwebui_dir = '/home/stable-diffusion-webui';
   const volumeMappings = [
     {
       source: '/mnt/flies/AI_research/Stable_Diffusion/.cache',
       target: '/root/.cache',
     },
-    { source: `${host_sd_dir}/models`, target: `${container_sd_dir}/models` },
     {
-      source: `${host_sd_dir}/embeddings`,
-      target: `${container_sd_dir}/embeddings`,
+      source: `${host_sdwebui_dir}/models`,
+      target: `${container_sdwebui_dir}/models`,
     },
     {
-      source: `${host_sd_dir}/interrogate`,
-      target: `${container_sd_dir}/interrogate`,
+      source: `${host_sdwebui_dir}/embeddings`,
+      target: `${container_sdwebui_dir}/embeddings`,
     },
     {
-      source: `${host_sd_dir}/models/SadTalker/checkpoints`,
-      target: `${container_sd_dir}/extensions/SadTalker/checkpoints/`,
+      source: `${host_sdwebui_dir}/interrogate`,
+      target: `${container_sdwebui_dir}/interrogate`,
     },
     {
-      source: `${host_sd_dir}/models/SadTalker/gfpgan`,
-      target: `${container_sd_dir}/extensions/SadTalker/gfpgan/`,
-    },
-    { source: `${host_sd_dir}/outputs`, target: `${container_sd_dir}/outputs` },
-    {
-      source: `${host_sd_dir}/extensions/sd-webui-controlnet/models`,
-      target: `${container_sd_dir}/extensions/sd-webui-controlnet/models`,
+      source: `${host_sdwebui_dir}/models/SadTalker/checkpoints`,
+      target: `${container_sdwebui_dir}/extensions/SadTalker/checkpoints/`,
     },
     {
-      source: `${host_sd_dir}/extensions/sd-webui-controlnet/annotator`,
-      target: `${container_sd_dir}/extensions/sd-webui-controlnet/annotator`,
+      source: `${host_sdwebui_dir}/models/SadTalker/gfpgan`,
+      target: `${container_sdwebui_dir}/extensions/SadTalker/gfpgan/`,
     },
     {
-      source: `${host_sd_dir}/cache.json`,
-      target: `${container_sd_dir}/cache.json`,
+      source: `${host_sdwebui_dir}/outputs`,
+      target: `${container_sdwebui_dir}/outputs`,
     },
     {
-      source: `${host_sd_dir}/config.json`,
-      target: `${container_sd_dir}/config.json`,
+      source: `${host_sdwebui_dir}/extensions/sd-webui-controlnet/models`,
+      target: `${container_sdwebui_dir}/extensions/sd-webui-controlnet/models`,
+    },
+    {
+      source: `${host_sdwebui_dir}/extensions/sd-webui-controlnet/annotator`,
+      target: `${container_sdwebui_dir}/extensions/sd-webui-controlnet/annotator`,
+    },
+    {
+      source: `${host_sdwebui_dir}/cache.json`,
+      target: `${container_sdwebui_dir}/cache.json`,
+    },
+    {
+      source: `${host_sdwebui_dir}/config.json`,
+      target: `${container_sdwebui_dir}/config.json`,
     },
   ];
   const wildcardVolume = {
     source: `${repoRootDir}/configs/wildcards_lib`,
-    target: `${container_sd_dir}/extensions/stable-diffusion-webui-wildcards/wildcards`,
+    target: `${container_sdwebui_dir}/extensions/stable-diffusion-webui-wildcards/wildcards`,
   };
 
   return volumeMappings
@@ -82,13 +88,13 @@ const config: DockerComposeConfig = {
       build: {
         context: projectRootDir,
         dockerfile: `${dockerfileDir}/Dockerfile.launch_ext`,
-        args: {
-          sdwebui: 'true',
-        },
+        // args: {
+        //   sdwebui: 'true',
+        // },
       },
       runtime: 'nvidia',
       environment: ['NVIDIA_VISIBLE_DEVICES=all', ...environment],
-      ports,
+      ports: ports,
       volumes: generateVolumes(),
       stdin_open: true,
       tty: true,
