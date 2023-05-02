@@ -72,3 +72,7 @@ CURRENT_CHOICE: 当前选择
 SCREEN_SESSION_ALREADY_RUNNING: 一个具有相同项目名称的screen会话已经在运行中。您是否想要重新启动容器？
 RESTART: 重启
 DO_NOT_RESTART: 不重启
+GENERATING_TEST_COMPOSE_FILE: 生成测试容器的 docker-compose.yaml 文件
+GENERATING_PRODUCTION_COMPOSE_FILE: 生成生产容器的 docker-compose.yaml 文件
+ERROR_CHECKING_CONTAINER_STATUS: 检查 {{containerName}} 容器状态时出错：{{err}}
+ERROR_CONTAINER_NOT_RUNNING: 错误：容器 {{containerName}} 在5秒后仍未运行

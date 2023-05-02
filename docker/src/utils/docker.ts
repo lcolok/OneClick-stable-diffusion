@@ -39,10 +39,6 @@ async function isScreenSessionRunning(projectName: string): Promise<boolean> {
   }
 }
 
-interface RemoveContainerOptions {
-  containerName: string;
-}
-
 async function containerExists(containerName: string): Promise<boolean> {
   try {
     await runCommand('docker', ['inspect', containerName]);
@@ -52,9 +48,9 @@ async function containerExists(containerName: string): Promise<boolean> {
   }
 }
 
-export async function removeOldContainer(
-  options: RemoveContainerOptions,
-): Promise<void> {
+export async function removeOldContainer(options: {
+  containerName: string;
+}): Promise<void> {
   if (await containerExists(options.containerName)) {
     await runCommand('docker', ['rm', '-f', options.containerName]);
   }

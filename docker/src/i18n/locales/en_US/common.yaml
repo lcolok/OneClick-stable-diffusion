@@ -63,7 +63,7 @@ ALL_DOCKER_IMAGES_LIST: 'All Docker images list:'
 TERMINATING_CHILD_PROCESS: ❗Received ⌃C, terminating child process...
 CHILD_PROCESS_TERMINATED: ⛔ Child process terminated.
 CHILD_PROCESS_EXITED: 'Child process exited with code:'
-STOP_RELOAD_START: Stopping, reloading, and starting service...
+STOP_RELOAD_START: Stopping, reloading and starting the service...
 CLOSED_WITH_CODE: Child process exited with code {{code}}
 ERROR_PRINT: 'Error: {{err}}'
 BUILD_SUCCESSFULLY: 🛠️👌 Build successfully.
@@ -72,3 +72,7 @@ CURRENT_CHOICE: 'Current choice'
 SCREEN_SESSION_ALREADY_RUNNING: A screen session with the same project name is already running. Do you want to restart the container?
 RESTART: Restart
 DO_NOT_RESTART: Do not restart
+GENERATING_TEST_COMPOSE_FILE: "Generating Test docker-compose.yaml File"
+GENERATING_PRODUCTION_COMPOSE_FILE: "Generating Production docker-compose.yaml File"
+ERROR_CHECKING_CONTAINER_STATUS: "Error checking container status for {{containerName}}: {{err}}"
+ERROR_CONTAINER_NOT_RUNNING: "Error: Container {{containerName}} is not running after 5 seconds"

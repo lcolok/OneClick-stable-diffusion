@@ -4,6 +4,7 @@ import path from 'path';
 import { buildConfig, buildAction } from '@utils';
 import * as pc from 'picocolors';
 import { dockerComposeGen } from '@utils';
+import i18next from '@i18n';
 
 export async function generateTestComposeFile(): Promise<{
   composeFilePath: string;
@@ -22,7 +23,7 @@ export async function generateTestComposeFile(): Promise<{
 
   const composeFilePath = path.join('temp', 'docker-compose.test.temp.yaml');
 
-  console.log(pc.inverse(pc.green('Generating Test Compose File')));
+  console.log(pc.inverse(pc.green(i18next.t('GENERATING_TEST_COMPOSE_FILE'))));
 
   dockerComposeGen({
     ymlOutputDist: composeFilePath,
@@ -53,7 +54,9 @@ export async function generateProductionComposeFile(): Promise<{
 
   const composeFilePath = path.join('temp', 'docker-compose.prod.temp.yaml');
 
-  console.log(pc.inverse(pc.green('Generating Production Compose File')));
+  console.log(
+    pc.inverse(pc.green(i18next.t('GENERATING_PRODUCTION_COMPOSE_FILE'))),
+  );
 
   dockerComposeGen({
     ymlOutputDist: composeFilePath,
