@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { exec, execSync, spawn, SpawnOptions } from 'child_process';
+import { spawn, SpawnOptions } from 'child_process';
+import { runCommand } from '@utils';
 import i18next from '@i18n';
 import {
   checkAndInstallScreen,
@@ -51,27 +52,28 @@ WantedBy=multi-user.target
 }
 
 // 复制服务文件到 systemd 目录
-function copyServiceFileToSystemd(serviceFilePath: string) {
-  execSync(`sudo cp ${serviceFilePath} /etc/systemd/system`);
+async function copyServiceFileToSystemd(serviceFilePath: string) {
+  await runCommand('sudo', ['cp', serviceFilePath, '/etc/systemd/system']);
 }
 
 // 启动服务并显示状态
 async function startServiceAndShowStatus(options: { containerName: string }) {
   const { containerName } = options;
 
-  const spawnOptions: SpawnOptions = {
-    stdio: ['pipe', 'inherit', 'inherit'],
-  };
-
   // 输出停止、重新加载和启动服务的提示信息
   console.log(i18next.t('STOP_RELOAD_START'));
 
   // 停止并重新启动服务
-  execSync('sudo systemctl stop autolaunch_sd.service');
-  execSync('sudo systemctl daemon-reload');
-  execSync('sudo systemctl start autolaunch_sd.service');
+  await runCommand('sudo', ['systemctl', 'stop', 'autolaunch_sd.service']);
+  await runCommand('sudo', ['systemctl', 'daemon-reload']);
+  await runCommand('sudo', ['systemctl', 'start', 'autolaunch_sd.service']);
 
   // 检查服务状态
+
+  const spawnOptions: SpawnOptions = {
+    stdio: ['pipe', 'inherit', 'inherit'],
+  };
+
   const systemctl = spawn(
     'sudo',
     ['systemctl', 'status', 'autolaunch_sd.service', '--no-pager'],
@@ -132,21 +134,27 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
   });
 }
 
-function checkContainerStatus(containerName: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    exec(
-      `docker ps --filter "name=${containerName}" --format "{{.Names}}"`,
-      (error, stdout, stderr) => {
-        if (error) {
-          reject(error);
-        } else if (stderr) {
-          reject(new Error(stderr));
-        } else {
-          resolve(stdout.trim() === containerName);
-        }
-      },
+async function checkContainerStatus(containerName: string): Promise<boolean> {
+  try {
+    const stdout = await runCommand(
+      'docker',
+      ['ps', '--filter', `name=${containerName}`, '--format', '{{.Names}}'],
+      { captureOutput: true },
     );
-  });
+    return stdout?.trim() === containerName;
+  } catch (error) {
+    console.error(
+      pc.red(
+        pc.bold(
+          i18next.t('ERROR_CHECKING_CONTAINER_STATUS', {
+            containerName,
+            err: error,
+          }),
+        ),
+      ),
+    );
+    return false;
+  }
 }
 
 async function installAutoLauncher(): Promise<void> {
@@ -165,8 +173,8 @@ async function installAutoLauncher(): Promise<void> {
 
   // 复制 docker-compose.yaml 文件到 /etc/stable_diffusion/ 目录
   const targetComposeFilePath = '/etc/stable_diffusion/docker-compose.yaml';
-  execSync(`sudo mkdir -p /etc/stable_diffusion`);
-  execSync(`sudo cp ${composeFilePath} ${targetComposeFilePath}`);
+  await runCommand('sudo', ['mkdir', '-p', '/etc/stable_diffusion']);
+  await runCommand('sudo', ['cp', composeFilePath, targetComposeFilePath]);
 
   // 创建并保存 systemd 服务文件
   const serviceFilePath = createAndSaveServiceFile({
