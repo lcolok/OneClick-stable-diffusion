@@ -6,3 +6,6 @@ export * from './menuSelection';
 export * from './print';
 export * from './runCommand';
 export * from './yamlGen';
+export * from './imageBuilder';
+export * from './buildAction';
+export * from './composeConfig';

@@ -18,7 +18,6 @@ import {
   runCommand,
 } from '@utils';
 import i18next from '@i18n';
-import { spawn } from 'child_process';
 
 // 创建一个通用函数用于构建镜像
 
@@ -133,7 +132,7 @@ export async function buildImagesRecursively({
   }
 }
 
-interface SelectDependenciesAndBuildImagesParams {
+export interface SelectDependenciesAndBuildImagesParams {
   selectedConfig: BuildConfigType[keyof BuildConfigType];
   selectedConfigKey: string;
 }
