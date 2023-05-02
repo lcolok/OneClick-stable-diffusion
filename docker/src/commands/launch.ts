@@ -63,12 +63,6 @@ async function launchProductionImage(): Promise<void> {
   const containerName = 'sd_prod_container';
   const networkName = 'sd_prod_network';
 
-  //   // 停止并删除旧的 Docker 容器
-  //   console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
-  //   await dockerComposeDown({ composeFilePath, projectName });
-  //   await removeOldContainer({ containerName });
-  //   console.log(i18next.t('DOCKER_CONTAINERS_STOPPED_AND_REMOVED'));
-
   dockerComposeGen({
     ymlOutputDist: composeFilePath,
     serviceName,

@@ -1,7 +1,8 @@
 import path from 'path';
-import { runCommand } from './runCommand';
+import { runCommand } from '@utils/runCommand';
 import { confirm } from '@clack/prompts';
 import i18next from '@i18n';
+import { checkAndInstallScreen } from '@modules/installBinHelper';
 
 export async function handleExistingScreenSession(
   options: DockerComposeOptions,
@@ -25,6 +26,8 @@ export async function handleExistingScreenSession(
 }
 
 async function isScreenSessionRunning(projectName: string): Promise<boolean> {
+  // 检查并安装 screen
+  await checkAndInstallScreen();
   try {
     const result = (await runCommand('screen', ['-ls'], {
       captureOutput: true,
@@ -83,6 +86,8 @@ export async function dockerComposeDown(
 export async function dockerComposeUp(
   options: DockerComposeOptions,
 ): Promise<void> {
+  // 检查并安装 screen
+  await checkAndInstallScreen();
   const upCommand = 'screen';
   const upArgs = [
     '-S',
