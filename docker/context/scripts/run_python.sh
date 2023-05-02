@@ -12,10 +12,12 @@ python webui.py \
     --port ${SDWEBUI_PORT} \
     --api \
     --disable-safe-unpickle \
-    --opt-sdp-attention \
+    --opt-sdp-no-mem-attention \
     --listen \
     --skip-install \
     --disable-nan-check \
     --no-half-vae
     # --ckpt ./models/Stable-diffusion/revAnimated_v11.safetensors
     # --nowebui \
+
+# 开启 –opt-sdp-attention 后会提高显存的需求，你会发现之前hires可以开启的分辨率，现在会爆显存，你可以配合分块vae插件来解决这个问题。 存在和 xformer 一样的不确定性问题，可以通过修改为 --opt-sdp-no-mem-attention 解决，但是会损失一丢丢速度

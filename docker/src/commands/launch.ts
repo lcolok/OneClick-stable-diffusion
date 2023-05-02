@@ -1,7 +1,5 @@
-import { select, isCancel, cancel } from '@clack/prompts';
-import path from 'path';
 import * as pc from 'picocolors';
-import { buildConfig, buildAction, selectMenu } from '@utils';
+import { selectMenu } from '@utils';
 import {
   dockerComposeDown,
   dockerComposeUp,
@@ -10,7 +8,6 @@ import {
   generateTestComposeFile,
   generateProductionComposeFile,
 } from '@utils';
-import { dockerComposeGen } from '@utils';
 import i18next from '@i18n';
 
 async function launchTestImage(): Promise<void> {
@@ -29,7 +26,7 @@ async function launchTestImage(): Promise<void> {
     composeFilePath,
     projectName,
     containerName,
-    // build: true
+    build: true,
   });
 }
 

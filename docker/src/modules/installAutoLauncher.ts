@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { spawn, SpawnOptions } from 'child_process';
 import { runCommand } from '@utils';
 import i18next from '@i18n';
 import {
@@ -69,19 +68,13 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
   await runCommand('sudo', ['systemctl', 'start', 'autolaunch_sd.service']);
 
   // 检查服务状态
-
-  const spawnOptions: SpawnOptions = {
-    stdio: ['pipe', 'inherit', 'inherit'],
-  };
-
-  const systemctl = spawn(
-    'sudo',
-    ['systemctl', 'status', 'autolaunch_sd.service', '--no-pager'],
-    spawnOptions,
-  );
-
-  systemctl.on('close', async (code: number) => {
-    // console.log(i18next.t('CLOSED_WITH_CODE', { code }));
+  try {
+    await runCommand(
+      'sudo',
+      ['systemctl', 'status', 'autolaunch_sd.service', '--no-pager'],
+      { captureOutput: false },
+    );
+    console.log('Command executed successfully.');
 
     const checkInterval = 500; // 每500毫秒检查一次
     const timeout = 5000; // 5秒超时时间
@@ -126,12 +119,10 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
         i18next.t('ERROR_CONTAINER_NOT_RUNNING', { containerName }),
       );
     }, timeout);
-  });
-
-  systemctl.on('error', (err: Error) => {
+  } catch (err) {
     console.error(i18next.t('ERROR_PRINT', { err }));
     console.error(`${i18next.t('ERROR_INSTALLING_AUTO_LAUNCHER')}: ${err}`);
-  });
+  }
 }
 
 async function checkContainerStatus(containerName: string): Promise<boolean> {
