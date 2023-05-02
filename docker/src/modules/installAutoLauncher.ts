@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { exec, execSync, spawn, SpawnOptions } from 'child_process';
 import i18next from '@i18n';
-import { checkAndInstallScreen } from '@utils';
+import { checkAndInstallScreen, generateProductionComposeFile } from '@utils';
 
 // 创建临时目录
 function createTempDirectory(currentDirectory: string): string {
@@ -26,8 +26,8 @@ After=docker.service
 Restart=always
 RemainAfterExit=yes
 WorkingDirectory=${currentDirectory}
-ExecStart=/usr/bin/screen -S sd -dm /usr/bin/python3 dash.py --name autolaunch --port_increment 1
-ExecStop=/usr/bin/screen -S sd -X quit
+ExecStart=/usr/bin/docker-compose -f /etc/stable_diffusion/docker-compose.yaml up -d
+ExecStop=/usr/bin/docker-compose -f /etc/stable_diffusion/docker-compose.yaml down
 
 [Install]
 WantedBy=multi-user.target
@@ -82,8 +82,17 @@ async function installAutoLauncher(): Promise<void> {
   // 获取当前工作目录的绝对路径
   const currentDirectory = path.resolve(path.dirname(''));
 
+  // 生成 docker-compose.yaml 文件
+  const { composeFilePath, containerName, projectName } =
+    await generateProductionComposeFile();
+
   // 创建临时目录
   const tempDirectory = createTempDirectory(currentDirectory);
+
+  // 复制 docker-compose.yaml 文件到 /etc/stable_diffusion/ 目录
+  const targetComposeFilePath = '/etc/stable_diffusion/docker-compose.yaml';
+  execSync(`sudo mkdir -p /etc/stable_diffusion`);
+  execSync(`sudo cp ${composeFilePath} ${targetComposeFilePath}`);
 
   // 创建并保存 systemd 服务文件
   const serviceFilePath = createAndSaveServiceFile(
