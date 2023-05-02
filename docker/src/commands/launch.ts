@@ -1,17 +1,16 @@
 import { select, isCancel, cancel } from '@clack/prompts';
 import path from 'path';
 import * as pc from 'picocolors';
-import { runCommand } from '@utils/runCommand';
-import { buildConfig } from '@utils/imageBuildConfigReader';
+import { buildConfig } from '@utils';
 import { buildAction } from './build';
-import { selectMenu } from '@utils/menuSelection';
+import { selectMenu } from '@utils';
 import {
   dockerComposeDown,
   dockerComposeUp,
   removeOldContainer,
   handleExistingScreenSession,
-} from '@utils/dockerUtils';
-import { dockerComposeGen } from '@modules/dockerComposeGenerator';
+} from '@utils';
+import { dockerComposeGen } from '@utils';
 import i18next from '@i18n';
 
 async function launchTestImage(): Promise<void> {

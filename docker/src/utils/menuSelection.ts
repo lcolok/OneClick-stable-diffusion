@@ -1,5 +1,5 @@
 // 导入所需的模块
-import { select, isCancel, cancel } from "@clack/prompts";
+import { select, isCancel, cancel } from '@clack/prompts';
 import i18next from '@i18n';
 
 /**
@@ -16,7 +16,9 @@ export async function selectMenu<T>({
   operations,
 }: {
   message: string;
-  operations: Array<T & { label: string; action: () => Promise<void>; hint?: string }>;
+  operations: Array<
+    T & { label: string; action: () => Promise<void>; hint?: string }
+  >;
 }): Promise<T | null> {
   // 调用 select 函数展示选项列表，并将用户选择的结果赋值给 selectedItem 变量
   const selectedItem: string | symbol | null = await select({
@@ -31,10 +33,12 @@ export async function selectMenu<T>({
   // 检查用户是否取消了选择
   if (isCancel(selectedItem)) {
     // 如果用户取消选择，显示取消信息并返回 null
-    cancel(i18next.t("OPERATION_CANCELLED")!);
+    cancel(i18next.t('OPERATION_CANCELLED')!);
     return null;
   }
 
   // 如果用户选择了一个操作，则从操作列表中找到该操作并返回
-  return operations.find((operation) => operation.action.name === selectedItem) as T;
+  return operations.find(
+    (operation) => operation.action.name === selectedItem,
+  ) as T;
 }

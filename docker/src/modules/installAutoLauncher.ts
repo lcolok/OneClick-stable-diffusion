@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { exec, execSync, spawn, SpawnOptions } from 'child_process';
 import i18next from '@i18n';
-import { checkAndInstallScreen } from '@modules/installBinHelper';
+import { checkAndInstallScreen } from '@utils';
 
 // 创建临时目录
 function createTempDirectory(currentDirectory: string): string {

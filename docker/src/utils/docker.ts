@@ -1,8 +1,7 @@
 import path from 'path';
-import { runCommand } from '@utils/runCommand';
 import { confirm } from '@clack/prompts';
 import i18next from '@i18n';
-import { checkAndInstallScreen } from '@modules/installBinHelper';
+import { checkAndInstallScreen, runCommand } from '@utils';
 
 export async function handleExistingScreenSession(
   options: DockerComposeOptions,
@@ -26,7 +25,7 @@ export async function handleExistingScreenSession(
 }
 
 async function isScreenSessionRunning(projectName: string): Promise<boolean> {
-  // 检查并安装 screen
+  // 检查并安装 screenF
   await checkAndInstallScreen();
   try {
     const result = (await runCommand('screen', ['-ls'], {

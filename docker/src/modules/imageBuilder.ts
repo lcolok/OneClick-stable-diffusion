@@ -7,15 +7,18 @@ import {
   isCancel,
   cancel,
   text,
-  multiselect
-} from "@clack/prompts";
+  multiselect,
+} from '@clack/prompts';
 
-import pc from "picocolors";
-import { BuildConfigType, buildConfig, projectOptions } from "@utils/imageBuildConfigReader";
+import pc from 'picocolors';
+import {
+  BuildConfigType,
+  buildConfig,
+  logImageBuildStatus,
+  runCommand,
+} from '@utils';
 import i18next from '@i18n';
-import { runCommand } from '@utils/runCommand';
-import { spawn } from "child_process";
-import { logImageBuildStatus } from "@utils/print";
+import { spawn } from 'child_process';
 
 // 创建一个通用函数用于构建镜像
 
@@ -27,21 +30,21 @@ interface BuildImageOptions {
 }
 
 // 创建一个通用函数用于构建镜像
-export async function buildImage(
-  { tag,
-    dockerfilePath,
-    contextPath,
-    flags = []
-  }: BuildImageOptions
-): Promise<void> {
-  await runCommand("docker", ["build",
-    "-t",
+export async function buildImage({
+  tag,
+  dockerfilePath,
+  contextPath,
+  flags = [],
+}: BuildImageOptions): Promise<void> {
+  await runCommand('docker', [
+    'build',
+    '-t',
     tag,
-    "-f",
+    '-f',
     dockerfilePath,
     contextPath,
-    ...flags
-  ],);
+    ...flags,
+  ]);
 }
 
 interface BuildImagesRecursivelyOptions {
@@ -52,7 +55,7 @@ interface BuildImagesRecursivelyOptions {
 
 /**
  * 递归构建镜像。
- * 
+ *
  * @param selectedConfig 选定的构建配置
  * @param buildFromScratchDependencies 需要从头构建的依赖项集合
  * @param builtDependencies 已经构建的依赖项集合，默认为空集合
@@ -84,20 +87,25 @@ export async function buildImagesRecursively({
 
   let noCacheFlag: string[] = [];
   if (buildFromScratchDependencies.has(selectedConfig.tag)) {
-    noCacheFlag = ["--no-cache"];
+    noCacheFlag = ['--no-cache'];
     logImageBuildStatus(
-      pc.cyan(pc.inverse(` ${i18next.t('REBUILDING_IMAGE_VIA_DOCKER',
-        { tag: pc.yellow(pc.inverse(` ${selectedConfig.tag} `)) }
-      )}`))
-    )
+      pc.cyan(
+        pc.inverse(
+          ` ${i18next.t('REBUILDING_IMAGE_VIA_DOCKER', {
+            tag: pc.yellow(pc.inverse(` ${selectedConfig.tag} `)),
+          })}`,
+        ),
+      ),
+    );
   } else {
     logImageBuildStatus(
-      i18next.t("BUILDING_IMAGE_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })
-    )
+      i18next.t('BUILDING_IMAGE_VIA_DOCKER', {
+        tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)),
+      }),
+    );
   }
 
   // 提示正在构建的镜像
-
 
   try {
     // 调用 buildImage 函数构建镜像
@@ -109,13 +117,18 @@ export async function buildImagesRecursively({
     });
     // 提示镜像构建成功
     logImageBuildStatus(
-      i18next.t("IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER", { tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)) })
+      i18next.t('IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER', {
+        tag: pc.green(pc.inverse(` ${selectedConfig.tag} `)),
+      }),
     );
-
   } catch (error: any) {
     console.error(pc.red(error.message));
     // 如果构建失败，则提示用户并返回 null
-    cancel(`${i18next.t("IMAGE_BUILD_FAILED", { tag: pc.red(pc.inverse(` ${selectedConfig.tag} `)) })}`);
+    cancel(
+      `${i18next.t('IMAGE_BUILD_FAILED', {
+        tag: pc.red(pc.inverse(` ${selectedConfig.tag} `)),
+      })}`,
+    );
     return process.exit(1);
   }
 }
@@ -125,7 +138,10 @@ interface SelectDependenciesAndBuildImagesParams {
   selectedConfigKey: string;
 }
 
-export async function selectDependenciesAndBuildImages({ selectedConfig, selectedConfigKey }: SelectDependenciesAndBuildImagesParams) {
+export async function selectDependenciesAndBuildImages({
+  selectedConfig,
+  selectedConfigKey,
+}: SelectDependenciesAndBuildImagesParams) {
   if (!selectedConfig || !selectedConfig.dependencies) {
     return;
   }
@@ -133,19 +149,22 @@ export async function selectDependenciesAndBuildImages({ selectedConfig, selecte
   const dependencyOptions = [
     ...selectedConfig.dependencies,
     selectedConfigKey,
-  ].map(dep => {
+  ].map((dep) => {
     const tag = buildConfig[dep].tag;
     const label = buildConfig[dep].label;
     return {
       value: tag,
       label: pc.cyan('🔄' + label),
-      hint: dep === selectedConfigKey ? pc.yellow(i18next.t('CURRENT_CHOICE')) : undefined, // Add a hint for the selected config
+      hint:
+        dep === selectedConfigKey
+          ? pc.yellow(i18next.t('CURRENT_CHOICE'))
+          : undefined, // Add a hint for the selected config
     };
   });
 
   return new Promise(async (resolve, reject) => {
     const selectedDependencies = await multiselect({
-      message: i18next.t("SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH"),
+      message: i18next.t('SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH'),
       options: dependencyOptions,
       required: false,
     });
@@ -153,7 +172,7 @@ export async function selectDependenciesAndBuildImages({ selectedConfig, selecte
     // 检查用户是否取消了选择
     if (isCancel(selectedDependencies)) {
       // 如果用户取消选择，显示取消信息并返回 null
-      cancel(i18next.t("OPERATION_CANCELLED")!);
+      cancel(i18next.t('OPERATION_CANCELLED')!);
       return reject();
     }
 
@@ -161,7 +180,7 @@ export async function selectDependenciesAndBuildImages({ selectedConfig, selecte
       await buildImagesRecursively({
         selectedConfig,
         buildFromScratchDependencies: new Set(selectedDependencies as string[]),
-      })
+      }),
     );
   });
 }
