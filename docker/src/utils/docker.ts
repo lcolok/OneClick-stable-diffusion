@@ -28,11 +28,9 @@ async function isScreenSessionRunning(projectName: string): Promise<boolean> {
   // 检查并安装 screen
   await checkAndInstallScreen();
   try {
-    const { stdout } = await runCommand('screen', ['-ls'], {
-      inheritStdio: false,
-    });
+    const stdout = await runCommand('screen', ['-ls'], { captureOutput: true });
     const regex = new RegExp(`.*${projectName}.*`);
-    return regex.test(stdout);
+    return regex.test(stdout as string);
   } catch (error) {
     console.error('Error checking for screen session:', error);
     return false;
@@ -120,13 +118,14 @@ async function checkDockerImageExists(
   options: DockerComposeOptions,
 ): Promise<boolean> {
   const imageName = `${options.projectName}_${options.serviceName}`;
-  console.log(imageName);
-  const listImagesCommand = 'docker';
-  const listImagesArgs = ['image', 'ls', '--format', '{{.Repository}}'];
 
-  const { stdout } = await runCommand(listImagesCommand, listImagesArgs, {
-    inheritStdio: false,
-  });
+  const stdout = await runCommand(
+    'docker',
+    ['image', 'ls', '--format', '{{.Repository}}'],
+    {
+      captureOutput: true,
+    },
+  );
 
-  return stdout.includes(imageName);
+  return (stdout as string).includes(imageName);
 }

@@ -1,8 +1,6 @@
 import { spawn, ChildProcess } from 'child_process';
-import { promises as fs } from 'fs';
-import os from 'os';
-import path from 'path';
 import { cancel } from '@clack/prompts';
+import { Writable } from 'stream';
 import i18next from '@i18n';
 import pc from 'picocolors';
 
@@ -10,25 +8,34 @@ const childProcesses = new Set<ChildProcess>();
 
 interface RunCommandOptions {
   cwd?: string;
-  inheritStdio?: boolean;
+  captureOutput?: boolean;
 }
 
 export async function runCommand(
   command: string,
   args: string[],
   options?: RunCommandOptions,
-): Promise<{ stdout: string; stderr: string }> {
-  return new Promise<{ stdout: string; stderr: string }>(async (resolve, reject) => {
-    const inheritStdio = options?.inheritStdio ?? true;
-    const outputFile = path.join(os.tmpdir(), `runCommand_output_${Date.now()}.txt`);
+): Promise<string | void> {
+  return new Promise<string | void>((resolve, reject) => {
+    const captureOutput = options?.captureOutput ?? false;
 
-    const commandWithScript = `script -q -e -c "${command} ${args.join(' ')}" ${outputFile}`;
+    const stdoutStream: Writable = captureOutput
+      ? new Writable({
+          write(chunk, encoding, callback) {
+            resolve(chunk.toString());
+            callback();
+          },
+        })
+      : process.stdout;
 
-    const childProcess = spawn(commandWithScript, [], {
-      stdio: inheritStdio ? 'inherit' : 'ignore',
+    const childProcess = spawn(command, args, {
+      stdio: ['inherit', captureOutput ? 'pipe' : 'inherit', 'inherit'],
       cwd: options?.cwd,
-      shell: true,
     });
+
+    if (captureOutput) {
+      childProcess.stdout?.pipe(stdoutStream);
+    }
 
     childProcesses.add(childProcess);
 
@@ -44,18 +51,12 @@ export async function runCommand(
 
     process.on('SIGINT', onSigInt);
 
-    childProcess.on('close', async (code) => {
+    childProcess.on('close', (code) => {
       childProcesses.delete(childProcess);
       process.removeListener('SIGINT', onSigInt);
 
       if (code === 0) {
-        try {
-          const output = await fs.readFile(outputFile, 'utf8');
-          await fs.unlink(outputFile);
-          resolve({ stdout: output, stderr: '' });
-        } catch (error) {
-          reject(error);
-        }
+        resolve(captureOutput ? undefined : '');
       } else {
         reject(new Error(`${i18next.t('CHILD_PROCESS_EXITED')} ${code}`));
       }
