@@ -126,26 +126,25 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
 }
 
 async function checkContainerStatus(containerName: string): Promise<boolean> {
-  try {
-    const stdout = await runCommand(
-      'docker',
-      ['ps', '--filter', `name=${containerName}`, '--format', '{{.Names}}'],
-      { captureOutput: true },
-    );
-    return stdout?.trim() === containerName;
-  } catch (error) {
+  const { stdout, stderr } = await runCommand(
+    'docker',
+    ['ps', '--filter', `name=${containerName}`, '--format', '{{.Names}}'],
+    { captureOutput: true, captureError: true },
+  );
+  if (stderr) {
     console.error(
       pc.red(
         pc.bold(
           i18next.t('ERROR_CHECKING_CONTAINER_STATUS', {
             containerName,
-            err: error,
+            err: stderr,
           }),
         ),
       ),
     );
     return false;
   }
+  return stdout?.trim() === containerName;
 }
 
 async function installAutoLauncher(): Promise<void> {
