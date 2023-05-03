@@ -1,6 +1,8 @@
 import { spawn, ChildProcess } from 'child_process';
+import { promises as fs } from 'fs';
+import os from 'os';
+import path from 'path';
 import { cancel } from '@clack/prompts';
-import { Writable } from 'stream';
 import i18next from '@i18n';
 import pc from 'picocolors';
 
@@ -16,31 +18,16 @@ export async function runCommand(
   args: string[],
   options?: RunCommandOptions,
 ): Promise<{ stdout: string; stderr: string }> {
-  return new Promise<{ stdout: string; stderr: string }>((resolve, reject) => {
+  return new Promise<{ stdout: string; stderr: string }>(async (resolve, reject) => {
     const inheritStdio = options?.inheritStdio ?? true;
+    const outputFile = path.join(os.tmpdir(), `runCommand_output_${Date.now()}.txt`);
 
-    let stdout = '';
-    let stderr = '';
+    const commandWithScript = `script -q -e -c "${command} ${args.join(' ')}" ${outputFile}`;
 
-    const childProcess = spawn(command, args, {
-      stdio: ['inherit', 'pipe', 'pipe'],
+    const childProcess = spawn(commandWithScript, [], {
+      stdio: inheritStdio ? 'inherit' : 'ignore',
       cwd: options?.cwd,
-    });
-
-    childProcess.stdout?.on('data', (chunk) => {
-      const chunkStr = chunk.toString();
-      stdout += chunkStr;
-      if (inheritStdio) {
-        process.stdout.write(chunkStr);
-      }
-    });
-
-    childProcess.stderr?.on('data', (chunk) => {
-      const chunkStr = chunk.toString();
-      stderr += chunkStr;
-      if (inheritStdio) {
-        process.stderr.write(chunkStr);
-      }
+      shell: true,
     });
 
     childProcesses.add(childProcess);
@@ -57,12 +44,18 @@ export async function runCommand(
 
     process.on('SIGINT', onSigInt);
 
-    childProcess.on('close', (code) => {
+    childProcess.on('close', async (code) => {
       childProcesses.delete(childProcess);
       process.removeListener('SIGINT', onSigInt);
 
       if (code === 0) {
-        resolve({ stdout, stderr });
+        try {
+          const output = await fs.readFile(outputFile, 'utf8');
+          await fs.unlink(outputFile);
+          resolve({ stdout: output, stderr: '' });
+        } catch (error) {
+          reject(error);
+        }
       } else {
         reject(new Error(`${i18next.t('CHILD_PROCESS_EXITED')} ${code}`));
       }
