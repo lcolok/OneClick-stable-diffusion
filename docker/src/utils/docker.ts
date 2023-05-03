@@ -60,7 +60,8 @@ interface DockerComposeOptions {
   composeFilePath: string;
   projectName: string;
   containerName: string;
-  build?: boolean;
+  serviceName: string;
+  build?: 'auto' | 'force' | 'none';
   runInBackground?: boolean;
 }
 
@@ -83,6 +84,20 @@ export async function dockerComposeUp(
 ): Promise<void> {
   // 检查并安装 screen
   await checkAndInstallScreen();
+
+  let buildOption = '';
+
+  if (options.build === 'force') {
+    buildOption = '--build';
+  } else if (options.build === 'none') {
+    buildOption = '';
+  } else {
+    const imageExists = await checkDockerImageExists(options);
+    if (!imageExists) {
+      buildOption = '--build';
+    }
+  }
+
   const upCommand = 'screen';
   const upArgs = [
     '-S',
@@ -95,9 +110,23 @@ export async function dockerComposeUp(
     '--project-name',
     options.projectName,
     'up',
-    // 根据 build 的值动态添加 --build 参数
-    ...(options.build ? ['--build'] : []),
+    buildOption,
   ];
-
+  // console.log(upCommand + ' ' + upArgs.join(' '));
   await runCommand(upCommand, upArgs);
+}
+
+async function checkDockerImageExists(
+  options: DockerComposeOptions,
+): Promise<boolean> {
+  const imageName = `${options.projectName}_${options.serviceName}`;
+  console.log(imageName);
+  const listImagesCommand = 'docker';
+  const listImagesArgs = ['image', 'ls', '--format', '{{.Repository}}'];
+
+  const { stdout } = await runCommand(listImagesCommand, listImagesArgs, {
+    inheritStdio: false,
+  });
+
+  return stdout.includes(imageName);
 }

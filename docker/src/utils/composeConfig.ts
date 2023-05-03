@@ -10,6 +10,7 @@ export async function generateTestComposeFile(): Promise<{
   composeFilePath: string;
   containerName: string;
   projectName: string;
+  serviceName: string;
 }> {
   // 构建新的镜像
   const selectedConfigKey = 'sdwebui_ext_build';
@@ -39,13 +40,14 @@ export async function generateTestComposeFile(): Promise<{
     },
   });
 
-  return { composeFilePath, containerName, projectName };
+  return { composeFilePath, containerName, projectName, serviceName };
 }
 
 export async function generateProductionComposeFile(): Promise<{
   composeFilePath: string;
   containerName: string;
   projectName: string;
+  serviceName: string;
 }> {
   const projectName = 'sd_prod';
   const serviceName = 'sd_prod_service';
@@ -72,5 +74,5 @@ export async function generateProductionComposeFile(): Promise<{
     },
   });
 
-  return { composeFilePath, containerName, projectName };
+  return { composeFilePath, containerName, projectName, serviceName };
 }

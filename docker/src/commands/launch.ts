@@ -15,11 +15,16 @@ import i18next from '@i18n';
 
 async function launchTestImage(): Promise<void> {
   // 构建新的镜像
-  const { composeFilePath, containerName, projectName } =
+  const { composeFilePath, containerName, serviceName, projectName } =
     await generateTestComposeFile();
   // 停止并删除旧的 Docker 容器
   console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
-  await dockerComposeDown({ composeFilePath, containerName, projectName });
+  await dockerComposeDown({
+    composeFilePath,
+    serviceName,
+    projectName,
+    containerName,
+  });
   await removeOldContainer({ containerName });
   console.log(i18next.t('DOCKER_CONTAINERS_STOPPED_AND_REMOVED'));
 
@@ -27,6 +32,7 @@ async function launchTestImage(): Promise<void> {
   console.log(pc.inverse(pc.green(i18next.t('STARTING_NEW_TEST_CONTAINER'))));
   await dockerComposeUp({
     composeFilePath,
+    serviceName,
     projectName,
     containerName,
     // build: true
@@ -35,7 +41,7 @@ async function launchTestImage(): Promise<void> {
 
 async function launchProductionImage(): Promise<void> {
   // 构建新的镜像
-  const { composeFilePath, containerName, projectName } =
+  const { composeFilePath, serviceName, projectName, containerName } =
     await generateProductionComposeFile();
 
   // 启动新的测试容器
@@ -43,9 +49,10 @@ async function launchProductionImage(): Promise<void> {
 
   await handleExistingScreenSession({
     composeFilePath,
+    serviceName,
     projectName,
     containerName,
-    build: true,
+    build: 'auto',
   });
 }
 

@@ -167,7 +167,7 @@ async function installAutoLauncher(): Promise<void> {
   const currentDirectory = path.resolve(path.dirname(''));
 
   // 生成 docker-compose.yaml 文件
-  const { composeFilePath, containerName, projectName } =
+  const { composeFilePath, serviceName, projectName, containerName } =
     await generateProductionComposeFile();
 
   // 创建临时目录
@@ -198,7 +198,12 @@ async function installAutoLauncher(): Promise<void> {
   copyServiceFileToSystemd(serviceFilePath);
 
   // 停止并移除已存在的容器
-  await dockerComposeDown({ composeFilePath, containerName, projectName });
+  await dockerComposeDown({
+    composeFilePath,
+    serviceName,
+    projectName,
+    containerName,
+  });
   await removeOldContainer({ containerName });
 
   // 启动服务并显示状态
