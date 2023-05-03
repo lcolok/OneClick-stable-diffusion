@@ -136,11 +136,13 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
 
 async function checkContainerStatus(containerName: string): Promise<boolean> {
   try {
-    const stdout = await runCommand(
-      'docker',
-      ['ps', '--filter', `name=${containerName}`, '--format', '{{.Names}}'],
-      { captureOutput: true },
-    );
+    const { stdout } = await runCommand('docker', [
+      'ps',
+      '--filter',
+      `name=${containerName}`,
+      '--format',
+      '{{.Names}}',
+    ]);
     return stdout?.trim() === containerName;
   } catch (error) {
     console.error(

@@ -25,14 +25,14 @@ export async function handleExistingScreenSession(
 }
 
 async function isScreenSessionRunning(projectName: string): Promise<boolean> {
-  // 检查并安装 screenF
+  // 检查并安装 screen
   await checkAndInstallScreen();
   try {
-    const result = (await runCommand('screen', ['-ls'], {
-      captureOutput: true,
-    })) as string;
+    const { stdout } = await runCommand('screen', ['-ls'], {
+      inheritStdio: false,
+    });
     const regex = new RegExp(`.*${projectName}.*`);
-    return regex.test(result);
+    return regex.test(stdout);
   } catch (error) {
     console.error('Error checking for screen session:', error);
     return false;
