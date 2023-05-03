@@ -22,7 +22,11 @@ export async function generateTestComposeFile(): Promise<{
   const containerName = 'sd_test_container';
   const networkName = 'sd_test_network';
 
-  const composeFilePath = path.join('temp', 'docker-compose.test.temp.yaml');
+  const composeFilePath = path.resolve(
+    __dirname,
+    'temp',
+    'docker-compose.test.temp.yaml',
+  );
 
   console.log(pc.inverse(pc.green(i18next.t('GENERATING_TEST_COMPOSE_FILE'))));
 
@@ -54,7 +58,11 @@ export async function generateProductionComposeFile(): Promise<{
   const containerName = 'sd_prod_container';
   const networkName = 'sd_prod_network';
 
-  const composeFilePath = path.join('temp', 'docker-compose.prod.temp.yaml');
+  const composeFilePath = path.resolve(
+    __dirname,
+    'temp',
+    'docker-compose.prod.temp.yaml',
+  );
 
   console.log(
     pc.inverse(pc.green(i18next.t('GENERATING_PRODUCTION_COMPOSE_FILE'))),

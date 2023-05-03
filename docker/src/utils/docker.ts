@@ -108,7 +108,8 @@ export async function dockerComposeUp(
     '--project-name',
     options.projectName,
     'up',
-    buildOption,
+    // 如果 buildOption 不为空，则添加到数组中
+    ...(buildOption ? [buildOption] : []),
   ];
   // console.log(upCommand + ' ' + upArgs.join(' '));
   await runCommand(upCommand, upArgs);
