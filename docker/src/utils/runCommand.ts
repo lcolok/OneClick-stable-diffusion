@@ -1,10 +1,13 @@
 import { spawn, ChildProcess } from 'child_process';
+import { cancel } from '@clack/prompts';
 import { Writable } from 'stream';
+import i18next from '@i18n';
+import pc from 'picocolors';
+
+const childProcesses = new Set<ChildProcess>();
 
 interface RunCommandOptions {
   cwd?: string;
-  captureOutput?: boolean;
-  captureError?: boolean;
   inheritStdio?: boolean;
 }
 
@@ -12,55 +15,57 @@ export async function runCommand(
   command: string,
   args: string[],
   options?: RunCommandOptions,
-): Promise<{ stdout: string | void; stderr: string | void }> {
-  return new Promise<{ stdout: string | void; stderr: string | void }>(
-    (resolve, reject) => {
-      const captureOutput = options?.captureOutput ?? false;
-      const captureError = options?.captureError ?? false;
-      const inheritStdio = options?.inheritStdio ?? true;
+): Promise<{ stdout: string; stderr: string }> {
+  return new Promise<{ stdout: string; stderr: string }>((resolve, reject) => {
+    const inheritStdio = options?.inheritStdio ?? true;
 
-      const stdoutStream: Writable = captureOutput
-        ? new Writable({
-            write(chunk, encoding, callback) {
-              resolve({ stdout: chunk.toString(), stderr: undefined });
-              callback();
-            },
-          })
-        : process.stdout;
+    let stdout = '';
+    let stderr = '';
 
-      const stderrStream: Writable = captureError
-        ? new Writable({
-            write(chunk, encoding, callback) {
-              resolve({ stdout: undefined, stderr: chunk.toString() });
-              callback();
-            },
-          })
-        : process.stderr;
+    const childProcess = spawn(command, args, {
+      stdio: ['inherit', 'pipe', 'pipe'],
+      cwd: options?.cwd,
+    });
 
-      const childProcess = spawn(command, args, {
-        stdio: [
-          'inherit',
-          captureOutput ? 'pipe' : inheritStdio ? 'inherit' : 'ignore',
-          captureError ? 'pipe' : inheritStdio ? 'inherit' : 'ignore',
-        ],
-        cwd: options?.cwd,
-      });
-
-      if (captureOutput) {
-        childProcess.stdout?.pipe(stdoutStream);
+    childProcess.stdout?.on('data', (chunk) => {
+      const chunkStr = chunk.toString();
+      stdout += chunkStr;
+      if (inheritStdio) {
+        process.stdout.write(chunkStr);
       }
+    });
 
-      if (captureError) {
-        childProcess.stderr?.pipe(stderrStream);
+    childProcess.stderr?.on('data', (chunk) => {
+      const chunkStr = chunk.toString();
+      stderr += chunkStr;
+      if (inheritStdio) {
+        process.stderr.write(chunkStr);
       }
+    });
 
-      childProcess.on('close', (code) => {
-        if (code === 0) {
-          resolve({ stdout: undefined, stderr: undefined });
-        } else {
-          reject(new Error(`Child process exited with code ${code}`));
-        }
-      });
-    },
-  );
+    childProcesses.add(childProcess);
+
+    const onSigInt = () => {
+      console.log(`\n${i18next.t('TERMINATING_CHILD_PROCESS')}`);
+      childProcesses.forEach((cp) => cp.kill('SIGINT'));
+      process.removeListener('SIGINT', onSigInt);
+      setTimeout(() => {
+        cancel(i18next.t('CHILD_PROCESS_TERMINATED') as string);
+        process.exit(0);
+      }, 200);
+    };
+
+    process.on('SIGINT', onSigInt);
+
+    childProcess.on('close', (code) => {
+      childProcesses.delete(childProcess);
+      process.removeListener('SIGINT', onSigInt);
+
+      if (code === 0) {
+        resolve({ stdout, stderr });
+      } else {
+        reject(new Error(`${i18next.t('CHILD_PROCESS_EXITED')} ${code}`));
+      }
+    });
+  });
 }

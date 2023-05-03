@@ -28,9 +28,7 @@ async function isScreenSessionRunning(projectName: string): Promise<boolean> {
   // 检查并安装 screenF
   await checkAndInstallScreen();
   try {
-    const { stdout } = await runCommand('screen', ['-ls'], {
-      captureOutput: true,
-    });
+    const { stdout } = await runCommand('screen', ['-ls']);
     const regex = new RegExp(`.*${projectName}.*`);
     return regex.test(stdout as string);
   } catch (error) {

@@ -69,11 +69,12 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
 
   // 检查服务状态
   try {
-    await runCommand(
-      'sudo',
-      ['systemctl', 'status', 'autolaunch_sd.service', '--no-pager'],
-      { captureOutput: false },
-    );
+    await runCommand('sudo', [
+      'systemctl',
+      'status',
+      'autolaunch_sd.service',
+      '--no-pager',
+    ]);
     console.log('Command executed successfully.');
 
     const checkInterval = 500; // 每500毫秒检查一次
@@ -126,11 +127,13 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
 }
 
 async function checkContainerStatus(containerName: string): Promise<boolean> {
-  const { stdout, stderr } = await runCommand(
-    'docker',
-    ['ps', '--filter', `name=${containerName}`, '--format', '{{.Names}}'],
-    { captureOutput: true, captureError: true },
-  );
+  const { stdout, stderr } = await runCommand('docker', [
+    'ps',
+    '--filter',
+    `name=${containerName}`,
+    '--format',
+    '{{.Names}}',
+  ]);
   if (stderr) {
     console.error(
       pc.red(
