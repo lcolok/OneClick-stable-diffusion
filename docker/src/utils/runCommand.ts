@@ -51,6 +51,10 @@ export async function runCommand(
 
     process.on('SIGINT', onSigInt);
 
+    childProcess.on('error', (error) => {
+      reject(error);
+    });
+
     childProcess.on('close', (code) => {
       childProcesses.delete(childProcess);
       process.removeListener('SIGINT', onSigInt);
