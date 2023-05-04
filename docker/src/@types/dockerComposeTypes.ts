@@ -34,3 +34,14 @@ export interface DockerComposeOptions {
   forceRebuild?: boolean;
   forceRestart?: boolean;
 }
+
+export interface DockerComposeGenOptions {
+  ymlOutputDist: string;
+  serviceName: string;
+  containerName?: string;
+  networkName: string;
+  host_sdwebui_dir: string;
+  container_sdwebui_dir: string;
+  portMappings: Record<string, number>;
+  launchDockerfile: string;
+}

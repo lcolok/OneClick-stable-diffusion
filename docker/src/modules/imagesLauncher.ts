@@ -1,13 +1,8 @@
+import { handleExistingScreenSession, buildAction, buildConfig } from '@utils';
 import {
-  dockerComposeDown,
-  dockerComposeUp,
-  removeOldContainer,
-  handleExistingScreenSession,
   generateTestComposeFile,
   generateProductionComposeFile,
-  buildAction,
-  buildConfig,
-} from '@utils';
+} from '@modules';
 import * as pc from 'picocolors';
 import i18next from '@i18n';
 

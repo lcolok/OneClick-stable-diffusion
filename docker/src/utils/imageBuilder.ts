@@ -11,22 +11,15 @@ import {
 } from '@clack/prompts';
 
 import pc from 'picocolors';
-import { BuildConfig } from '@types';
 import {
-  buildConfig,
-  logImageBuildStatus,
-  runCommand,
-} from '@utils';
+  BuildConfig,
+  BuildImageOptions,
+  BuildImagesRecursivelyOptions,
+} from '@types';
+import { buildConfig, logImageBuildStatus, runCommand } from '@utils';
 import i18next from '@i18n';
 
 // 创建一个通用函数用于构建镜像
-
-interface BuildImageOptions {
-  tag: string;
-  dockerfilePath: string;
-  contextPath: string;
-  flags?: string[];
-}
 
 // 创建一个通用函数用于构建镜像
 export async function buildImage({
@@ -44,12 +37,6 @@ export async function buildImage({
     contextPath,
     ...flags,
   ]);
-}
-
-interface BuildImagesRecursivelyOptions {
-  selectedConfig: BuildConfig[keyof BuildConfig];
-  buildFromScratchDependencies: Set<string>;
-  builtDependencies?: Set<string>;
 }
 
 /**

@@ -3,13 +3,13 @@ import * as path from 'path';
 import i18next from '@i18n';
 import {
   checkAndInstallScreen,
-  generateProductionComposeFile,
   removeOldContainer,
   dockerComposeDown,
   buildAction,
   buildConfig,
   runCommand,
 } from '@utils';
+import { generateProductionComposeFile } from '@modules';
 import pc from 'picocolors';
 
 // 创建临时目录

@@ -1,17 +1,28 @@
-import { DockerComposeConfig } from '@types';
-import { writeDockerComposeYamlToFile } from '@utils';
+import {
+  DockerComposeConfig,
+  BuildConfig,
+  BuildActionParams,
+  DockerComposeGenOptions,
+} from '@types';
+import {
+  writeDockerComposeYamlToFile,
+  selectDependenciesAndBuildImages,
+  printDockerImages,
+} from '@utils';
 import * as path from 'path';
 import { path as projectRootDir } from 'app-root-path';
+import i18next from '@i18n';
+import { outro } from '@clack/prompts';
 
-interface DockerComposeGenOptions {
-  ymlOutputDist: string;
-  serviceName: string;
-  containerName?: string;
-  networkName: string;
-  host_sdwebui_dir: string;
-  container_sdwebui_dir: string;
-  portMappings: Record<string, number>;
-  launchDockerfile: string;
+export async function buildAction({
+  selectedConfig,
+  selectedConfigKey,
+}: BuildActionParams): Promise<void> {
+  // 构建镜像
+  await selectDependenciesAndBuildImages({ selectedConfig, selectedConfigKey });
+  // 打印镜像信息
+  await printDockerImages(selectedConfig);
+  outro(i18next.t('BUILD_SUCCESSFULLY')!);
 }
 
 export function dockerComposeGen({

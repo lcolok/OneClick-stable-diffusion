@@ -1,4 +1,4 @@
-export * from './dockerComposeGen';
+export * from './dockerComposeBuilder';
 export * from './docker';
 export * from './imageBuildConfig';
 export * from './install';
@@ -7,5 +7,3 @@ export * from './print';
 export * from './runCommand';
 export * from './yamlGen';
 export * from './imageBuilder';
-export * from './buildAction';
-export * from './composeConfig';

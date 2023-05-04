@@ -1,5 +1,3 @@
-// composeConfig.ts
-
 import path from 'path';
 import { buildConfig, buildAction } from '@utils';
 import * as pc from 'picocolors';

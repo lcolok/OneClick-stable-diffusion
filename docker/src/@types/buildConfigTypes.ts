@@ -11,3 +11,21 @@ export interface BuildConfig {
     dependencies?: string[]; // 依赖列表
   };
 }
+
+export interface BuildImageOptions {
+  tag: string;
+  dockerfilePath: string;
+  contextPath: string;
+  flags?: string[];
+}
+
+export interface BuildImagesRecursivelyOptions {
+  selectedConfig: BuildConfig[keyof BuildConfig];
+  buildFromScratchDependencies: Set<string>;
+  builtDependencies?: Set<string>;
+}
+
+export interface BuildActionParams {
+  selectedConfig: BuildConfig[keyof BuildConfig];
+  selectedConfigKey: string;
+}
