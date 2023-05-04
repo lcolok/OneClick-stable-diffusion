@@ -15,10 +15,10 @@ const targetBuild = 'lama_cleaner_build';
 
 async function launchImage({
   generateComposeFile,
-  buildMode,
+  testMode,
 }: {
   generateComposeFile: (targetBuild: string) => Promise<any>;
-  buildMode: 'force' | 'auto';
+  testMode?: boolean;
 }): Promise<void> {
   // 构建Compose文件
   const { composeFilePath, containerName, serviceName, projectName } =
@@ -34,15 +34,15 @@ async function launchImage({
     serviceName,
     projectName,
     containerName,
-    build: buildMode,
-    forceRestart: buildMode === 'force',
+    forceRebuild: testMode ? true : false,
+    forceRestart: testMode ? true : false,
   });
 }
 
 export async function launchTestImage(): Promise<void> {
   await launchImage({
     generateComposeFile: generateTestComposeFile,
-    buildMode: 'force',
+    testMode: true,
   });
 }
 
@@ -52,6 +52,5 @@ export async function launchProductionImage(): Promise<void> {
 
   await launchImage({
     generateComposeFile: generateProductionComposeFile,
-    buildMode: 'auto',
   });
 }

@@ -5,15 +5,17 @@ import { checkAndInstallScreen, runCommand } from '@utils';
 import { DockerComposeOptions } from '@types';
 
 export async function handleExistingScreenSession(
-  options: DockerComposeOptions
+  options: DockerComposeOptions,
 ): Promise<void> {
   if (await isScreenSessionRunning(options.projectName)) {
-    const shouldRestart = options.forceRestart || await confirm({
-      message: i18next.t('SCREEN_SESSION_ALREADY_RUNNING'),
-      active: i18next.t('RESTART') as string,
-      inactive: i18next.t('DO_NOT_RESTART') as string,
-      initialValue: false,
-    });
+    const shouldRestart =
+      options.forceRestart ||
+      (await confirm({
+        message: i18next.t('SCREEN_SESSION_ALREADY_RUNNING'),
+        active: i18next.t('RESTART') as string,
+        inactive: i18next.t('DO_NOT_RESTART') as string,
+        initialValue: false,
+      }));
 
     if (shouldRestart) {
       console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
@@ -77,10 +79,8 @@ export async function dockerComposeUp(
 
   let buildOption = '';
 
-  if (options.build === 'force') {
+  if (options.forceRebuild) {
     buildOption = '--build';
-  } else if (options.build === 'none') {
-    buildOption = '';
   } else {
     const imageExists = await checkDockerImageExists(options);
     if (!imageExists) {

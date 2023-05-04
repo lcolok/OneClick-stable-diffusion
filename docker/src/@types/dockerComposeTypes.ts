@@ -30,7 +30,7 @@ export interface DockerComposeOptions {
   projectName: string;
   containerName: string;
   serviceName: string;
-  build?: 'auto' | 'force' | 'none';
   runInBackground?: boolean;
+  forceRebuild?: boolean;
   forceRestart?: boolean;
 }
