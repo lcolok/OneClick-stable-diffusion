@@ -1,4 +1,4 @@
-import { DockerComposeConfig } from 'dockerComposeTypes';
+import { DockerComposeConfig } from '@types';
 import { writeDockerComposeYamlToFile } from '@utils';
 import * as path from 'path';
 import { path as projectRootDir } from 'app-root-path';

@@ -11,7 +11,7 @@ import {
 } from '@clack/prompts';
 
 import pc from 'picocolors';
-import { BuildConfig } from 'buildConfigTypes';
+import { BuildConfig } from '@types';
 import {
   buildConfig,
   logImageBuildStatus,

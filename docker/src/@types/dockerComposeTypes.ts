@@ -24,3 +24,13 @@ export interface DockerComposeConfig {
     [networkName: string]: {};
   };
 }
+
+export interface DockerComposeOptions {
+  composeFilePath: string;
+  projectName: string;
+  containerName: string;
+  serviceName: string;
+  build?: 'auto' | 'force' | 'none';
+  runInBackground?: boolean;
+  forceRestart?: boolean;
+}

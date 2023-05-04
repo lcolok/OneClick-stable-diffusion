@@ -2,12 +2,13 @@ import path from 'path';
 import { confirm } from '@clack/prompts';
 import i18next from '@i18n';
 import { checkAndInstallScreen, runCommand } from '@utils';
+import { DockerComposeOptions } from '@types';
 
 export async function handleExistingScreenSession(
-  options: DockerComposeOptions,
+  options: DockerComposeOptions
 ): Promise<void> {
   if (await isScreenSessionRunning(options.projectName)) {
-    const shouldRestart = await confirm({
+    const shouldRestart = options.forceRestart || await confirm({
       message: i18next.t('SCREEN_SESSION_ALREADY_RUNNING'),
       active: i18next.t('RESTART') as string,
       inactive: i18next.t('DO_NOT_RESTART') as string,
@@ -52,15 +53,6 @@ export async function removeOldContainer(options: {
   if (await containerExists(options.containerName)) {
     await runCommand('docker', ['rm', '-f', options.containerName]);
   }
-}
-
-interface DockerComposeOptions {
-  composeFilePath: string;
-  projectName: string;
-  containerName: string;
-  serviceName: string;
-  build?: 'auto' | 'force' | 'none';
-  runInBackground?: boolean;
 }
 
 export async function dockerComposeDown(

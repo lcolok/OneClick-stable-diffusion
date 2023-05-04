@@ -20,11 +20,11 @@
       "@temp/*": [
         "temp/*"
       ],
-      "@modules/*": [
-        "src/modules/*"
+      "@modules": [
+        "src/modules/_index.ts"
       ],
-      "@utils/*": [
-        "src/utils/*"
+      "@types": [
+        "src/@types/_index.ts"
       ],
       "@utils": [
         "src/utils/_index.ts"
@@ -34,7 +34,6 @@
       ],
       "*": [
         "*",
-        "src/@types/*"
       ]
     }
   },

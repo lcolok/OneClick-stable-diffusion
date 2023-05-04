@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import i18next from '@i18n';
-import { BuildConfig } from 'buildConfigTypes';
+import { BuildConfig } from '@types';
 
 // 获取配置文件路径
 const configFile = path.join(

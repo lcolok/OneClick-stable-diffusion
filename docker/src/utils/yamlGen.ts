@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { DockerComposeConfig } from 'dockerComposeTypes';
+import { DockerComposeConfig } from '@types';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 

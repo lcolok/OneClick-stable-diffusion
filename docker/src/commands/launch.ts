@@ -1,7 +1,7 @@
 import * as pc from 'picocolors';
 import { selectMenu } from '@utils';
 import i18next from '@i18n';
-import { launchTestImage, launchProductionImage } from '@modules/launchImages';
+import { launchTestImage, launchProductionImage } from '@modules';
 
 export async function launchContainer(): Promise<void> {
   const selectedOperation = await selectMenu({

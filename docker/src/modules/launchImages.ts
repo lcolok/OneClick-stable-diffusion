@@ -22,25 +22,13 @@ export async function launchTestImage(): Promise<void> {
     selectedConfigKey: targetBuild,
   });
 
-  // 停止并删除旧的 Docker 容器
-  console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
-  await dockerComposeDown({
-    composeFilePath,
-    serviceName,
-    projectName,
-    containerName,
-  });
-  await removeOldContainer({ containerName });
-  console.log(i18next.t('DOCKER_CONTAINERS_STOPPED_AND_REMOVED'));
-
-  // 启动新的测试容器
-  console.log(pc.inverse(pc.green(i18next.t('STARTING_NEW_TEST_CONTAINER'))));
-  await dockerComposeUp({
+  await handleExistingScreenSession({
     composeFilePath,
     serviceName,
     projectName,
     containerName,
     build: 'force',
+    forceRestart: true,
   });
 }
 

@@ -3,7 +3,7 @@ import {
   printDockerImages,
 } from '@utils';
 
-import { BuildConfig } from 'buildConfigTypes';
+import { BuildConfig } from '@types';
 import i18next from '@i18n';
 import { outro } from '@clack/prompts';
 
