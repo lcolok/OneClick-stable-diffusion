@@ -49,15 +49,14 @@ export async function generateTestComposeFile(targetBuild: string): Promise<{
   return { composeFilePath, containerName, projectName, serviceName };
 }
 
-export async function generateProductionComposeFile(): Promise<{
+export async function generateProductionComposeFile(targetBuild: string): Promise<{
   composeFilePath: string;
   containerName: string;
   projectName: string;
   serviceName: string;
 }> {
-  const selectedConfigKey = 'lama_cleaner_build';
 
-  const launchDockerfile = buildConfig[selectedConfigKey][
+  const launchDockerfile = buildConfig[targetBuild][
     'launchDockerfile'
   ] as string;
 

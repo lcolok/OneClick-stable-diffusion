@@ -1,12 +1,14 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { runCommand } from '@utils';
 import i18next from '@i18n';
 import {
   checkAndInstallScreen,
   generateProductionComposeFile,
   removeOldContainer,
   dockerComposeDown,
+  buildAction,
+  buildConfig,
+  runCommand,
 } from '@utils';
 import pc from 'picocolors';
 
@@ -34,7 +36,7 @@ After=docker.service
 Restart=always
 RemainAfterExit=yes
 WorkingDirectory=${options.currentDirectory}
-ExecStart=/usr/bin/screen -S ${options.projectName} -dm /usr/bin/docker-compose --file ${options.targetComposeFilePath} --project-name ${options.projectName} up
+ExecStart=/usr/bin/screen -S ${options.projectName} -dm /usr/bin/docker-compose --file ${options.targetComposeFilePath} --project-name ${options.projectName} up --build
 ExecStop=/usr/bin/screen -S ${options.projectName} -X quit
 Type=forking
 
@@ -141,9 +143,15 @@ async function installAutoLauncher(): Promise<void> {
   // 获取当前工作目录的绝对路径
   const currentDirectory = path.resolve(path.dirname(''));
 
+  const targetBuild = 'lama_cleaner_build';
   // 生成 docker-compose.yaml 文件
   const { composeFilePath, serviceName, projectName, containerName } =
-    await generateProductionComposeFile();
+    await generateProductionComposeFile(targetBuild);
+  // 构建新的镜像
+  await buildAction({
+    selectedConfig: buildConfig[targetBuild],
+    selectedConfigKey: targetBuild,
+  });
 
   // 创建临时目录
   const tempDirectory = createTempDirectory(currentDirectory);
