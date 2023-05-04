@@ -1,16 +1,13 @@
 import path from 'path';
-import { buildConfig, buildAction } from '@utils';
 import * as pc from 'picocolors';
-import { dockerComposeGen } from '@utils';
+import { dockerComposeGen, buildConfig } from '@utils';
 import i18next from '@i18n';
 import { path as projectRootDir } from 'app-root-path';
+import { DockerComposeOptions } from '@types';
 
-export async function generateTestComposeFile(targetBuild: string): Promise<{
-  composeFilePath: string;
-  containerName: string;
-  projectName: string;
-  serviceName: string;
-}> {
+export async function generateTestComposeFile(
+  targetBuild: string,
+): Promise<DockerComposeOptions> {
   const launchDockerfile = buildConfig[targetBuild][
     'launchDockerfile'
   ] as string;
@@ -47,13 +44,9 @@ export async function generateTestComposeFile(targetBuild: string): Promise<{
   return { composeFilePath, containerName, projectName, serviceName };
 }
 
-export async function generateProductionComposeFile(targetBuild: string): Promise<{
-  composeFilePath: string;
-  containerName: string;
-  projectName: string;
-  serviceName: string;
-}> {
-
+export async function generateProductionComposeFile(
+  targetBuild: string,
+): Promise<DockerComposeOptions> {
   const launchDockerfile = buildConfig[targetBuild][
     'launchDockerfile'
   ] as string;
