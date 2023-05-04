@@ -11,6 +11,7 @@ interface DockerComposeGenOptions {
   host_sdwebui_dir: string;
   container_sdwebui_dir: string;
   portMappings: Record<string, number>;
+  launchDockerfile: string;
 }
 
 export function dockerComposeGen({
@@ -21,6 +22,7 @@ export function dockerComposeGen({
   host_sdwebui_dir,
   container_sdwebui_dir,
   portMappings,
+  launchDockerfile,
 }: DockerComposeGenOptions): void {
   const repoRootDir = path.join(projectRootDir, '..');
   const dockerfileDir = path.join(projectRootDir, 'dockerfile');
@@ -102,7 +104,7 @@ export function dockerComposeGen({
         ...(containerName ? { container_name: containerName } : {}),
         build: {
           context: projectRootDir,
-          dockerfile: `${dockerfileDir}/Dockerfile.launch_ext`,
+          dockerfile: `${dockerfileDir}/${launchDockerfile}`,
           // args: {
           //   sdwebui: 'true',
           // },

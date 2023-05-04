@@ -1,0 +1,5 @@
+FROM sdwebui_ext:rtx4090
+
+RUN conda create --name lama_cleaner --clone py3.10.6
+RUN conda activate lama_cleaner && \
+    python -m pip install lama-cleaner

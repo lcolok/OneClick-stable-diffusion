@@ -11,8 +11,8 @@ import {
 } from '@clack/prompts';
 
 import pc from 'picocolors';
+import { BuildConfig } from 'buildConfigTypes';
 import {
-  BuildConfigType,
   buildConfig,
   logImageBuildStatus,
   runCommand,
@@ -47,7 +47,7 @@ export async function buildImage({
 }
 
 interface BuildImagesRecursivelyOptions {
-  selectedConfig: BuildConfigType[keyof BuildConfigType];
+  selectedConfig: BuildConfig[keyof BuildConfig];
   buildFromScratchDependencies: Set<string>;
   builtDependencies?: Set<string>;
 }
@@ -105,8 +105,17 @@ export async function buildImagesRecursively({
   }
 
   // 提示正在构建的镜像
-
   try {
+    // const dockerfilePath = path.resolve(
+    //   projectRootDir,
+    //   selectedConfig.dockerfilePath as string,
+    // );
+
+    // const contextPath = path.resolve(
+    //   projectRootDir,
+    //   selectedConfig.contextPath as string,
+    // );
+
     // 调用 buildImage 函数构建镜像
     await buildImage({
       tag: selectedConfig.tag,
@@ -133,7 +142,7 @@ export async function buildImagesRecursively({
 }
 
 export interface SelectDependenciesAndBuildImagesParams {
-  selectedConfig: BuildConfigType[keyof BuildConfigType];
+  selectedConfig: BuildConfig[keyof BuildConfig];
   selectedConfigKey: string;
 }
 

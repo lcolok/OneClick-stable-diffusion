@@ -1,13 +1,14 @@
 import {
   selectDependenciesAndBuildImages,
   printDockerImages,
-  BuildConfigType,
 } from '@utils';
+
+import { BuildConfig } from 'buildConfigTypes';
 import i18next from '@i18n';
 import { outro } from '@clack/prompts';
 
 interface BuildActionParams {
-  selectedConfig: BuildConfigType[keyof BuildConfigType];
+  selectedConfig: BuildConfig[keyof BuildConfig];
   selectedConfigKey: string;
 }
 

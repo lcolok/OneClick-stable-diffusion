@@ -1,0 +1,16 @@
+FROM lama_cleaner:rtx4090
+
+ENV SDWEBUI_PORT=${SDWEBUI_PORT}
+ENV JUPYTER_PORT=${JUPYTER_PORT}
+ENV LAMA_CLEANER_PORT=${LAMA_CLEANER_PORT}
+
+# # 设置工作目录
+# WORKDIR $NOTEBOOK_DIR
+
+# 复制启动脚本到容器中
+COPY /context/scripts/*.sh /scripts/
+RUN chmod +x /scripts/*.sh
+
+# 启动startup脚本
+# ENTRYPOINT /scripts/start_jupyter.sh & /scripts/run_python.sh & /scripts/run_lama_cleaner.sh
+ENTRYPOINT /scripts/run_lama_cleaner.sh

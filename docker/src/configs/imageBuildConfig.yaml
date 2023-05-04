@@ -23,7 +23,16 @@ baseBuildConfig:
 
   sdwebui_ext_build:
     tag: sdwebui_ext:rtx4090
+    launchDockerfile: Dockerfile.sdwebui_ext.launch
     dockerfile: Dockerfile.sdwebui_ext
     label: SDWEBUI_EXT_IMAGE.LABEL
     hint: SDWEBUI_EXT_IMAGE.HINT
     dependencies: [conda_build, py_build, sdwebui_base_build]
+
+  lama_cleaner_build:
+    tag: lama_cleaner:rtx4090
+    launchDockerfile: Dockerfile.lama_cleaner.launch
+    dockerfile: Dockerfile.lama_cleaner
+    label: LAMA_CLEANER_IMAGE.LABEL
+    hint: LAMA_CLEANER_IMAGE.HINT
+    dependencies: [conda_build, py_build, sdwebui_base_build, sdwebui_ext_build]

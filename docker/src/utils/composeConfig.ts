@@ -5,6 +5,7 @@ import { buildConfig, buildAction } from '@utils';
 import * as pc from 'picocolors';
 import { dockerComposeGen } from '@utils';
 import i18next from '@i18n';
+import { path as projectRootDir } from 'app-root-path';
 
 export async function generateTestComposeFile(): Promise<{
   composeFilePath: string;
@@ -13,17 +14,21 @@ export async function generateTestComposeFile(): Promise<{
   serviceName: string;
 }> {
   // 构建新的镜像
-  const selectedConfigKey = 'sdwebui_ext_build';
+  const selectedConfigKey = 'lama_cleaner_build';
   const selectedConfig = buildConfig[selectedConfigKey];
   await buildAction({ selectedConfig, selectedConfigKey });
+
+  const launchDockerfile = buildConfig[selectedConfigKey][
+    'launchDockerfile'
+  ] as string;
 
   const projectName = 'sd_test';
   const serviceName = 'sd_test_service';
   const containerName = 'sd_test_container';
   const networkName = 'sd_test_network';
 
-  const composeFilePath = path.resolve(
-    __dirname,
+  const composeFilePath = path.join(
+    projectRootDir,
     'temp',
     'docker-compose.test.temp.yaml',
   );
@@ -41,7 +46,9 @@ export async function generateTestComposeFile(): Promise<{
     portMappings: {
       JUPYTER_PORT: 33334,
       SDWEBUI_PORT: 7861,
+      LAMA_CLEANER_PORT: 8081,
     },
+    launchDockerfile,
   });
 
   return { composeFilePath, containerName, projectName, serviceName };
@@ -53,6 +60,11 @@ export async function generateProductionComposeFile(): Promise<{
   projectName: string;
   serviceName: string;
 }> {
+  const selectedConfigKey = 'sdwebui_ext_build';
+  const launchDockerfile = buildConfig[selectedConfigKey][
+    'launchDockerfile'
+  ] as string;
+
   const projectName = 'sd_prod';
   const serviceName = 'sd_prod_service';
   const containerName = 'sd_prod_container';
@@ -80,6 +92,7 @@ export async function generateProductionComposeFile(): Promise<{
       JUPYTER_PORT: 33333,
       SDWEBUI_PORT: 7860,
     },
+    launchDockerfile,
   });
 
   return { composeFilePath, containerName, projectName, serviceName };

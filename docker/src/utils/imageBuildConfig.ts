@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import i18next from '@i18n';
+import { BuildConfig } from 'buildConfigTypes';
 
 // 获取配置文件路径
 const configFile = path.join(
@@ -15,26 +16,13 @@ const configFile = path.join(
 const config = yaml.load(fs.readFileSync(configFile, 'utf8')) as {
   dockerfilesPath: string; // Dockerfile 路径
   contextPath: string; // 构建上下文路径
-  baseBuildConfig: BuildConfigType; // 构建配置对象
+  baseBuildConfig: BuildConfig; // 构建配置对象
 };
 
 // 从配置文件中获取 Dockerfile 路径和构建配置对象
 const dockerfilesPath = config.dockerfilesPath;
 const baseBuildConfig = config.baseBuildConfig;
 const contextPath = config.contextPath;
-
-// 定义构建配置类型
-export type BuildConfigType = {
-  [key: string]: {
-    tag: string; // 镜像标签
-    dockerfile: string; // Dockerfile 文件名
-    dockerfilePath?: string; // Dockerfile 文件路径
-    contextPath?: string; // 构建上下文路径
-    label: string; // 项目标签
-    hint?: string; // 项目提示
-    dependencies?: string[]; // 依赖列表
-  };
-};
 
 // 生成 Dockerfile 文件路径的函数
 function generateDockerfilePath(path: string, dockerfile: string): string {
@@ -43,10 +31,10 @@ function generateDockerfilePath(path: string, dockerfile: string): string {
 
 // 生成包含 Dockerfile 文件路径的新构建配置对象的函数
 function generateBuildConfigWithDockerfilePath(
-  config: BuildConfigType,
+  config: BuildConfig,
   path: string,
-): BuildConfigType {
-  const newConfig: BuildConfigType = {};
+): BuildConfig {
+  const newConfig: BuildConfig = {};
 
   for (const key in config) {
     newConfig[key] = {
