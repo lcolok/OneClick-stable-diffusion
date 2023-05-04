@@ -7,18 +7,13 @@ import { dockerComposeGen } from '@utils';
 import i18next from '@i18n';
 import { path as projectRootDir } from 'app-root-path';
 
-export async function generateTestComposeFile(): Promise<{
+export async function generateTestComposeFile(targetBuild: string): Promise<{
   composeFilePath: string;
   containerName: string;
   projectName: string;
   serviceName: string;
 }> {
-  // 构建新的镜像
-  const selectedConfigKey = 'lama_cleaner_build';
-  const selectedConfig = buildConfig[selectedConfigKey];
-  await buildAction({ selectedConfig, selectedConfigKey });
-
-  const launchDockerfile = buildConfig[selectedConfigKey][
+  const launchDockerfile = buildConfig[targetBuild][
     'launchDockerfile'
   ] as string;
 
@@ -60,7 +55,8 @@ export async function generateProductionComposeFile(): Promise<{
   projectName: string;
   serviceName: string;
 }> {
-  const selectedConfigKey = 'sdwebui_ext_build';
+  const selectedConfigKey = 'lama_cleaner_build';
+
   const launchDockerfile = buildConfig[selectedConfigKey][
     'launchDockerfile'
   ] as string;
@@ -70,8 +66,8 @@ export async function generateProductionComposeFile(): Promise<{
   const containerName = 'sd_prod_container';
   const networkName = 'sd_prod_network';
 
-  const composeFilePath = path.resolve(
-    __dirname,
+  const composeFilePath = path.join(
+    projectRootDir,
     'temp',
     'docker-compose.prod.temp.yaml',
   );
@@ -91,6 +87,7 @@ export async function generateProductionComposeFile(): Promise<{
     portMappings: {
       JUPYTER_PORT: 33333,
       SDWEBUI_PORT: 7860,
+      LAMA_CLEANER_PORT: 8080,
     },
     launchDockerfile,
   });

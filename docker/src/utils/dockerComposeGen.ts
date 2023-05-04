@@ -104,10 +104,7 @@ export function dockerComposeGen({
         ...(containerName ? { container_name: containerName } : {}),
         build: {
           context: projectRootDir,
-          dockerfile: `${dockerfileDir}/${launchDockerfile}`,
-          // args: {
-          //   sdwebui: 'true',
-          // },
+          dockerfile: `${dockerfileDir}/launch/${launchDockerfile}`,
         },
         runtime: 'nvidia',
         environment: ['NVIDIA_VISIBLE_DEVICES=all', ...environment],

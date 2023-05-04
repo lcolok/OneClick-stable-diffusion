@@ -1,14 +1,12 @@
 FROM sdwebui_ext:rtx4090
 
-RUN conda create --name lama_cleaner --clone py3.10.6
-
 WORKDIR $NOTEBOOK_DIR
 
 RUN git clone --depth=1 https://github.com/Sanster/lama-cleaner
 RUN cd lama-cleaner && \
-    conda activate lama_cleaner && \
+    conda activate py3.10.6 && \
     python -m pip install -e . 
-RUN conda activate lama_cleaner && python -m pip install \
+RUN conda activate py3.10.6 && python -m pip install \
     realesrgan \
     gfpgan \
     realesrgan \

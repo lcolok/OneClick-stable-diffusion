@@ -48,6 +48,9 @@ SDWEBUI_EXT_IMAGE:
 GEN_DOCKER_COMPOSE:
   LABEL: 📝 生成docker-compose.yaml
   HINT: 生成docker-compose.yaml文件
+LAMA_CLEANER_IMAGE:
+  LABEL: 🧹 构建Lama Cleaner镜像
+  HINT: 包含Lama Cleaner
 SCREEN_NOT_FOUND: 未检测到 screen，现在将自动安装...
 SCREEN_INSTALLED_SUCCESSFULLY: 已成功安装 screen。
 SCREEN_INSTALLATION_FAILED: 安装 screen 时出错，请手动安装。

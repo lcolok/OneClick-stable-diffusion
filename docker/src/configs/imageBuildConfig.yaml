@@ -17,6 +17,7 @@ baseBuildConfig:
 
   sdwebui_base_build:
     tag: sdwebui_base:rtx4090
+    launchDockerfile: Dockerfile.sdwebui_base.launch
     dockerfile: Dockerfile.sdwebui_base
     label: SDWEBUI_BASE_IMAGE.LABEL
     dependencies: [conda_build, py_build]

@@ -48,6 +48,9 @@ SDWEBUI_EXT_IMAGE:
 GEN_DOCKER_COMPOSE:
   LABEL: 📝 Generate docker-compose.yaml
   HINT: Generate docker-compose.yaml from template
+LAMA_CLEANER_IMAGE:
+  LABEL: 🧹 Build LAMA Cleaner Image
+  HINT: Includes LAMA Cleaner
 SCREEN_NOT_FOUND: screen not found, now installing...
 SCREEN_INSTALLED_SUCCESSFULLY: screen installed successfully.
 SCREEN_INSTALLATION_FAILED: Error installing screen, please install manually.
