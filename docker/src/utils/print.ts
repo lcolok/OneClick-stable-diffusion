@@ -3,17 +3,6 @@ import pc from 'picocolors';
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
 import i18next from '@i18n';
-import {
-  intro,
-  outro,
-  confirm,
-  select,
-  spinner,
-  isCancel,
-  cancel,
-  text,
-  multiselect,
-} from '@clack/prompts';
 
 const exec = promisify(execCallback);
 
