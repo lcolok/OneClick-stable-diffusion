@@ -5,16 +5,12 @@ import { path as projectRootDir } from 'app-root-path';
 import { generatedVolumesForSdWebUI } from '@helpers';
 
 export async function generateComposeFile(
-  targetBuild: string,
   environment: Environment,
   environments: Record<Environment, EnvironmentConfig>,
 ): Promise<DockerComposeOptions> {
   const { env, jupyterPort, sdWebUIPort, lamaCleanerPort } =
     environments[environment];
-  const launchDockerfile = buildConfig[targetBuild][
-    'launchDockerfile'
-  ] as string;
-
+    
   const projectName = 'sd' + '_' + env;
   const serviceName = 'sd_service' + '_' + env;
   const composeFilePath = path.join(

@@ -13,7 +13,7 @@ const configFile = path.join(
 );
 
 interface globalConfigTypes {
-  targetBuild: string;
+  targetBuilds: string[];
 }
 
 // 读取配置文件并解析为 TypeScript 类型

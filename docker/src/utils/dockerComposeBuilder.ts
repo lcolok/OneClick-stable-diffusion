@@ -1,6 +1,5 @@
 import {
   DockerComposeConfig,
-  BuildConfig,
   BuildActionParams,
   DockerComposeGenOptions,
   ServiceOptions,
@@ -9,6 +8,7 @@ import {
   writeDockerComposeYamlToFile,
   selectDependenciesAndBuildImages,
   printDockerImages,
+  buildConfig,
 } from '@utils';
 import * as path from 'path';
 import { path as projectRootDir } from 'app-root-path';
@@ -23,7 +23,19 @@ export async function buildAction({
   await selectDependenciesAndBuildImages({ selectedConfig, selectedConfigKey });
   // 打印镜像信息
   await printDockerImages(selectedConfig);
-  outro(i18next.t('BUILD_SUCCESSFULLY')!);
+  outro(`${selectedConfigKey} ${i18next.t('BUILD_SUCCESSFULLY')}` as string);
+}
+
+export async function buildActionMultiple(
+  targetBuilds: string[],
+): Promise<void> {
+  for (const targetBuild of targetBuilds) {
+    console.log(`Building target: ${targetBuild}`);
+    await buildAction({
+      selectedConfig: buildConfig[targetBuild],
+      selectedConfigKey: targetBuild,
+    });
+  }
 }
 
 function generateEnvironmentAndPorts(portMappings: Record<string, number>) {

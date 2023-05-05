@@ -4,9 +4,9 @@ import i18next from '@i18n';
 import {
   checkAndInstallScreen,
   dockerComposeDown,
-  buildAction,
-  buildConfig,
   runCommand,
+  globalConfig,
+  buildActionMultiple,
 } from '@utils';
 import { generateProductionComposeFile } from '@modules';
 import pc from 'picocolors';
@@ -148,15 +148,13 @@ async function installAutoLauncher(): Promise<void> {
   // 获取当前工作目录的绝对路径
   const currentDirectory = path.resolve(path.dirname(''));
 
-  const targetBuild = 'lama_cleaner_build';
   // 生成 docker-compose.yaml 文件
   const { composeFilePath, serviceName, projectName } =
-    await generateProductionComposeFile(targetBuild);
-  // 构建新的镜像
-  await buildAction({
-    selectedConfig: buildConfig[targetBuild],
-    selectedConfigKey: targetBuild,
-  });
+    await generateProductionComposeFile();
+
+  // 批量构建新的镜像
+  const targetBuilds = globalConfig.targetBuilds;
+  await buildActionMultiple(targetBuilds);
 
   // 创建临时目录
   const tempDirectory = createTempDirectory(currentDirectory);

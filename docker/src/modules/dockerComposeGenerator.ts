@@ -18,18 +18,14 @@ const environments: Record<Environment, EnvironmentConfig> = {
   },
 };
 
-export async function generateTestComposeFile(
-  targetBuild: string,
-): Promise<DockerComposeOptions> {
+export async function generateTestComposeFile(): Promise<DockerComposeOptions> {
   console.log(pc.inverse(pc.green(i18next.t('GENERATING_TEST_COMPOSE_FILE'))));
-  return generateComposeFile(targetBuild, 'test', environments);
+  return generateComposeFile('test', environments);
 }
 
-export async function generateProductionComposeFile(
-  targetBuild: string,
-): Promise<DockerComposeOptions> {
+export async function generateProductionComposeFile(): Promise<DockerComposeOptions> {
   console.log(
     pc.inverse(pc.green(i18next.t('GENERATING_PRODUCTION_COMPOSE_FILE'))),
   );
-  return generateComposeFile(targetBuild, 'production', environments);
+  return generateComposeFile('production', environments);
 }

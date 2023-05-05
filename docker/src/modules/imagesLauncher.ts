@@ -1,8 +1,7 @@
 import {
   handleExistingScreenSession,
-  buildAction,
-  buildConfig,
   globalConfig,
+  buildActionMultiple,
 } from '@utils';
 import {
   generateTestComposeFile,
@@ -11,23 +10,19 @@ import {
 import * as pc from 'picocolors';
 import i18next from '@i18n';
 
-const targetBuild = globalConfig.targetBuild;
-
 async function launchImage({
   generateComposeFile,
   testMode,
 }: {
-  generateComposeFile: (targetBuild: string) => Promise<any>;
+  generateComposeFile: () => Promise<any>;
   testMode?: boolean;
 }): Promise<void> {
   // 构建Compose文件
   const { composeFilePath, serviceName, projectName } =
-    await generateComposeFile(targetBuild);
-  // 构建新的镜像
-  await buildAction({
-    selectedConfig: buildConfig[targetBuild],
-    selectedConfigKey: targetBuild,
-  });
+    await generateComposeFile();
+  // 批量构建新的镜像
+  const targetBuilds = globalConfig.targetBuilds;
+  await buildActionMultiple(targetBuilds);
 
   await handleExistingScreenSession({
     composeFilePath,
