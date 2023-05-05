@@ -1,6 +1,6 @@
+import { globalConfig } from '@configs';
 import {
   handleExistingScreenSession,
-  globalConfig,
   buildActionMultiple,
 } from '@utils';
 import {

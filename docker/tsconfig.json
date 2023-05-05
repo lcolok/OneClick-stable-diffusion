@@ -20,6 +20,9 @@
       "@temp/*": [
         "temp/*"
       ],
+      "@configs": [
+        "src/configs/_index.ts"
+      ],
       "@modules": [
         "src/modules/_index.ts"
       ],

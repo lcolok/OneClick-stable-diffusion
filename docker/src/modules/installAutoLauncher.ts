@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import i18next from '@i18n';
+import { globalConfig } from '@configs';
 import {
   checkAndInstallScreen,
   dockerComposeDown,
   runCommand,
-  globalConfig,
   buildActionMultiple,
   pp,
 } from '@utils';
