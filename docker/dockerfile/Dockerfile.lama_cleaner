@@ -1,4 +1,4 @@
-FROM sdwebui_ext:rtx4090
+FROM py:3.10.6-torch2.0.0
 
 WORKDIR $NOTEBOOK_DIR
 

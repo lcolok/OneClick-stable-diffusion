@@ -39,4 +39,4 @@ baseBuildConfig:
     dockerfile: Dockerfile.lama_cleaner
     label: LAMA_CLEANER_IMAGE.LABEL
     hint: LAMA_CLEANER_IMAGE.HINT
-    dependencies: [conda_build, py_build, sdwebui_base_build, sdwebui_ext_build]
+    dependencies: [conda_build, py_build]
