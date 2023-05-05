@@ -7,6 +7,7 @@ import {
   runCommand,
   globalConfig,
   buildActionMultiple,
+  pp,
 } from '@utils';
 import { generateProductionComposeFile } from '@modules';
 import pc from 'picocolors';
@@ -91,26 +92,14 @@ async function startServiceAndShowStatus(options: {
         const containerStatus = await checkContainerStatus(repositoryName);
         if (containerStatus) {
           console.log(
-            pc.green(
-              pc.bold(
-                pc.inverse(i18next.t('AUTO_LAUNCHER_INSTALLED_SUCCESSFULLY')),
-              ),
-            ),
+            pp.success(i18next.t('AUTO_LAUNCHER_INSTALLED_SUCCESSFULLY')),
           );
           clearInterval(intervalId);
           clearTimeout(timeoutId); // 取消超时逻辑
         }
       } catch (err) {
-        console.error(
-          pc.red(
-            pc.bold(
-              i18next.t('ERROR_CHECKING_CONTAINER_STATUS', {
-                repositoryName,
-                err,
-              }),
-            ),
-          ),
-        );
+        console.log(pp.error(i18next.t('ERROR_CHECKING_CONTAINER_STATUS')));
+        console.error(err);
       }
     };
 

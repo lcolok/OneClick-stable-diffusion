@@ -51,3 +51,12 @@ export async function logImageBuildStatus(input: string) {
   console.log(`${pc.green('◇')} ${input}`);
   console.log(pc.gray('│'));
 }
+
+export const pp = {
+  success: (message: string) => {
+    return pc.green(pc.bold(pc.inverse(i18next.t(message))));
+  },
+  error: (message: string) => {
+    return pc.red(pc.bold(pc.inverse(i18next.t(message))));
+  },
+};

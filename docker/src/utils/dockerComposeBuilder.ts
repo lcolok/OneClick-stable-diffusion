@@ -9,6 +9,7 @@ import {
   selectDependenciesAndBuildImages,
   printDockerImages,
   buildConfig,
+  pp,
 } from '@utils';
 import * as path from 'path';
 import { path as projectRootDir } from 'app-root-path';
@@ -23,14 +24,17 @@ export async function buildAction({
   await selectDependenciesAndBuildImages({ selectedConfig, selectedConfigKey });
   // 打印镜像信息
   await printDockerImages(selectedConfig);
-  outro(`${selectedConfigKey} ${i18next.t('BUILD_SUCCESSFULLY')}` as string);
+  outro(
+    `${pp.success(` ${selectedConfigKey} `)} ${i18next.t(
+      'BUILD_SUCCESSFULLY',
+    )}` as string,
+  );
 }
 
 export async function buildActionMultiple(
   targetBuilds: string[],
 ): Promise<void> {
   for (const targetBuild of targetBuilds) {
-    console.log(`Building target: ${targetBuild}`);
     await buildAction({
       selectedConfig: buildConfig[targetBuild],
       selectedConfigKey: targetBuild,
