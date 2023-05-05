@@ -72,19 +72,38 @@ export async function dockerComposeUp(
 
   const upCommand = 'screen';
   const upArgs = [
+    // 添加 -S 参数，指定项目名称
     '-S',
     options.projectName,
-    // 根据 runInBackground 的值动态添加 -dm 参数
+    // 根据 runInBackground 的值动态添加 -dm 参数，表示在后台运行容器
     ...(options.runInBackground ? ['-dm'] : []),
-    'docker-compose',
-    '--file',
-    options.composeFilePath,
-    '--project-name',
-    options.projectName,
-    'up',
-    // 如果 buildOption 不为空，则添加到数组中
-    ...(buildOption ? [buildOption] : []),
+    // 指定要运行的命令为 bash
+    'bash',
+    '-c',
+    // 在 bash 中执行以下命令
+    [
+      // 使用 docker-compose 启动服务
+      'docker-compose',
+      // 指定 docker-compose 文件路径
+      '--file',
+      options.composeFilePath,
+      // 指定项目名称
+      '--project-name',
+      options.projectName,
+      // 启动服务命令
+      'up',
+      // 如果 buildOption 不为空，则添加到数组中，用于构建镜像
+      ...(buildOption ? [buildOption] : []),
+      // 用分号分隔多个命令，此处是为了防止容器自动退出
+      ';',
+      // 打印错误信息并等待用户按下回车键
+      'echo',
+      '"Error occurred, press Enter to close the screen session..."',
+      ';',
+      'read',
+    ].join(' '),
   ];
+
   // console.log(upCommand + ' ' + upArgs.join(' '));
   await runCommand(upCommand, upArgs);
 }
