@@ -8,4 +8,4 @@ COPY /context/scripts/*.sh /scripts/
 RUN chmod +x /scripts/*.sh
 
 # 启动
-ENTRYPOINT /scripts/run_jupyter.sh & /scripts/run_python.sh
+ENTRYPOINT /scripts/run_jupyter.sh & /scripts/run_sdwebui.sh

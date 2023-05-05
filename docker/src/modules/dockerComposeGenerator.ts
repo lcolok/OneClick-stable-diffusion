@@ -64,10 +64,11 @@ export async function generateProductionComposeFile(
     'launchDockerfile'
   ] as string;
 
-  const projectName = 'sd_prod';
-  const serviceName = 'sd_prod_service';
-  const containerName = 'sd_prod_container';
-  const networkName = 'sd_prod_network';
+  const env = '_prod';
+
+  const projectName = 'sd' + env;
+  const serviceName = 'sd_service' + env;
+  const containerName = 'sd_container' + env;
 
   const composeFilePath = path.join(
     projectRootDir,
@@ -81,11 +82,11 @@ export async function generateProductionComposeFile(
 
   dockerComposeGen({
     ymlOutputDist: composeFilePath,
-    networkName,
+    networkName: 'network' + env,
     services: [
       {
-        serviceName: 'sdwebui_ext', // 服务名，例如：'sdwebui_ext'
-        containerName: 'sdwebui_ext_container', // 容器名，例如：'sdwebui_ext_container'，可选
+        serviceName: 'sd_service' + env, // 服务名，例如：'sdwebui_ext'
+        containerName: 'sd_container' + env, // 容器名，例如：'sdwebui_ext_container'，可选
         launchDockerfile: 'Dockerfile.sdwebui_ext.launch', // 对应的 Dockerfile 名
         portMappings: {
           JUPYTER_PORT: 33333,
@@ -94,8 +95,8 @@ export async function generateProductionComposeFile(
         mountVolumes: generatedVolumesForSdWebUI,
       },
       {
-        serviceName: 'lama_cleaner', // 服务名，例如：'lama_cleaner'
-        containerName: 'lama_cleaner_container', // 容器名，例如：'lama_cleaner_container'，可选
+        serviceName: 'lama_cleaner' + env, // 服务名，例如：'lama_cleaner'
+        containerName: 'lama_cleaner_container' + env, // 容器名，例如：'lama_cleaner_container'，可选
         launchDockerfile: 'Dockerfile.lama_cleaner.launch', // 对应的 Dockerfile 名
         portMappings: {
           LAMA_CLEANER_PORT: 8080,

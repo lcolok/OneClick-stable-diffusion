@@ -1,5 +1,5 @@
 globalConfig:
-  targetBuild: sdwebui_ext_build
+  targetBuild: lama_cleaner_build
 
 dockerfilesPath: ./dockerfile
 contextPath: ./context

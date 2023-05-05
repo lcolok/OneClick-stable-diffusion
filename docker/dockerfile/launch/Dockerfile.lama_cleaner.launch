@@ -12,7 +12,4 @@ COPY /context/scripts/*.sh /scripts/
 RUN chmod +x /scripts/*.sh
 
 # 启动startup脚本
-ENTRYPOINT \
-/scripts/run_jupyter.sh & \
-/scripts/run_python.sh & \
-/scripts/run_lama_cleaner.sh
+ENTRYPOINT /scripts/run_lama_cleaner.sh
