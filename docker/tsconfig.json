@@ -29,6 +29,9 @@
       "@utils": [
         "src/utils/_index.ts"
       ],
+      "@helpers": [
+        "src/helpers/_index.ts"
+      ],
       "@i18n": [
         "src/i18n/index.ts"
       ],

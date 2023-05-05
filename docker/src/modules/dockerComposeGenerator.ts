@@ -4,6 +4,7 @@ import { dockerComposeGen, buildConfig } from '@utils';
 import i18next from '@i18n';
 import { path as projectRootDir } from 'app-root-path';
 import { DockerComposeOptions } from '@types';
+import { generatedVolumesForSdWebUI } from '@helpers';
 
 export async function generateTestComposeFile(
   targetBuild: string,
@@ -27,18 +28,30 @@ export async function generateTestComposeFile(
 
   dockerComposeGen({
     ymlOutputDist: composeFilePath,
-    serviceName,
-    containerName,
     networkName,
-    host_sdwebui_dir:
-      '/mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master',
-    container_sdwebui_dir: '/home/stable-diffusion-webui',
-    portMappings: {
-      JUPYTER_PORT: 33334,
-      SDWEBUI_PORT: 7861,
-      LAMA_CLEANER_PORT: 8081,
-    },
-    launchDockerfile,
+    services: [
+      {
+        serviceName: 'sdwebui_ext', // 服务名，例如：'sdwebui_ext'
+        containerName: 'sdwebui_ext_container', // 容器名，例如：'sdwebui_ext_container'，可选
+        launchDockerfile: 'Dockerfile.sdwebui_ext.launch', // 对应的 Dockerfile 名
+        portMappings: {
+          JUPYTER_PORT: 33334,
+          SDWEBUI_PORT: 7861,
+        },
+        mountVolumes: generatedVolumesForSdWebUI,
+      },
+      {
+        serviceName: 'lama_cleaner', // 服务名，例如：'lama_cleaner'
+        containerName: 'lama_cleaner_container', // 容器名，例如：'lama_cleaner_container'，可选
+        launchDockerfile: 'Dockerfile.lama_cleaner.launch', // 对应的 Dockerfile 名
+        portMappings: {
+          LAMA_CLEANER_PORT: 8081,
+        },
+        mountVolumes: [
+          '/mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache',
+        ],
+      },
+    ],
   });
 
   return { composeFilePath, containerName, projectName, serviceName };
@@ -68,18 +81,30 @@ export async function generateProductionComposeFile(
 
   dockerComposeGen({
     ymlOutputDist: composeFilePath,
-    serviceName,
-    containerName,
     networkName,
-    host_sdwebui_dir:
-      '/mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master',
-    container_sdwebui_dir: '/home/stable-diffusion-webui',
-    portMappings: {
-      JUPYTER_PORT: 33333,
-      SDWEBUI_PORT: 7860,
-      LAMA_CLEANER_PORT: 8080,
-    },
-    launchDockerfile,
+    services: [
+      {
+        serviceName: 'sdwebui_ext', // 服务名，例如：'sdwebui_ext'
+        containerName: 'sdwebui_ext_container', // 容器名，例如：'sdwebui_ext_container'，可选
+        launchDockerfile: 'Dockerfile.sdwebui_ext.launch', // 对应的 Dockerfile 名
+        portMappings: {
+          JUPYTER_PORT: 33333,
+          SDWEBUI_PORT: 7860,
+        },
+        mountVolumes: generatedVolumesForSdWebUI,
+      },
+      {
+        serviceName: 'lama_cleaner', // 服务名，例如：'lama_cleaner'
+        containerName: 'lama_cleaner_container', // 容器名，例如：'lama_cleaner_container'，可选
+        launchDockerfile: 'Dockerfile.lama_cleaner.launch', // 对应的 Dockerfile 名
+        portMappings: {
+          LAMA_CLEANER_PORT: 8080,
+        },
+        mountVolumes: [
+          '/mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache',
+        ],
+      },
+    ],
   });
 
   return { composeFilePath, containerName, projectName, serviceName };
