@@ -21,7 +21,7 @@ async function launchImage({
   testMode?: boolean;
 }): Promise<void> {
   // 构建Compose文件
-  const { composeFilePath, containerName, serviceName, projectName } =
+  const { composeFilePath, serviceName, projectName } =
     await generateComposeFile(targetBuild);
   // 构建新的镜像
   await buildAction({
@@ -33,7 +33,6 @@ async function launchImage({
     composeFilePath,
     serviceName,
     projectName,
-    containerName,
     forceRebuild: testMode ? true : false,
     forceRestart: testMode ? true : false,
   });

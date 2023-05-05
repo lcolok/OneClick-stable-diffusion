@@ -28,7 +28,6 @@ export interface DockerComposeConfig {
 export interface DockerComposeOptions {
   composeFilePath: string;
   projectName: string;
-  containerName: string;
   serviceName: string;
   runInBackground?: boolean;
   forceRebuild?: boolean;

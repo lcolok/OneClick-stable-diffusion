@@ -3,7 +3,6 @@ import * as path from 'path';
 import i18next from '@i18n';
 import {
   checkAndInstallScreen,
-  removeOldContainer,
   dockerComposeDown,
   buildAction,
   buildConfig,
@@ -58,8 +57,12 @@ async function copyServiceFileToSystemd(serviceFilePath: string) {
 }
 
 // 启动服务并显示状态
-async function startServiceAndShowStatus(options: { containerName: string }) {
-  const { containerName } = options;
+async function startServiceAndShowStatus(options: {
+  projectName: string;
+  serviceName: string;
+}) {
+  const { projectName, serviceName } = options;
+  const repositoryName = `${projectName}_${serviceName}`;
 
   // 输出停止、重新加载和启动服务的提示信息
   console.log(i18next.t('STOP_RELOAD_START'));
@@ -85,7 +88,7 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
 
     const checkStatusAndClear = async () => {
       try {
-        const containerStatus = await checkContainerStatus(containerName);
+        const containerStatus = await checkContainerStatus(repositoryName);
         if (containerStatus) {
           console.log(
             pc.green(
@@ -102,7 +105,7 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
           pc.red(
             pc.bold(
               i18next.t('ERROR_CHECKING_CONTAINER_STATUS', {
-                containerName,
+                repositoryName,
                 err,
               }),
             ),
@@ -118,7 +121,7 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
       console.error(
-        i18next.t('ERROR_CONTAINER_NOT_RUNNING', { containerName }),
+        i18next.t('ERROR_CONTAINER_NOT_RUNNING', { repositoryName }),
       );
     }, timeout);
   } catch (err) {
@@ -127,13 +130,15 @@ async function startServiceAndShowStatus(options: { containerName: string }) {
   }
 }
 
-async function checkContainerStatus(containerName: string): Promise<boolean> {
+async function checkContainerStatus(repositoryName: string): Promise<boolean> {
   const stdout = await runCommand(
     'docker',
-    ['ps', '--filter', `name=${containerName}`, '--format', '{{.Names}}'],
-    { captureOutput: true },
+    ['ps', '--filter', `ancestor=${repositoryName}`, '--format', '{{.Image}}'],
+    {
+      captureOutput: true,
+    },
   );
-  return stdout?.trim() === containerName;
+  return stdout?.trim() === repositoryName;
 }
 
 async function installAutoLauncher(): Promise<void> {
@@ -145,7 +150,7 @@ async function installAutoLauncher(): Promise<void> {
 
   const targetBuild = 'lama_cleaner_build';
   // 生成 docker-compose.yaml 文件
-  const { composeFilePath, serviceName, projectName, containerName } =
+  const { composeFilePath, serviceName, projectName } =
     await generateProductionComposeFile(targetBuild);
   // 构建新的镜像
   await buildAction({
@@ -185,12 +190,10 @@ async function installAutoLauncher(): Promise<void> {
     composeFilePath,
     serviceName,
     projectName,
-    containerName,
   });
-  await removeOldContainer({ containerName });
 
   // 启动服务并显示状态
-  startServiceAndShowStatus({ containerName });
+  startServiceAndShowStatus({ projectName, serviceName });
 }
 
 export { installAutoLauncher };

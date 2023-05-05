@@ -20,7 +20,6 @@ export async function handleExistingScreenSession(
     if (shouldRestart) {
       console.log(i18next.t('STOPPING_AND_REMOVING_DOCKER_CONTAINERS'));
       await dockerComposeDown(options);
-      await removeOldContainer({ containerName: options.containerName });
       console.log(i18next.t('DOCKER_CONTAINERS_STOPPED_AND_REMOVED'));
     }
   }
@@ -37,23 +36,6 @@ async function isScreenSessionRunning(projectName: string): Promise<boolean> {
   } catch (error) {
     console.error('Error checking for screen session:', error);
     return false;
-  }
-}
-
-async function containerExists(containerName: string): Promise<boolean> {
-  try {
-    await runCommand('docker', ['inspect', containerName]);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
-export async function removeOldContainer(options: {
-  containerName: string;
-}): Promise<void> {
-  if (await containerExists(options.containerName)) {
-    await runCommand('docker', ['rm', '-f', options.containerName]);
   }
 }
 
