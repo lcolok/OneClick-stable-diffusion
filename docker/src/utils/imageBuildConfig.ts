@@ -12,17 +12,24 @@ const configFile = path.join(
   './imageBuildConfig.yaml',
 );
 
+interface globalConfigTypes {
+  targetBuild: string;
+}
+
 // 读取配置文件并解析为 TypeScript 类型
 const config = yaml.load(fs.readFileSync(configFile, 'utf8')) as {
   dockerfilesPath: string; // Dockerfile 路径
   contextPath: string; // 构建上下文路径
   baseBuildConfig: BuildConfig; // 构建配置对象
+  globalConfig: globalConfigTypes; // 目标构建
 };
 
 // 从配置文件中获取 Dockerfile 路径和构建配置对象
 const dockerfilesPath = config.dockerfilesPath;
 const baseBuildConfig = config.baseBuildConfig;
 const contextPath = config.contextPath;
+
+export const globalConfig = config.globalConfig
 
 // 生成 Dockerfile 文件路径的函数
 function generateDockerfilePath(path: string, dockerfile: string): string {

@@ -1,3 +1,6 @@
+globalConfig:
+  targetBuild: lama_cleaner_build
+
 dockerfilesPath: ./dockerfile
 contextPath: ./context
 

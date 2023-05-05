@@ -1,4 +1,9 @@
-import { handleExistingScreenSession, buildAction, buildConfig } from '@utils';
+import {
+  handleExistingScreenSession,
+  buildAction,
+  buildConfig,
+  globalConfig,
+} from '@utils';
 import {
   generateTestComposeFile,
   generateProductionComposeFile,
@@ -6,7 +11,7 @@ import {
 import * as pc from 'picocolors';
 import i18next from '@i18n';
 
-const targetBuild = 'lama_cleaner_build';
+const targetBuild = globalConfig.targetBuild;
 
 async function launchImage({
   generateComposeFile,
