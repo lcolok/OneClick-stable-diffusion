@@ -8,8 +8,8 @@ import path from 'path';
 // 生成包含 Dockerfile 文件路径的新构建配置对象的函数
 function generateBuildConfigWithDockerfilePath(options: {
   baseBuildConfig: BuildConfig;
-  dockerfilesPath: string;
-  contextPath: string;
+  dockerfilesDir: string;
+  contextDir: string;
 }): BuildConfig {
   const newConfig: BuildConfig = {};
 
@@ -19,10 +19,10 @@ function generateBuildConfigWithDockerfilePath(options: {
       ...value,
       dockerfilePath: path.join(
         projectRootDir,
-        options.dockerfilesPath,
+        options.dockerfilesDir,
         dockerfile,
       ),
-      contextPath: path.join(projectRootDir, options.contextPath),
+      contextPath: path.join(projectRootDir, options.contextDir),
       label: i18next.t(label) as string,
       ...(hint && { hint: i18next.t(hint as string) as string }),
     };

@@ -1,7 +1,5 @@
-targetBuilds: [sdwebui_ext_build,lama_cleaner_build]
-
-dockerfilesPath: ./dockerfile
-contextPath: ./context
+dockerfilesDir: ./dockerfile
+contextDir: ./context
 
 baseBuildConfig:
   conda_build:
@@ -39,3 +37,5 @@ baseBuildConfig:
     label: LAMA_CLEANER_IMAGE.LABEL
     hint: LAMA_CLEANER_IMAGE.HINT
     dependencies: [conda_build, py_build]
+
+targetBuilds: [sdwebui_ext_build,lama_cleaner_build]
