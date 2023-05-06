@@ -142,8 +142,7 @@ async function installAutoLauncher(): Promise<void> {
     await generateProductionComposeFile();
 
   // 批量构建新的镜像
-  const targetBuilds = globalConfig.targetBuilds;
-  await buildActionMultiple(targetBuilds);
+  await buildActionMultiple(globalConfig.buildList);
 
   // 创建临时目录
   const tempDirectory = createTempDirectory(currentDirectory);

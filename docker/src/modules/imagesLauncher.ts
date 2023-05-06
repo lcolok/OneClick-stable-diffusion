@@ -1,8 +1,5 @@
 import { globalConfig } from '@configs';
-import {
-  handleExistingScreenSession,
-  buildActionMultiple,
-} from '@utils';
+import { handleExistingScreenSession, buildActionMultiple } from '@utils';
 import {
   generateTestComposeFile,
   generateProductionComposeFile,
@@ -20,9 +17,9 @@ async function launchImage({
   // 构建Compose文件
   const { composeFilePath, serviceName, projectName } =
     await generateComposeFile();
+
   // 批量构建新的镜像
-  const targetBuilds = globalConfig.targetBuilds;
-  await buildActionMultiple(targetBuilds);
+  await buildActionMultiple(globalConfig.buildList);
 
   await handleExistingScreenSession({
     composeFilePath,

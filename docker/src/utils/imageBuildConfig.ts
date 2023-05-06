@@ -7,13 +7,13 @@ import path from 'path';
 
 // 生成包含 Dockerfile 文件路径的新构建配置对象的函数
 function generateBuildConfigWithDockerfilePath(options: {
-  baseBuildConfig: BuildConfig;
+  dockerBuildConfig: BuildConfig;
   dockerfilesDir: string;
   contextDir: string;
 }): BuildConfig {
   const newConfig: BuildConfig = {};
 
-  for (const [key, value] of Object.entries(options.baseBuildConfig)) {
+  for (const [key, value] of Object.entries(options.dockerBuildConfig)) {
     const { dockerfile, hint, label } = value;
     newConfig[key] = {
       ...value,

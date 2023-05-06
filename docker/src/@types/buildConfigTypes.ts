@@ -1,3 +1,9 @@
+export interface GlobalConfigTypes {
+  dockerfilesDir: string; // Dockerfile 路径
+  contextDir: string; // 构建上下文路径
+  dockerBuildConfig: BuildConfig; // 构建配置对象
+}
+
 // 定义构建配置类型
 export interface BuildConfig {
   [key: string]: {
@@ -9,6 +15,7 @@ export interface BuildConfig {
     label: string; // 项目标签
     hint?: string; // 项目提示
     dependencies: string[]; // 依赖列表
+    endpointBuild?: boolean; // 是否为端点构建
   };
 }
 
