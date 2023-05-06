@@ -10,5 +10,5 @@ conda activate py3.10.6 &&
         --enable-gfpgan --gfpgan-device cuda \
         --enable-restoreformer --restoreformer-device cuda \
         --enable-remove-bg \
-        --enable-interactive-seg --interactive-seg-model=vit_l --interactive-seg-device=cuda \
+        --enable-interactive-seg --interactive-seg-model=vit_h --interactive-seg-device=cuda \
         --enable-gif
