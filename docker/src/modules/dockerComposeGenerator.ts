@@ -6,15 +6,15 @@ import { generateComposeFile } from '@helpers';
 const environments: Record<Environment, EnvironmentConfig> = {
   test: {
     env: 'test',
-    jupyterPort: 33334,
-    sdWebUIPort: 7861,
-    lamaCleanerPort: 8081,
+    JUPYTER_PORT: 33334,
+    SDWEBUI_PORT: 7861,
+    LAMA_CLEANER_PORT: 8081,
   },
   production: {
     env: 'prod',
-    jupyterPort: 33333,
-    sdWebUIPort: 7860,
-    lamaCleanerPort: 8080,
+    JUPYTER_PORT: 33333,
+    SDWEBUI_PORT: 7860,
+    LAMA_CLEANER_PORT: 8080,
   },
 };
 

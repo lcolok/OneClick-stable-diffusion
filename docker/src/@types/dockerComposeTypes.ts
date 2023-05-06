@@ -43,7 +43,7 @@ export interface ServiceOptions {
 }
 
 export interface DockerComposeGenOptions {
-  ymlOutputDist: string;
+  composeFilePath: string;
   networkName: string;
   services: ServiceOptions[];
 }

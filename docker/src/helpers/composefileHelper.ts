@@ -8,9 +8,9 @@ export async function generateComposeFile(
   environment: Environment,
   environments: Record<Environment, EnvironmentConfig>,
 ): Promise<DockerComposeOptions> {
-  const { env, jupyterPort, sdWebUIPort, lamaCleanerPort } =
+  const { env, JUPYTER_PORT, SDWEBUI_PORT, LAMA_CLEANER_PORT } =
     environments[environment];
-    
+
   const projectName = 'sd' + '_' + env;
   const serviceName = 'sd_service' + '_' + env;
   const composeFilePath = path.join(
@@ -20,7 +20,7 @@ export async function generateComposeFile(
   );
 
   dockerComposeGen({
-    ymlOutputDist: composeFilePath,
+    composeFilePath: composeFilePath,
     networkName: 'network' + '_' + env,
     services: [
       {
@@ -28,8 +28,8 @@ export async function generateComposeFile(
         containerName: 'sd_container' + '_' + env,
         launchDockerfile: 'Dockerfile.sdwebui_ext.launch',
         portMappings: {
-          JUPYTER_PORT: jupyterPort,
-          SDWEBUI_PORT: sdWebUIPort,
+          JUPYTER_PORT: JUPYTER_PORT,
+          SDWEBUI_PORT: SDWEBUI_PORT,
         },
         mountVolumes: generatedVolumesForSdWebUI,
       },
@@ -38,7 +38,7 @@ export async function generateComposeFile(
         containerName: 'lama_cleaner_container' + '_' + env,
         launchDockerfile: 'Dockerfile.lama_cleaner.launch',
         portMappings: {
-          LAMA_CLEANER_PORT: lamaCleanerPort,
+          LAMA_CLEANER_PORT: LAMA_CLEANER_PORT,
         },
         mountVolumes: [
           '/mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache',

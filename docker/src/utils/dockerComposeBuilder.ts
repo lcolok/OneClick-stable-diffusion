@@ -51,7 +51,7 @@ function generateEnvironmentAndPorts(portMappings: Record<string, number>) {
 }
 
 export function dockerComposeGen({
-  ymlOutputDist,
+  composeFilePath,
   networkName,
   services,
 }: DockerComposeGenOptions): void {
@@ -91,5 +91,5 @@ export function dockerComposeGen({
     },
   };
 
-  writeDockerComposeYamlToFile(config, ymlOutputDist);
+  writeDockerComposeYamlToFile(config, composeFilePath);
 }
