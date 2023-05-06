@@ -28,6 +28,7 @@ STOPPING_AND_REMOVING_DOCKER_CONTAINERS: Stopping and removing old Docker contai
 DOCKER_CONTAINERS_STOPPED_AND_REMOVED: Old Docker containers stopped and removed.
 STARTING_NEW_TEST_CONTAINER: Starting new 🧪 test container...
 STARTING_NEW_PROD_CONTAINER: Starting new 🏭 production container...
+CONTAINER_RUNNING:  container {{repositoryName}} is running.
 AUTO_LAUNCHER_INSTALLED_SUCCESSFULLY: Auto-launch service installed successfully.
 ERROR_INSTALLING_AUTO_LAUNCHER: Error installing auto-launch service.
 NVITOP_ALREADY_INSTALLED: Nvitop is already installed.
@@ -77,5 +78,5 @@ RESTART: Restart
 DO_NOT_RESTART: Do not restart
 GENERATING_TEST_COMPOSE_FILE: "Generating Test docker-compose.yaml File"
 GENERATING_PRODUCTION_COMPOSE_FILE: "Generating Production docker-compose.yaml File"
-ERROR_CHECKING_CONTAINER_STATUS: "Error checking container status for {{containerName}}: {{err}}"
-ERROR_CONTAINER_NOT_RUNNING: "Error: Container {{containerName}} is not running after 5 seconds"
+ERROR_CHECKING_CONTAINER_STATUS: "Error checking container status: {{err}}"
+ERROR_CONTAINER_NOT_RUNNING: "Error: Container is not running after 5 seconds"

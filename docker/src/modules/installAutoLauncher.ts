@@ -100,7 +100,9 @@ async function startServiceAndShowStatus(options: {
           clearTimeout(timeoutId); // 取消超时逻辑
         }
       } catch (err) {
-        console.log(pp.error(i18next.t('ERROR_CHECKING_CONTAINER_STATUS')));
+        console.log(
+          pp.error(i18next.t('ERROR_CHECKING_CONTAINER_STATUS', { err })),
+        );
         console.error(err);
       }
     };
@@ -111,7 +113,7 @@ async function startServiceAndShowStatus(options: {
     // 超过5秒后，停止检查容器状态并显示错误消息
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
-      console.error(i18next.t('ERROR_CONTAINERS_NOT_RUNNING', { projectName }));
+      console.error(i18next.t('ERROR_CONTAINER_NOT_RUNNING'));
     }, timeout);
   } catch (err) {
     console.error(i18next.t('ERROR_PRINT', { err }));
@@ -125,7 +127,13 @@ async function checkAllContainersStatus(
 ): Promise<boolean> {
   const containerStatusPromises = services.map(async (service) => {
     const repositoryName = `${projectName}_${service.serviceName}`;
-    return await checkContainerStatus(repositoryName);
+    const isRunning = await checkContainerStatus(repositoryName);
+    if (isRunning) {
+      console.log(
+        pp.success(i18next.t('CONTAINER_RUNNING', { repositoryName })),
+      );
+    }
+    return isRunning;
   });
 
   const containerStatuses = await Promise.all(containerStatusPromises);
