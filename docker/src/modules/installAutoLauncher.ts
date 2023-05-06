@@ -82,42 +82,46 @@ async function waitForContainer(repositoryName: string): Promise<void> {
   );
 }
 
-// 启动服务并显示状态
+async function stopAndReloadService(): Promise<void> {
+  console.log(i18next.t('STOP_RELOAD_START'));
+  await runCommand('sudo', ['systemctl', 'stop', 'autolaunch_sd.service']);
+  await runCommand('sudo', ['systemctl', 'daemon-reload']);
+  await runCommand('sudo', ['systemctl', 'start', 'autolaunch_sd.service']);
+}
+
+async function checkServiceStatus(): Promise<void> {
+  await runCommand('sudo', [
+    'systemctl',
+    'status',
+    'autolaunch_sd.service',
+    '--no-pager',
+  ]);
+  console.log('Command executed successfully.');
+}
+
+async function waitForAllContainers(
+  projectName: string,
+  services: ServiceOptions[],
+): Promise<void> {
+  const waitForContainersPromises = services.map((service) => {
+    const repositoryName = `${projectName}_${service.serviceName}`;
+    return waitForContainer(repositoryName);
+  });
+
+  await Promise.all(waitForContainersPromises);
+  console.log(pp.success(i18next.t('AUTO_LAUNCHER_INSTALLED_SUCCESSFULLY')));
+}
+
 async function startServiceAndShowStatus(options: {
   projectName: string;
   services: ServiceOptions[];
 }): Promise<void> {
   const { projectName, services } = options;
 
-  // 输出停止、重新加载和启动服务的提示信息
-  console.log(i18next.t('STOP_RELOAD_START'));
-
-  // 停止并重新启动服务
-  await runCommand('sudo', ['systemctl', 'stop', 'autolaunch_sd.service']);
-  await runCommand('sudo', ['systemctl', 'daemon-reload']);
-  await runCommand('sudo', ['systemctl', 'start', 'autolaunch_sd.service']);
-
-  // 检查服务状态
   try {
-    await runCommand(
-      'sudo',
-      ['systemctl', 'status', 'autolaunch_sd.service', '--no-pager'],
-      // { inheritStdio: false },
-    );
-    console.log('Command executed successfully.');
-    try {
-      const waitForContainersPromises = services.map((service) => {
-        const repositoryName = `${projectName}_${service.serviceName}`;
-        return waitForContainer(repositoryName);
-      });
-
-      await Promise.all(waitForContainersPromises);
-      console.log(
-        pp.success(i18next.t('AUTO_LAUNCHER_INSTALLED_SUCCESSFULLY')),
-      );
-    } catch (err) {
-      console.error(i18next.t('ERROR_CONTAINER_NOT_RUNNING'));
-    }
+    await stopAndReloadService();
+    await checkServiceStatus();
+    await waitForAllContainers(projectName, services);
   } catch (err) {
     console.error(i18next.t('ERROR_PRINT', { err }));
     console.error(`${i18next.t('ERROR_INSTALLING_AUTO_LAUNCHER')}: ${err}`);
