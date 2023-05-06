@@ -11,6 +11,7 @@ import {
   pp,
 } from '@utils';
 import { generateProductionComposeFile } from '@modules';
+import retry from 'async-retry';
 
 // 创建临时目录
 function createTempDirectory(currentDirectory: string): string {
@@ -57,6 +58,30 @@ async function copyServiceFileToSystemd(serviceFilePath: string) {
   await runCommand('sudo', ['cp', serviceFilePath, '/etc/systemd/system']);
 }
 
+async function waitForContainer(repositoryName: string): Promise<void> {
+  await retry(
+    async () => {
+      const isRunning = await checkContainerStatus(repositoryName);
+      if (!isRunning) {
+        throw new Error(
+          i18next.t('ERROR_CONTAINER_NOT_RUNNING', {
+            repositoryName,
+          }) as string,
+        );
+      } else {
+        console.log(
+          pp.success(i18next.t('CONTAINER_RUNNING', { repositoryName })),
+        );
+      }
+    },
+    {
+      retries: 10, // 尝试次数
+      minTimeout: 500, // 最小等待时间
+      factor: 1, // 指数因子
+    },
+  );
+}
+
 // 启动服务并显示状态
 async function startServiceAndShowStatus(options: {
   projectName: string;
@@ -80,64 +105,23 @@ async function startServiceAndShowStatus(options: {
       // { inheritStdio: false },
     );
     console.log('Command executed successfully.');
+    try {
+      const waitForContainersPromises = services.map((service) => {
+        const repositoryName = `${projectName}_${service.serviceName}`;
+        return waitForContainer(repositoryName);
+      });
 
-    const checkInterval = 500; // 每500毫秒检查一次
-    const timeout = 5000; // 5秒超时时间
-    let intervalId: NodeJS.Timeout;
-    let timeoutId: NodeJS.Timeout;
-
-    const checkStatusAndClear = async () => {
-      try {
-        const allContainersRunning = await checkAllContainersStatus(
-          services,
-          projectName,
-        );
-        if (allContainersRunning) {
-          console.log(
-            pp.success(i18next.t('AUTO_LAUNCHER_INSTALLED_SUCCESSFULLY')),
-          );
-          clearInterval(intervalId);
-          clearTimeout(timeoutId); // 取消超时逻辑
-        }
-      } catch (err) {
-        console.log(
-          pp.error(i18next.t('ERROR_CHECKING_CONTAINER_STATUS', { err })),
-        );
-        console.error(err);
-      }
-    };
-
-    // 每500毫秒检查一次容器状态
-    intervalId = setInterval(checkStatusAndClear, checkInterval);
-
-    // 超过5秒后，停止检查容器状态并显示错误消息
-    timeoutId = setTimeout(() => {
-      clearInterval(intervalId);
+      await Promise.all(waitForContainersPromises);
+      console.log(
+        pp.success(i18next.t('AUTO_LAUNCHER_INSTALLED_SUCCESSFULLY')),
+      );
+    } catch (err) {
       console.error(i18next.t('ERROR_CONTAINER_NOT_RUNNING'));
-    }, timeout);
+    }
   } catch (err) {
     console.error(i18next.t('ERROR_PRINT', { err }));
     console.error(`${i18next.t('ERROR_INSTALLING_AUTO_LAUNCHER')}: ${err}`);
   }
-}
-
-async function checkAllContainersStatus(
-  services: ServiceOptions[],
-  projectName: string,
-): Promise<boolean> {
-  const containerStatusPromises = services.map(async (service) => {
-    const repositoryName = `${projectName}_${service.serviceName}`;
-    const isRunning = await checkContainerStatus(repositoryName);
-    if (isRunning) {
-      console.log(
-        pp.success(i18next.t('CONTAINER_RUNNING', { repositoryName })),
-      );
-    }
-    return isRunning;
-  });
-
-  const containerStatuses = await Promise.all(containerStatusPromises);
-  return containerStatuses.every((status) => status);
 }
 
 async function checkContainerStatus(repositoryName: string): Promise<boolean> {
