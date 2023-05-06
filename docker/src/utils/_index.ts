@@ -1,6 +1,5 @@
 export * from './dockerComposeBuilder';
 export * from './docker';
-export * from './imageBuildConfig';
 export * from './install';
 export * from './menuSelection';
 export * from './print';

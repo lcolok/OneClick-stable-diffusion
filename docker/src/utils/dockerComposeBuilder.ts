@@ -8,9 +8,9 @@ import {
   writeDockerComposeYamlToFile,
   selectDependenciesAndBuildImages,
   printDockerImages,
-  buildConfig,
   pp,
 } from '@utils';
+import { globalConfig } from '@configs';
 import * as path from 'path';
 import { path as projectRootDir } from 'app-root-path';
 import i18next from '@i18n';
@@ -36,7 +36,7 @@ export async function buildActionMultiple(
 ): Promise<void> {
   for (const targetBuild of targetBuilds) {
     await buildAction({
-      selectedConfig: buildConfig[targetBuild],
+      selectedConfig: globalConfig.buildConfig[targetBuild],
       selectedConfigKey: targetBuild,
     });
   }

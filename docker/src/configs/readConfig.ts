@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import { GlobalConfigTypes } from '@types';
+import { generateBuildConfigWithDockerfilePath } from './imageBuildConfig';
 
 // 获取配置文件路径
 const configFile = path.join(__dirname, './globalConfig.yaml');
@@ -16,8 +17,23 @@ const buildList = Object.keys(parsedGlobalConfig.dockerBuildConfig).filter(
   (key) => parsedGlobalConfig.dockerBuildConfig[key].endpointBuild,
 );
 
+// 根据 Dockerfile 路径生成新的构建配置对象
+const buildConfig = generateBuildConfigWithDockerfilePath(parsedGlobalConfig);
+
+// 根据构建配置对象生成项目选项数组
+const projectOptions = Object.keys(buildConfig).map((key) => {
+  const { label, hint } = buildConfig[key];
+  return {
+    value: key,
+    label,
+    ...(hint && { hint }),
+  };
+});
+
 // 将 buildList 追加到 globalConfig 中
 export const globalConfig = {
   ...parsedGlobalConfig,
   buildList: buildList,
+  buildConfig: buildConfig,
+  projectOptions: projectOptions,
 };

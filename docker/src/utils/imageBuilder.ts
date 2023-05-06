@@ -16,7 +16,8 @@ import {
   BuildImageOptions,
   BuildImagesRecursivelyOptions,
 } from '@types';
-import { buildConfig, logImageBuildStatus, runCommand } from '@utils';
+import { logImageBuildStatus, runCommand } from '@utils';
+import { globalConfig } from '@configs';
 import i18next from '@i18n';
 
 // 创建一个通用函数用于构建镜像
@@ -58,7 +59,7 @@ export async function buildImagesRecursively({
   // 如果有依赖项，则先构建依赖项
   if (selectedConfig.dependencies) {
     for (const dependency of selectedConfig.dependencies) {
-      const depConfig = buildConfig[dependency];
+      const depConfig = globalConfig.buildConfig[dependency];
       if (depConfig && !builtDependencies.has(dependency)) {
         // 如果依赖项未被构建，则递归构建依赖项
         await buildImagesRecursively({
@@ -145,8 +146,8 @@ export async function selectDependenciesAndBuildImages({
     ...selectedConfig.dependencies,
     selectedConfigKey,
   ].map((dep) => {
-    const tag = buildConfig[dep].tag;
-    const label = buildConfig[dep].label;
+    const tag = globalConfig.buildConfig[dep].tag;
+    const label = globalConfig.buildConfig[dep].label;
     return {
       value: tag,
       label: pc.cyan('🔄' + label),
