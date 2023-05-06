@@ -1,11 +1,18 @@
+import { SelectOptions } from '@clack/prompts';
+
 export interface GlobalConfigTypes {
-  dockerfilesDir: string; // Dockerfile 路径
-  contextDir: string; // 构建上下文路径
-  dockerBuildConfig: BuildConfig; // 构建配置对象
+  dockerfilesDir: string;
+  contextDir: string;
+  dockerBuildConfig: BuildConfigTypes;
+  buildList: string[];
+  buildConfig: BuildConfigTypes;
+  projectOptions: SelectOptions<any, string> extends { options: infer O }
+    ? O
+    : never;
 }
 
 // 定义构建配置类型
-export interface BuildConfig {
+export interface BuildConfigTypes {
   [key: string]: {
     tag: string; // 镜像标签
     dockerfile: string; // Dockerfile 文件名
@@ -27,12 +34,12 @@ export interface BuildImageOptions {
 }
 
 export interface BuildImagesRecursivelyOptions {
-  selectedConfig: BuildConfig[keyof BuildConfig];
+  selectedConfig: BuildConfigTypes[keyof BuildConfigTypes];
   buildFromScratchDependencies: Set<string>;
   builtDependencies?: Set<string>;
 }
 
 export interface BuildActionParams {
-  selectedConfig: BuildConfig[keyof BuildConfig];
+  selectedConfig: BuildConfigTypes[keyof BuildConfigTypes];
   selectedConfigKey: string;
 }

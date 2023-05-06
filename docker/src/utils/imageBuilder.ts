@@ -12,7 +12,7 @@ import {
 
 import pc from 'picocolors';
 import {
-  BuildConfig,
+  BuildConfigTypes,
   BuildImageOptions,
   BuildImagesRecursivelyOptions,
 } from '@types';
@@ -130,7 +130,7 @@ export async function buildImagesRecursively({
 }
 
 export interface SelectDependenciesAndBuildImagesParams {
-  selectedConfig: BuildConfig[keyof BuildConfig];
+  selectedConfig: BuildConfigTypes[keyof BuildConfigTypes];
   selectedConfigKey: string;
 }
 

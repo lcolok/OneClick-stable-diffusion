@@ -1,4 +1,4 @@
-import { BuildConfig } from '@types';
+import { BuildConfigTypes } from '@types';
 import pc from 'picocolors';
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
@@ -7,7 +7,7 @@ import i18next from '@i18n';
 const exec = promisify(execCallback);
 
 export async function printDockerImages(
-  selectedConfig: BuildConfig[keyof BuildConfig],
+  selectedConfig: BuildConfigTypes[keyof BuildConfigTypes],
 ) {
   const { stdout, stderr } = await exec('docker images');
   const images = stdout.split('\n').filter(Boolean);
