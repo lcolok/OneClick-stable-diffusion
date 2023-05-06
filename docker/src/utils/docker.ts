@@ -111,9 +111,7 @@ export async function dockerComposeUp(
 async function checkDockerImageExists(
   options: DockerComposeOptions,
 ): Promise<boolean> {
-  const imageName = `${options.projectName}_${options.serviceName}`;
-
-  const stdout = await runCommand(
+  const existingImages = await runCommand(
     'docker',
     ['image', 'ls', '--format', '{{.Repository}}'],
     {
@@ -121,5 +119,10 @@ async function checkDockerImageExists(
     },
   );
 
-  return (stdout as string).includes(imageName);
+  const existingImagesSet = new Set((existingImages as string).split('\n'));
+
+  return options.services.every((service) => {
+    const imageName = `${options.projectName}_${service.serviceName}`;
+    return existingImagesSet.has(imageName);
+  });
 }

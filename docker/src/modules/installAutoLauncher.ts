@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import i18next from '@i18n';
 import { globalConfig } from '@configs';
+import { ServiceOptions } from '@types';
 import {
   checkAndInstallScreen,
   dockerComposeDown,
@@ -10,7 +11,6 @@ import {
   pp,
 } from '@utils';
 import { generateProductionComposeFile } from '@modules';
-import pc from 'picocolors';
 
 // 创建临时目录
 function createTempDirectory(currentDirectory: string): string {
@@ -60,10 +60,9 @@ async function copyServiceFileToSystemd(serviceFilePath: string) {
 // 启动服务并显示状态
 async function startServiceAndShowStatus(options: {
   projectName: string;
-  serviceName: string;
-}) {
-  const { projectName, serviceName } = options;
-  const repositoryName = `${projectName}_${serviceName}`;
+  services: ServiceOptions[];
+}): Promise<void> {
+  const { projectName, services } = options;
 
   // 输出停止、重新加载和启动服务的提示信息
   console.log(i18next.t('STOP_RELOAD_START'));
@@ -89,8 +88,11 @@ async function startServiceAndShowStatus(options: {
 
     const checkStatusAndClear = async () => {
       try {
-        const containerStatus = await checkContainerStatus(repositoryName);
-        if (containerStatus) {
+        const allContainersRunning = await checkAllContainersStatus(
+          services,
+          projectName,
+        );
+        if (allContainersRunning) {
           console.log(
             pp.success(i18next.t('AUTO_LAUNCHER_INSTALLED_SUCCESSFULLY')),
           );
@@ -109,14 +111,25 @@ async function startServiceAndShowStatus(options: {
     // 超过5秒后，停止检查容器状态并显示错误消息
     timeoutId = setTimeout(() => {
       clearInterval(intervalId);
-      console.error(
-        i18next.t('ERROR_CONTAINER_NOT_RUNNING', { repositoryName }),
-      );
+      console.error(i18next.t('ERROR_CONTAINERS_NOT_RUNNING', { projectName }));
     }, timeout);
   } catch (err) {
     console.error(i18next.t('ERROR_PRINT', { err }));
     console.error(`${i18next.t('ERROR_INSTALLING_AUTO_LAUNCHER')}: ${err}`);
   }
+}
+
+async function checkAllContainersStatus(
+  services: ServiceOptions[],
+  projectName: string,
+): Promise<boolean> {
+  const containerStatusPromises = services.map(async (service) => {
+    const repositoryName = `${projectName}_${service.serviceName}`;
+    return await checkContainerStatus(repositoryName);
+  });
+
+  const containerStatuses = await Promise.all(containerStatusPromises);
+  return containerStatuses.every((status) => status);
 }
 
 async function checkContainerStatus(repositoryName: string): Promise<boolean> {
@@ -138,7 +151,7 @@ async function installAutoLauncher(): Promise<void> {
   const currentDirectory = path.resolve(path.dirname(''));
 
   // 生成 docker-compose.yaml 文件
-  const { composeFilePath, serviceName, projectName } =
+  const { composeFilePath, services, projectName } =
     await generateProductionComposeFile();
 
   // 批量构建新的镜像
@@ -174,12 +187,12 @@ async function installAutoLauncher(): Promise<void> {
   // 停止并移除已存在的容器
   await dockerComposeDown({
     composeFilePath,
-    serviceName,
+    services,
     projectName,
   });
 
   // 启动服务并显示状态
-  startServiceAndShowStatus({ projectName, serviceName });
+  startServiceAndShowStatus({ projectName, services });
 }
 
 export { installAutoLauncher };

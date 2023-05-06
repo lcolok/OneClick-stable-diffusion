@@ -12,40 +12,44 @@ export async function generateComposeFile(
     environments[environment];
 
   const projectName = 'sd' + '_' + env;
-  const serviceName = 'sd_service' + '_' + env;
   const composeFilePath = path.join(
     projectRootDir,
     'temp',
     `docker-compose.${environment}.temp.yaml`,
   );
+  const services = [
+    {
+      serviceName: 'sd_service' + '_' + env,
+      containerName: 'sd_container' + '_' + env,
+      launchDockerfile: 'Dockerfile.sdwebui_ext.launch',
+      portMappings: {
+        JUPYTER_PORT: JUPYTER_PORT,
+        SDWEBUI_PORT: SDWEBUI_PORT,
+      },
+      mountVolumes: generatedVolumesForSdWebUI,
+    },
+    {
+      serviceName: 'lama_cleaner' + '_' + env,
+      containerName: 'lama_cleaner_container' + '_' + env,
+      launchDockerfile: 'Dockerfile.lama_cleaner.launch',
+      portMappings: {
+        LAMA_CLEANER_PORT: LAMA_CLEANER_PORT,
+      },
+      mountVolumes: [
+        '/mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache',
+      ],
+    },
+  ];
 
   dockerComposeGen({
     composeFilePath: composeFilePath,
     networkName: 'network' + '_' + env,
-    services: [
-      {
-        serviceName: 'sd_service' + '_' + env,
-        containerName: 'sd_container' + '_' + env,
-        launchDockerfile: 'Dockerfile.sdwebui_ext.launch',
-        portMappings: {
-          JUPYTER_PORT: JUPYTER_PORT,
-          SDWEBUI_PORT: SDWEBUI_PORT,
-        },
-        mountVolumes: generatedVolumesForSdWebUI,
-      },
-      {
-        serviceName: 'lama_cleaner' + '_' + env,
-        containerName: 'lama_cleaner_container' + '_' + env,
-        launchDockerfile: 'Dockerfile.lama_cleaner.launch',
-        portMappings: {
-          LAMA_CLEANER_PORT: LAMA_CLEANER_PORT,
-        },
-        mountVolumes: [
-          '/mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache',
-        ],
-      },
-    ],
+    services: services,
   });
 
-  return { composeFilePath, projectName, serviceName };
+  return {
+    composeFilePath,
+    projectName,
+    services,
+  };
 }

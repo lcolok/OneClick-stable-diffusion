@@ -15,7 +15,7 @@ async function launchImage({
   testMode?: boolean;
 }): Promise<void> {
   // 构建Compose文件
-  const { composeFilePath, serviceName, projectName } =
+  const { composeFilePath, services, projectName } =
     await generateComposeFile();
 
   // 批量构建新的镜像
@@ -23,7 +23,7 @@ async function launchImage({
 
   await handleExistingScreenSession({
     composeFilePath,
-    serviceName,
+    services,
     projectName,
     forceRebuild: testMode ? true : false,
     forceRestart: testMode ? true : false,

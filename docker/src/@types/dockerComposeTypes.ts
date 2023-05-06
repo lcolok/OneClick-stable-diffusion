@@ -1,3 +1,5 @@
+import { PortMappingsType } from '@types';
+
 export interface DockerComposeConfig {
   version: string;
   services: {
@@ -28,7 +30,7 @@ export interface DockerComposeConfig {
 export interface DockerComposeOptions {
   composeFilePath: string;
   projectName: string;
-  serviceName: string;
+  services: ServiceOptions[]; // 使用新的 ServiceInfo 类型替换 serviceName
   runInBackground?: boolean;
   forceRebuild?: boolean;
   forceRestart?: boolean;
@@ -39,7 +41,7 @@ export interface ServiceOptions {
   containerName?: string;
   launchDockerfile: string;
   mountVolumes?: string[];
-  portMappings: Record<string, number>;
+  portMappings: PortMappingsType;
 }
 
 export interface DockerComposeGenOptions {

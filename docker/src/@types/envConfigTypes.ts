@@ -6,3 +6,5 @@ export interface EnvironmentConfig {
   SDWEBUI_PORT: number;
   LAMA_CLEANER_PORT: number;
 }
+
+export type PortMappingsType = Partial<Record<string, number>>;

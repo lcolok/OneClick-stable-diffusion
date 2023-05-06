@@ -3,6 +3,7 @@ import {
   BuildActionParams,
   DockerComposeGenOptions,
   ServiceOptions,
+  PortMappingsType,
 } from '@types';
 import {
   writeDockerComposeYamlToFile,
@@ -42,7 +43,7 @@ export async function buildActionMultiple(
   }
 }
 
-function generateEnvironmentAndPorts(portMappings: Record<string, number>) {
+function generateEnvironmentAndPorts(portMappings: PortMappingsType) {
   const environment = Object.entries(portMappings).map(
     ([key, value]) => `${key}=${value}`,
   );
