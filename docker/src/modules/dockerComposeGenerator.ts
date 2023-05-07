@@ -9,12 +9,14 @@ const environments: Record<Environment, EnvironmentConfig> = {
     JUPYTER_PORT: 33334,
     SDWEBUI_PORT: 7861,
     LAMA_CLEANER_PORT: 8081,
+    COMFYUI_PORT: 8189,
   },
   production: {
     env: 'prod',
     JUPYTER_PORT: 33333,
     SDWEBUI_PORT: 7860,
     LAMA_CLEANER_PORT: 8080,
+    COMFYUI_PORT: 8188,
   },
 };
 

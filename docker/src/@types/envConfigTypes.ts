@@ -5,6 +5,7 @@ export interface EnvironmentConfig {
   JUPYTER_PORT: number;
   SDWEBUI_PORT: number;
   LAMA_CLEANER_PORT: number;
+  COMFYUI_PORT: number;
 }
 
 export type PortMappingsType = Partial<Record<string, number>>;
