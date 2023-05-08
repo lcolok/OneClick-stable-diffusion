@@ -13,6 +13,9 @@ CLEAN_IMAGE:
   LABEL: 🧹 清理多余的镜像
 GPU_STATUS:
   LABEL: 📈 查看GPU运行状况
+GEN_DOCKER_COMPOSE:
+  LABEL: 📝 生成docker-compose.yaml
+  HINT: 生成docker-compose.yaml文件
 SELECT_PROJECT_TYPE: 选择一个构建方案：
 OPERATION_CANCELLED: 操作已取消。
 CLEANING_DOCKER_RESOURCES: 正在清理无用的 Docker 资源...
@@ -46,12 +49,12 @@ SDWEBUI_BASE_IMAGE:
 SDWEBUI_EXT_IMAGE:
   LABEL: 🧩 构建Stable Diffusion WebUI附带常用插件的镜像
   HINT: 包含汉化、图库浏览器、ControlNet等
-GEN_DOCKER_COMPOSE:
-  LABEL: 📝 生成docker-compose.yaml
-  HINT: 生成docker-compose.yaml文件
 LAMA_CLEANER_IMAGE:
   LABEL: 🧹 构建Lama Cleaner镜像
   HINT: 包含Lama Cleaner
+COMFYUI_IMAGE:
+  LABEL: 🎨 构建ComfyUI镜像
+  HINT: 包含ComfyUI
 SCREEN_NOT_FOUND: 未检测到 screen，现在将自动安装...
 SCREEN_INSTALLED_SUCCESSFULLY: 已成功安装 screen。
 SCREEN_INSTALLATION_FAILED: 安装 screen 时出错，请手动安装。

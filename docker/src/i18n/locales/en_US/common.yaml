@@ -13,6 +13,9 @@ CLEAN_IMAGE:
   LABEL: 🧹 Clean Unused Images
 GPU_STATUS:
   LABEL: 📈 Check GPU Status
+GEN_DOCKER_COMPOSE:
+  LABEL: 📝 Generate docker-compose.yaml
+  HINT: Generate docker-compose.yaml from template
 SELECT_PROJECT_TYPE: 'Select a build scheme:'
 OPERATION_CANCELLED: Operation cancelled.
 CLEANING_DOCKER_RESOURCES: Cleaning unused Docker resources...
@@ -46,12 +49,12 @@ SDWEBUI_BASE_IMAGE:
 SDWEBUI_EXT_IMAGE:
   LABEL: 🧩 Build Stable Diffusion WebUI Extended Image
   HINT: Includes localization, image browser, ControlNet, etc.
-GEN_DOCKER_COMPOSE:
-  LABEL: 📝 Generate docker-compose.yaml
-  HINT: Generate docker-compose.yaml from template
 LAMA_CLEANER_IMAGE:
   LABEL: 🧹 Build LAMA Cleaner Image
   HINT: Includes LAMA Cleaner
+COMFYUI_IMAGE:
+  LABEL: 🛋️ Build ComfyUI Image
+  HINT: Includes ComfyUI
 SCREEN_NOT_FOUND: screen not found, now installing...
 SCREEN_INSTALLED_SUCCESSFULLY: screen installed successfully.
 SCREEN_INSTALLATION_FAILED: Error installing screen, please install manually.
