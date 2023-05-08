@@ -1,0 +1,2 @@
+a man, male
+a woman, female
