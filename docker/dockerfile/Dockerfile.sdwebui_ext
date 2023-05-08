@@ -52,9 +52,5 @@ WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui
 ENV COMMANDLINE_ARGS --skip-torch-cuda-test
 RUN python -c "import launch;launch.prepare_environment();"
 
-# # 通过修改 launch.py 文件，将 start() 函数注释掉，避免启动服务
-# # 将 launch.py 复制到 launch_for_install.py
-# RUN cp $NOTEBOOK_DIR/stable-diffusion-webui/launch.py $NOTEBOOK_DIR/stable-diffusion-webui/launch_for_install.py
-# # 修改 launch_for_install.py 文件，找到 if __name__ == "__main__": 那一行，并去掉 start()
-# RUN sed -i '/if __name__ == "__main__":/,/start()/ {/start()/ s/start()//}' $NOTEBOOK_DIR/stable-diffusion-webui/launch_for_install.py
-# RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/ && python launch_for_install.py --skip-torch-cuda-test
+# 修复ControlNet中Zoe所需要的timm版本
+RUN python -m pip uninstall timm -y && pip install timm==0.6.13
