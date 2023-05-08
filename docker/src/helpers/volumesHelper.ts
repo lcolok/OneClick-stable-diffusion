@@ -94,6 +94,10 @@ function generateVolumesForComfyUI({
       source: `${host_comfyui_dir}/stable-diffusion-webui-master/models/Lora`,
       target: `${container_comfyui_dir}/models/loras`,
     },
+    {
+      source: `${host_comfyui_dir}/ComfyUI/custom_nodes/comfy_controlnet_preprocessors/ckpts`,
+      target: `${container_comfyui_dir}/custom_nodes/comfy_controlnet_preprocessors/ckpts`,
+    },
   ];
 
   return volumeMappings.map(({ source, target }) => `${source}:${target}`);
