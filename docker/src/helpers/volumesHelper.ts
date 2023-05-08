@@ -39,8 +39,8 @@ function generateVolumes({
       target: `${container_sdwebui_dir}/extensions/sd-webui-controlnet/models`,
     },
     {
-      source: `${host_sdwebui_dir}/extensions/sd-webui-controlnet/annotator`,
-      target: `${container_sdwebui_dir}/extensions/sd-webui-controlnet/annotator`,
+      source: `${host_sdwebui_dir}/extensions/sd-webui-controlnet/annotator/downloads`,
+      target: `${container_sdwebui_dir}/extensions/sd-webui-controlnet/annotator/downloads`,
     },
     {
       source: `${host_sdwebui_dir}/cache.json`,
