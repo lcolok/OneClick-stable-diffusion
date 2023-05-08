@@ -2,13 +2,14 @@ FROM py:3.10.6-torch2.0.0
 
 ENV NOTEBOOK_DIR /home
 
+WORKDIR $NOTEBOOK_DIR
+
 # 设置默认 shell 为 bash，并使用“-i”选项启动shell
 SHELL ["/bin/bash", "-c", "-i"]
 
-RUN cd $NOTEBOOK_DIR && \
-    git clone https://github.com/comfyanonymous/ComfyUI;
+RUN git clone https://github.com/comfyanonymous/ComfyUI;
 
-RUN cd $NOTEBOOK_DIR/ComfyUI && \
+RUN cd ComfyUI && \
     conda activate py3.10.6 && \
     pip install -r requirements.txt && \
     cd /; 

@@ -1,4 +1,4 @@
-FROM comfyui_base:rtx4090
+FROM comfyui_ext:rtx4090
 
 ENV COMFYUI_PORT=${COMFYUI_PORT}
 

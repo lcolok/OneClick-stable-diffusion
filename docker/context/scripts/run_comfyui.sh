@@ -8,7 +8,7 @@ cd $NOTEBOOK_DIR/ComfyUI
 
 # 快速启动,但是前提是已经安装了依赖,否则无法正常启动,需要进一步调试
 conda activate py3.10.6 &&
-    python main.py --port ${COMFYUI_PORT} --listen --dont-upcast-attention
+    python main.py --port ${COMFYUI_PORT} --listen --dont-upcast-attention --highvram --use-pytorch-cross-attention
 # --ckpt ./models/Stable-diffusion/revAnimated_v11.safetensors
 # --nowebui \
 

@@ -1,0 +1,20 @@
+FROM comfyui_base:rtx4090
+
+WORKDIR $NOTEBOOK_DIR/ComfyUI/custom_nodes
+
+# 设置默认 shell 为 bash，并使用“-i”选项启动shell
+SHELL ["/bin/bash", "-c", "-i"]
+
+RUN apt-get update && apt-get install -y pkg-config libcairo2-dev
+
+RUN git clone https://github.com/Fannovel16/comfy_controlnet_preprocessors
+RUN cd comfy_controlnet_preprocessors && \
+    conda activate py3.10.6 && \
+    python -m pip install -r requirements.txt
+
+# RUN cd comfy_controlnet_preprocessors && conda activate py3.10.6 && python install.py
+
+RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui
+RUN cd was-node-suite-comfyui && \
+    conda activate py3.10.6 && \
+    python -m pip install -r requirements.txt
