@@ -4,7 +4,6 @@ import {
   Environment,
   EnvironmentConfig,
   ServiceOptions,
-  Ports,
 } from '@types';
 import { dockerComposeGen } from '@utils';
 import { path as projectRootDir } from 'app-root-path';
@@ -13,31 +12,63 @@ import {
   generatedVolumesForComfyUI,
 } from '@helpers';
 
-function generateTestPorts(productionPorts: Ports, offset: number): Ports {
-  return Object.fromEntries(
-    Object.entries(productionPorts).map(([key, value]) => [
-      key,
-      value + offset,
-    ]),
-  ) as Ports;
+function generateTestServices(
+  productionServices: ServiceOptions[],
+  offset: number,
+): ServiceOptions[] {
+  return productionServices.map((service) => {
+    const testService = { ...service };
+    testService.portMappings = Object.fromEntries(
+      Object.entries(service.portMappings).map(([key, value]) => [
+        key,
+        typeof value === 'number' ? value + offset : value,
+      ]),
+    );
+    return testService;
+  });
 }
 
-const productionPorts: Ports = {
-  JUPYTER_PORT: 33333,
-  SDWEBUI_PORT: 7860,
-  LAMA_CLEANER_PORT: 8080,
-  COMFYUI_PORT: 8188,
-  // Add more ports here
-};
+const productionServices: ServiceOptions[] = [
+  {
+    serviceName: 'sd_service',
+    containerName: 'sd_container',
+    launchDockerfile: 'Dockerfile.sdwebui_ext.launch',
+    portMappings: {
+      JUPYTER_PORT: 33333,
+      SDWEBUI_PORT: 7860,
+    },
+    mountVolumes: generatedVolumesForSdWebUI,
+  },
+  {
+    serviceName: 'lama_cleaner',
+    containerName: 'lama_cleaner_container',
+    launchDockerfile: 'Dockerfile.lama_cleaner.launch',
+    portMappings: {
+      LAMA_CLEANER_PORT: 8080,
+    },
+    mountVolumes: [
+      '/mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache',
+    ],
+  },
+  {
+    serviceName: 'comfyui',
+    containerName: 'comfyui_container',
+    launchDockerfile: 'Dockerfile.comfyui.launch',
+    portMappings: {
+      COMFYUI_PORT: 8188,
+    },
+    mountVolumes: generatedVolumesForComfyUI,
+  },
+];
 
 const environments: Record<Environment, EnvironmentConfig> = {
   production: {
     env: 'prod',
-    ports: productionPorts,
+    services: productionServices,
   },
   test: {
     env: 'test',
-    ports: generateTestPorts(productionPorts, 1), // Replace 1 with your desired offset
+    services: generateTestServices(productionServices, 1), // Replace 1 with your desired offset
   },
 };
 
@@ -53,7 +84,7 @@ function addEnvironmentSuffix(
 export async function generateComposeFile(
   environment: Environment,
 ): Promise<DockerComposeOptions> {
-  const { env, ports } = environments[environment];
+  const { env, services } = environments[environment];
 
   const projectName = 'ai' + '_' + env;
   const composeFilePath = path.join(
@@ -61,48 +92,20 @@ export async function generateComposeFile(
     'temp',
     `docker-compose.${environment}.temp.yaml`,
   );
-  const services: ServiceOptions[] = [
-    {
-      serviceName: 'sd_service',
-      containerName: 'sd_container',
-      launchDockerfile: 'Dockerfile.sdwebui_ext.launch',
-      portMappings: {
-        JUPYTER_PORT: ports.JUPYTER_PORT,
-        SDWEBUI_PORT: ports.SDWEBUI_PORT,
-      },
-      mountVolumes: generatedVolumesForSdWebUI,
-    },
-    {
-      serviceName: 'lama_cleaner',
-      containerName: 'lama_cleaner_container',
-      launchDockerfile: 'Dockerfile.lama_cleaner.launch',
-      portMappings: {
-        LAMA_CLEANER_PORT: ports.LAMA_CLEANER_PORT,
-      },
-      mountVolumes: [
-        '/mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache',
-      ],
-    },
-    {
-      serviceName: 'comfyui',
-      containerName: 'comfyui_container',
-      launchDockerfile: 'Dockerfile.comfyui.launch',
-      portMappings: {
-        COMFYUI_PORT: ports.COMFYUI_PORT,
-      },
-      mountVolumes: generatedVolumesForComfyUI,
-    },
-  ].map((service) => addEnvironmentSuffix(service, env));
+
+  const updatedServices = services.map((service) =>
+    addEnvironmentSuffix(service, env),
+  );
 
   dockerComposeGen({
     composeFilePath: composeFilePath,
     networkName: 'network' + '_' + env,
-    services: services,
+    services: updatedServices,
   });
 
   return {
     composeFilePath,
     projectName,
-    services,
+    services: updatedServices,
   };
 }

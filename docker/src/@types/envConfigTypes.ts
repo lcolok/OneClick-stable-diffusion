@@ -1,3 +1,5 @@
+import { ServiceOptions } from '@types';
+
 export type Environment = 'test' | 'production';
 
 export interface Ports {
@@ -6,7 +8,7 @@ export interface Ports {
 
 export interface EnvironmentConfig {
   env: string;
-  ports: Ports;
+  services: ServiceOptions[];
 }
 
 export type PortMappingsType = Partial<Record<string, number>>;
