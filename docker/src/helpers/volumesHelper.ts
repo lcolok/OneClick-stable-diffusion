@@ -68,3 +68,38 @@ export const generatedVolumesForSdWebUI = generateVolumes({
     '/mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master',
   container_sdwebui_dir: '/home/stable-diffusion-webui',
 });
+
+function generateVolumesForComfyUI({
+  host_comfyui_dir,
+  container_comfyui_dir,
+}: Record<string, string>) {
+  const volumeMappings = [
+    {
+      source: '/mnt/flies/AI_research/Stable_Diffusion/.cache',
+      target: '/root/.cache',
+    },
+    {
+      source: `${host_comfyui_dir}/models`,
+      target: `${container_comfyui_dir}/models`,
+    },
+    {
+      source: `${host_comfyui_dir}/stable-diffusion-webui-master/models/Stable-diffusion`,
+      target: `${container_comfyui_dir}/models/checkpoints`,
+    },
+    {
+      source: `${host_comfyui_dir}/stable-diffusion-webui-master/extensions/sd-webui-controlnet/models`,
+      target: `${container_comfyui_dir}/models/controlnet`,
+    },
+    {
+      source: `${host_comfyui_dir}/stable-diffusion-webui-master/models/Lora`,
+      target: `${container_comfyui_dir}/models/loras`,
+    },
+  ];
+
+  return volumeMappings.map(({ source, target }) => `${source}:${target}`);
+}
+
+export const generatedVolumesForComfyUI = generateVolumesForComfyUI({
+  host_comfyui_dir: '/mnt/flies/AI_research/Stable_Diffusion',
+  container_comfyui_dir: '/home/ComfyUI',
+});

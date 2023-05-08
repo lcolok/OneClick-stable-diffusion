@@ -4,10 +4,42 @@ import {
   Environment,
   EnvironmentConfig,
   ServiceOptions,
+  Ports,
 } from '@types';
 import { dockerComposeGen } from '@utils';
 import { path as projectRootDir } from 'app-root-path';
-import { generatedVolumesForSdWebUI } from '@helpers';
+import {
+  generatedVolumesForSdWebUI,
+  generatedVolumesForComfyUI,
+} from '@helpers';
+
+function generateTestPorts(productionPorts: Ports, offset: number): Ports {
+  return Object.fromEntries(
+    Object.entries(productionPorts).map(([key, value]) => [
+      key,
+      value + offset,
+    ]),
+  ) as Ports;
+}
+
+const productionPorts: Ports = {
+  JUPYTER_PORT: 33333,
+  SDWEBUI_PORT: 7860,
+  LAMA_CLEANER_PORT: 8080,
+  COMFYUI_PORT: 8188,
+  // Add more ports here
+};
+
+const environments: Record<Environment, EnvironmentConfig> = {
+  production: {
+    env: 'prod',
+    ports: productionPorts,
+  },
+  test: {
+    env: 'test',
+    ports: generateTestPorts(productionPorts, 1), // Replace 1 with your desired offset
+  },
+};
 
 function addEnvironmentSuffix(
   service: ServiceOptions,
@@ -20,10 +52,8 @@ function addEnvironmentSuffix(
 
 export async function generateComposeFile(
   environment: Environment,
-  environments: Record<Environment, EnvironmentConfig>,
 ): Promise<DockerComposeOptions> {
-  const { env, JUPYTER_PORT, SDWEBUI_PORT, LAMA_CLEANER_PORT, COMFYUI_PORT } =
-    environments[environment];
+  const { env, ports } = environments[environment];
 
   const projectName = 'ai' + '_' + env;
   const composeFilePath = path.join(
@@ -37,8 +67,8 @@ export async function generateComposeFile(
       containerName: 'sd_container',
       launchDockerfile: 'Dockerfile.sdwebui_ext.launch',
       portMappings: {
-        JUPYTER_PORT: JUPYTER_PORT,
-        SDWEBUI_PORT: SDWEBUI_PORT,
+        JUPYTER_PORT: ports.JUPYTER_PORT,
+        SDWEBUI_PORT: ports.SDWEBUI_PORT,
       },
       mountVolumes: generatedVolumesForSdWebUI,
     },
@@ -47,7 +77,7 @@ export async function generateComposeFile(
       containerName: 'lama_cleaner_container',
       launchDockerfile: 'Dockerfile.lama_cleaner.launch',
       portMappings: {
-        LAMA_CLEANER_PORT: LAMA_CLEANER_PORT,
+        LAMA_CLEANER_PORT: ports.LAMA_CLEANER_PORT,
       },
       mountVolumes: [
         '/mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache',
@@ -58,15 +88,9 @@ export async function generateComposeFile(
       containerName: 'comfyui_container',
       launchDockerfile: 'Dockerfile.comfyui.launch',
       portMappings: {
-        COMFYUI_PORT: COMFYUI_PORT,
+        COMFYUI_PORT: ports.COMFYUI_PORT,
       },
-      mountVolumes: [
-        '/mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache',
-        '/mnt/flies/AI_research/Stable_Diffusion/ComfyUI/models:/home/ComfyUI/models',
-        '/mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/Stable-diffusion:/home/ComfyUI/models/checkpoints',
-        '/mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/models:/home/ComfyUI/models/controlnet',
-        '/mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/Lora:/home/ComfyUI/models/loras',
-      ],
+      mountVolumes: generatedVolumesForComfyUI,
     },
   ].map((service) => addEnvironmentSuffix(service, env));
 

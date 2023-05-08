@@ -1,11 +1,12 @@
 export type Environment = 'test' | 'production';
 
+export interface Ports {
+  [key: string]: number;
+}
+
 export interface EnvironmentConfig {
   env: string;
-  JUPYTER_PORT: number;
-  SDWEBUI_PORT: number;
-  LAMA_CLEANER_PORT: number;
-  COMFYUI_PORT: number;
+  ports: Ports;
 }
 
 export type PortMappingsType = Partial<Record<string, number>>;
