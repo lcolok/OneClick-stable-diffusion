@@ -61,3 +61,5 @@ RUN conda activate py3.10.6 && pip install cog
 # from ffhq_dataset.face_alignment import image_align
 # from ffhq_dataset.landmarks_detector import LandmarksDetector
 RUN cd Thin-Plate-Spline-Motion-Model && git clone https://github.com/Puzer/stylegan-encoder.git
+
+WORKDIR $NOTEBOOK_DIR/Thin-Plate-Spline-Motion-Model
