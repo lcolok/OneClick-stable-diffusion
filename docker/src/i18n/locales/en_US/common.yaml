@@ -86,3 +86,5 @@ GENERATING_TEST_COMPOSE_FILE: "Generating Test docker-compose.yaml File"
 GENERATING_PRODUCTION_COMPOSE_FILE: "Generating Production docker-compose.yaml File"
 ERROR_CHECKING_CONTAINER_STATUS: "Error checking container status: {{err}}"
 ERROR_CONTAINER_NOT_RUNNING: "Error: Container is not running after 5 seconds"
+REMOVE_CONFLICTING_CONTAINERS_FAILS_FRIENDLY_REMINDER: Installation failed. Please execute the 'docker ps -a' command to view all current containers, and use the 'docker rm -f' command to manually delete conflicting containers
+AUTOLUNCHER_SERVICE_VERIFIED_SUCCESSFULLY_AND_WAITING_DOCKER_CONTAINERS_TO_START: Auto-launch service verified successfully and waiting for Docker containers to start...

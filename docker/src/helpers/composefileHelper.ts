@@ -86,7 +86,7 @@ export async function generateComposeFile(
 ): Promise<DockerComposeOptions> {
   const { env, services } = environments[environment];
 
-  const projectName = 'ai' + '_' + env;
+  const projectName = 'aiiiiiii' + '_' + env;
   const composeFilePath = path.join(
     projectRootDir,
     'temp',

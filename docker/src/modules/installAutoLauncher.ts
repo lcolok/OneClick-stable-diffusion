@@ -96,7 +96,9 @@ async function checkServiceStatus(): Promise<void> {
     'autolaunch_sd.service',
     '--no-pager',
   ]);
-  console.log('Command executed successfully.');
+  console.log(
+    pp.success(i18next.t('AUTOLUNCHER_SERVICE_VERIFIED_SUCCESSFULLY_AND_WAITING_DOCKER_CONTAINERS_TO_START')),
+  );
 }
 
 async function waitForAllContainers(
@@ -125,6 +127,11 @@ async function startServiceAndShowStatus(options: {
   } catch (err) {
     console.error(i18next.t('ERROR_PRINT', { err }));
     console.error(`${i18next.t('ERROR_INSTALLING_AUTO_LAUNCHER')}: ${err}`);
+    console.log(
+      pp.error(
+        i18next.t('REMOVE_CONFLICTING_CONTAINERS_FAILS_FRIENDLY_REMINDER'),
+      ),
+    );
   }
 }
 

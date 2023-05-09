@@ -86,3 +86,5 @@ GENERATING_TEST_COMPOSE_FILE: 生成测试容器的 docker-compose.yaml 文件
 GENERATING_PRODUCTION_COMPOSE_FILE: 生成生产容器的 docker-compose.yaml 文件
 ERROR_CHECKING_CONTAINER_STATUS: 检查容器状态时出错：{{err}}
 ERROR_CONTAINER_NOT_RUNNING: 错误：容器在5秒后仍未运行
+REMOVE_CONFLICTING_CONTAINERS_FAILS_FRIENDLY_REMINDER: "安装失败。请执行 docker ps -a 命令查看当前所有容器，使用 docker rm -f 命令手动删除冲突的容器。"
+AUTOLUNCHER_SERVICE_VERIFIED_SUCCESSFULLY_AND_WAITING_DOCKER_CONTAINERS_TO_START: 自启服务验证成功，正在等待 Docker 容器启动...
