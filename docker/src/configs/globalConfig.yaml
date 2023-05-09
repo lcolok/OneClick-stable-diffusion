@@ -44,15 +44,15 @@ dockerBuildConfig:
     tag: comfyui_base:rtx4090
     launchDockerfile: Dockerfile.comfyui.launch
     dockerfile: Dockerfile.comfyui_base
-    label: COMFYUI_IMAGE.LABEL
-    hint: COMFYUI_IMAGE.HINT
+    label: COMFYUI_BASE_IMAGE.LABEL
+    hint: COMFYUI_BASE_IMAGE.HINT
     dependencies: [conda_build, py_build]
 
   comfyui_ext_build:
     tag: comfyui_ext:rtx4090
     launchDockerfile: Dockerfile.comfyui.launch
     dockerfile: Dockerfile.comfyui_ext
-    label: COMFYUI_IMAGE.LABEL
-    hint: COMFYUI_IMAGE.HINT
-    dependencies: [conda_build, py_build,comfyui_base_build]
+    label: COMFYUI_EXT_IMAGE.LABEL
+    hint: COMFYUI_EXT_IMAGE.HINT
+    dependencies: [conda_build, py_build, comfyui_base_build]
     endpointBuild: true

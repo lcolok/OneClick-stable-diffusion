@@ -45,16 +45,19 @@ PYTORCH_IMAGE:
   LABEL: 🔥 构建Pytorch2.0镜像
   HINT: 包含Python3.10.6和Pytorch2.0.0
 SDWEBUI_BASE_IMAGE:
-  LABEL: 🕹️ 构建Stable Diffusion WebUI基本镜像
+  LABEL: 🕹️ 构建Stable Diffusion WebUI基础镜像
 SDWEBUI_EXT_IMAGE:
   LABEL: 🧩 构建Stable Diffusion WebUI附带常用插件的镜像
   HINT: 包含汉化、图库浏览器、ControlNet等
 LAMA_CLEANER_IMAGE:
   LABEL: 🧹 构建Lama Cleaner镜像
   HINT: 包含Lama Cleaner
-COMFYUI_IMAGE:
-  LABEL: 🎨 构建ComfyUI镜像
-  HINT: 包含ComfyUI
+COMFYUI_BASE_IMAGE:
+  LABEL: 🎨 构建ComfyUI基础镜像
+  HINT: 包含ComfyUI基础版
+COMFYUI_EXT_IMAGE:
+  LABEL: 🎨 构建ComfyUI附带常用插件的镜像
+  HINT: 包含ComfyUI基础版和常用插件
 SCREEN_NOT_FOUND: 未检测到 screen，现在将自动安装...
 SCREEN_INSTALLED_SUCCESSFULLY: 已成功安装 screen。
 SCREEN_INSTALLATION_FAILED: 安装 screen 时出错，请手动安装。

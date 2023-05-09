@@ -1,5 +1,5 @@
 TOOL_NAME: Simple Container Image Builder
-SELECT_OPERATION: 'Please select an operation:'
+SELECT_OPERATION: "Please select an operation:"
 START_CONTAINER:
   LABEL: 🚀 Start Container
   HINT: Execute docker-compose.yaml
@@ -16,7 +16,7 @@ GPU_STATUS:
 GEN_DOCKER_COMPOSE:
   LABEL: 📝 Generate docker-compose.yaml
   HINT: Generate docker-compose.yaml from template
-SELECT_PROJECT_TYPE: 'Select a build scheme:'
+SELECT_PROJECT_TYPE: "Select a build scheme:"
 OPERATION_CANCELLED: Operation cancelled.
 CLEANING_DOCKER_RESOURCES: Cleaning unused Docker resources...
 DOCKER_RESOURCES_CLEANED_SUCCESSFULLY: 🧹🔜👌 Docker resources cleaned successfully.
@@ -31,14 +31,14 @@ STOPPING_AND_REMOVING_DOCKER_CONTAINERS: Stopping and removing old Docker contai
 DOCKER_CONTAINERS_STOPPED_AND_REMOVED: Old Docker containers stopped and removed.
 STARTING_NEW_TEST_CONTAINER: Starting new 🧪 test container...
 STARTING_NEW_PROD_CONTAINER: Starting new 🏭 production container...
-CONTAINER_RUNNING:  container {{repositoryName}} is running.
+CONTAINER_RUNNING: container {{repositoryName}} is running.
 AUTO_LAUNCHER_INSTALLED_SUCCESSFULLY: Auto-launch service installed successfully.
 ERROR_INSTALLING_AUTO_LAUNCHER: Error installing auto-launch service.
 NVITOP_ALREADY_INSTALLED: Nvitop is already installed.
 INSTALLING_NVITOP: Nvitop is not installed. Installing now...
 NVITOP_SUCCESSFULLY_INSTALLED: Nvitop installed successfully.
 NVITOP_INSTALLATION_FAILED: Failed to install Nvitop.
-CONDA_IMAGE: 
+CONDA_IMAGE:
   LABEL: 🐍 Build Conda Image
   HINT: Based on nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 image, includes MiniConda, JupyterLab, and Openbayes theme
 PYTORCH_IMAGE:
@@ -52,9 +52,12 @@ SDWEBUI_EXT_IMAGE:
 LAMA_CLEANER_IMAGE:
   LABEL: 🧹 Build LAMA Cleaner Image
   HINT: Includes LAMA Cleaner
-COMFYUI_IMAGE:
+COMFYUI_BASE_IMAGE:
   LABEL: 🛋️ Build ComfyUI Image
   HINT: Includes ComfyUI
+COMFYUI_EXT_IMAGE:
+  LABEL: 🧩 Build ComfyUI Extended Image
+  HINT: Includes WASNodes, ControlNet Preprocessorsetc.
 SCREEN_NOT_FOUND: screen not found, now installing...
 SCREEN_INSTALLED_SUCCESSFULLY: screen installed successfully.
 SCREEN_INSTALLATION_FAILED: Error installing screen, please install manually.
@@ -66,16 +69,16 @@ BUILDING_IMAGE_VIA_DOCKER: Building image {{tag}} via Docker
 REBUILDING_IMAGE_VIA_DOCKER: Rebuilding image {{tag}} via Docker
 IMAGE_SUCCESSFULLY_BUILT_VIA_DOCKER: Image {{tag}} built successfully via Docker.
 IMAGE_BUILD_FAILED: Failed to build image {{tag}}.
-ALL_DOCKER_IMAGES_LIST: 'All Docker images list:'
+ALL_DOCKER_IMAGES_LIST: "All Docker images list:"
 TERMINATING_CHILD_PROCESS: ❗Received ⌃C, terminating child process...
 CHILD_PROCESS_TERMINATED: ⛔ Child process terminated.
-CHILD_PROCESS_EXITED: 'Child process exited with code:'
+CHILD_PROCESS_EXITED: "Child process exited with code:"
 STOP_RELOAD_START: Stopping, reloading and starting the service...
 CLOSED_WITH_CODE: Child process exited with code {{code}}
-ERROR_PRINT: 'Error: {{err}}'
+ERROR_PRINT: "Error: {{err}}"
 BUILD_SUCCESSFULLY: 🛠️👌 Build successfully.
-SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: 'Select dependencies to build from scratch:'
-CURRENT_CHOICE: 'Current choice'
+SELECT_DEPENDENCIES_TO_BUILD_FROM_SCRATCH: "Select dependencies to build from scratch:"
+CURRENT_CHOICE: "Current choice"
 SCREEN_SESSION_ALREADY_RUNNING: A screen session with the same project name is already running. Do you want to restart the container?
 RESTART: Restart
 DO_NOT_RESTART: Do not restart

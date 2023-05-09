@@ -46,6 +46,9 @@ RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris
 RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://github.com/isl-org/MiDaS midas && cd midas && git checkout b845b78
 # # 安装Civitai插件
 # RUN git clone --depth=1 https://github.com/civitai/sd_civitai_extension
+# 安装 SD-CN-Animation 拓展
+RUN git clone --depth=1 https://github.com/volotat/SD-CN-Animation
+
 
 # 进行一次安装，以便将插件的依赖安装到容器中
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui
