@@ -18,7 +18,7 @@ from demo import load_checkpoints
 from demo import make_animation
 from ffhq_dataset.face_alignment import image_align
 from ffhq_dataset.landmarks_detector import LandmarksDetector
-
+from datetime import datetime
 
 warnings.filterwarnings("ignore")
 
@@ -29,7 +29,6 @@ LANDMARKS_DETECTOR = LandmarksDetector("shape_predictor_68_face_landmarks.dat")
 
 class Predictor(BasePredictor):
     def setup(self):
-
         self.device = torch.device("cuda:0")
         datasets = ["vox", "taichi", "ted", "mgif"]
         (
@@ -66,7 +65,6 @@ class Predictor(BasePredictor):
             description="Choose a dataset.",
         ),
     ) -> Path:
-
         predict_mode = "relative"  # ['standard', 'relative', 'avd']
         # find_best_frame = False
 
@@ -74,8 +72,8 @@ class Predictor(BasePredictor):
 
         if dataset_name == "vox":
             # first run face alignment
-            align_image(str(source_image), 'aligned.png')
-            source_image = imageio.imread('aligned.png')
+            align_image(str(source_image), "aligned.png")
+            source_image = imageio.imread("aligned.png")
         else:
             source_image = imageio.imread(str(source_image))
         reader = imageio.get_reader(str(driving_video))
@@ -112,14 +110,22 @@ class Predictor(BasePredictor):
             mode=predict_mode,
         )
 
+        # create output directory if not exists
+        output_dir = "output"
+        os.makedirs(output_dir, exist_ok=True)
+
+        # generate output file name with current timestamp
+        current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        output_file_name = f"{current_time}.mp4"
+        output_path = os.path.join(output_dir, output_file_name)
+
         # save resulting video
-        out_path = Path(tempfile.mkdtemp()) / "output.mp4"
         imageio.mimsave(
-            str(out_path), [img_as_ubyte(frame) for frame in predictions], fps=fps
+            output_path, [img_as_ubyte(frame) for frame in predictions], fps=fps
         )
-        return out_path
+        return Path(output_path)
 
 
 def align_image(raw_img_path, aligned_face_path):
     for i, face_landmarks in enumerate(LANDMARKS_DETECTOR.get_landmarks(raw_img_path), start=1):
-        image_align(raw_img_path, aligned_face_path, face_landmarks)
+        image_align(raw_img_path, aligned_face_path, face_landmarks) 
