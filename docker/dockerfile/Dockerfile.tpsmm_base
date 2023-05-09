@@ -62,4 +62,6 @@ RUN conda activate py3.10.6 && pip install cog
 # from ffhq_dataset.landmarks_detector import LandmarksDetector
 RUN cd Thin-Plate-Spline-Motion-Model && git clone https://github.com/Puzer/stylegan-encoder.git
 
+RUN conda activate py3.10.6 && pip install moviepy
+
 WORKDIR $NOTEBOOK_DIR/Thin-Plate-Spline-Motion-Model
