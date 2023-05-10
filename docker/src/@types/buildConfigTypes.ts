@@ -24,6 +24,9 @@ export interface BuildConfigTypes {
     contextDir: string; // 构建上下文文件夹路径
     absContextPath: string; // 经过绝对路径处理的构建上下文路径
     serviceOptions: ServiceOptions;
+    // 项目启动配置
+    launchTest?: boolean;
+    launchProd?: boolean;
   };
 }
 

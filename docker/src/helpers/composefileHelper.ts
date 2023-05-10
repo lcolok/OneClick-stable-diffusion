@@ -27,8 +27,22 @@ function generateTestServices(
 }
 
 const productionServices: ServiceOptions[] = globalConfig.projectOptions
-  .filter((option: BuildConfigTypes) => option.serviceOptions !== undefined)
+  .filter(
+    (option: BuildConfigTypes) =>
+      option.serviceOptions !== undefined && option.launchProd,
+  )
   .map((option: BuildConfigTypes) => option.serviceOptions) as ServiceOptions[];
+
+const testServices: ServiceOptions[] = globalConfig.projectOptions
+  .filter(
+    (option: BuildConfigTypes) =>
+      option.serviceOptions !== undefined && option.launchTest,
+  )
+  .map((option: BuildConfigTypes) => option.serviceOptions) as ServiceOptions[];
+
+// console.log(globalConfig.projectOptions);
+// console.log(productionServices);
+// console.log(testServices);
 
 const environments: Record<Environment, EnvironmentConfig> = {
   production: {
@@ -37,7 +51,7 @@ const environments: Record<Environment, EnvironmentConfig> = {
   },
   test: {
     env: 'test',
-    services: generateTestServices(productionServices, 1), // Replace 1 with your desired offset
+    services: generateTestServices(testServices, 1), // Replace 1 with your desired offset
   },
 };
 

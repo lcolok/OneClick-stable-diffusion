@@ -49,6 +49,8 @@ dockerBuildConfig:
     hint: SDWEBUI_EXT_IMAGE.HINT
     dependencies: [conda_build, py_build, sdwebui_base_build]
     endpointBuild: true
+    launchTest: false
+    launchProd: false
     serviceOptions:
       serviceName: sd_service
       containerName: sd_container
@@ -73,12 +75,13 @@ dockerBuildConfig:
   lama_cleaner_build:
     <<: *defaults
     tag: lama_cleaner:rtx4090
-    launchDockerfile: Dockerfile.lama_cleaner.launch
     dockerfile: Dockerfile.lama_cleaner
     label: LAMA_CLEANER_IMAGE.LABEL
     hint: LAMA_CLEANER_IMAGE.HINT
     dependencies: [conda_build, py_build]
     endpointBuild: true
+    launchTest: false
+    launchProd: false
     serviceOptions:
       serviceName: lama_cleaner
       containerName: lama_cleaner_container
@@ -91,7 +94,6 @@ dockerBuildConfig:
   comfyui_base_build:
     <<: *defaults
     tag: comfyui_base:rtx4090
-    launchDockerfile: Dockerfile.comfyui.launch
     dockerfile: Dockerfile.comfyui_base
     label: COMFYUI_BASE_IMAGE.LABEL
     hint: COMFYUI_BASE_IMAGE.HINT
@@ -100,12 +102,13 @@ dockerBuildConfig:
   comfyui_ext_build:
     <<: *defaults
     tag: comfyui_ext:rtx4090
-    launchDockerfile: Dockerfile.comfyui.launch
     dockerfile: Dockerfile.comfyui_ext
     label: COMFYUI_EXT_IMAGE.LABEL
     hint: COMFYUI_EXT_IMAGE.HINT
     dependencies: [conda_build, py_build, comfyui_base_build]
     endpointBuild: true
+    launchTest: false
+    launchProd: false
     serviceOptions:
       serviceName: comfyui
       containerName: comfyui_container
@@ -123,12 +126,13 @@ dockerBuildConfig:
   tpsmm_base_build:
     <<: *defaults
     tag: tpsmm_base:rtx4090
-    launchDockerfile: Dockerfile.tpsmm_base.launch
     dockerfile: Dockerfile.tpsmm_base
     label: TPSMM_BASE_IMAGE.LABEL
     hint: TPSMM_BASE_IMAGE.HINT
     dependencies: [conda_build, py_build]
     endpointBuild: true
+    launchTest: true
+    launchProd: true
     serviceOptions:
       serviceName: tpsmm
       containerName: tpsmm_container
@@ -141,4 +145,3 @@ dockerBuildConfig:
         - /home/lco/下载/output:${cont_tps}/output
         - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:${cont_tps}/predict.py
         - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predictor.py:${cont_tps}/predictor.py
-       
