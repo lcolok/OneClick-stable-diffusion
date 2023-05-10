@@ -1,13 +1,18 @@
-import { SelectOptions } from '@clack/prompts';
 import { ServiceOptions } from '@types';
 
 export interface GlobalConfigTypes {
   dockerBuildConfig: BuildConfigTypes;
   buildList: string[];
   buildConfig: BuildConfigTypes;
-  projectOptions: SelectOptions<any, string> extends { options: infer O }
-    ? O
-    : never;
+  projectOptions: ProjectOption[];
+}
+
+// 新增 ProjectOption 接口
+export interface ProjectOption {
+  value: string;
+  label: string;
+  hint?: string;
+  serviceOptions?: ServiceOptions;
 }
 
 // 定义构建配置类型
@@ -24,9 +29,6 @@ export interface BuildConfigTypes {
     contextDir: string; // 构建上下文文件夹路径
     absContextPath: string; // 经过绝对路径处理的构建上下文路径
     serviceOptions: ServiceOptions;
-    // 项目启动配置
-    launchTest?: boolean;
-    launchProd?: boolean;
   };
 }
 

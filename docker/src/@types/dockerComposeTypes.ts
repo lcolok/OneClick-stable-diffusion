@@ -40,6 +40,11 @@ export interface ServiceOptions {
   launchDockerfile: string;
   mountVolumes?: string[];
   portMappings: PortMappingsType;
+  // 项目启动配置
+  launch?: {
+    test?: boolean;
+    prod?: boolean;
+  };
 }
 
 export interface DockerComposeGenOptions {

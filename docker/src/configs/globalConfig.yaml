@@ -49,8 +49,6 @@ dockerBuildConfig:
     hint: SDWEBUI_EXT_IMAGE.HINT
     dependencies: [conda_build, py_build, sdwebui_base_build]
     endpointBuild: true
-    launchTest: false
-    launchProd: false
     serviceOptions:
       serviceName: sd_service
       containerName: sd_container
@@ -58,6 +56,9 @@ dockerBuildConfig:
       portMappings:
         JUPYTER_PORT: 33333
         SDWEBUI_PORT: 7860
+      launch:
+        test: false
+        prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
         - ${host_sdw}/models:${cont_sdw}/models
@@ -80,14 +81,15 @@ dockerBuildConfig:
     hint: LAMA_CLEANER_IMAGE.HINT
     dependencies: [conda_build, py_build]
     endpointBuild: true
-    launchTest: false
-    launchProd: false
     serviceOptions:
       serviceName: lama_cleaner
       containerName: lama_cleaner_container
       launchDockerfile: Dockerfile.lama_cleaner.launch
       portMappings:
         LAMA_CLEANER_PORT: 8080
+      launch:
+        test: false
+        prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
 
@@ -107,14 +109,15 @@ dockerBuildConfig:
     hint: COMFYUI_EXT_IMAGE.HINT
     dependencies: [conda_build, py_build, comfyui_base_build]
     endpointBuild: true
-    launchTest: false
-    launchProd: false
     serviceOptions:
       serviceName: comfyui
       containerName: comfyui_container
       launchDockerfile: Dockerfile.comfyui.launch
       portMappings:
         COMFYUI_PORT: 8188
+      launch:
+        test: false
+        prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
         - ${host_sdw}/models/Stable-diffusion:${cont_cui}/models/checkpoints
@@ -131,13 +134,14 @@ dockerBuildConfig:
     hint: TPSMM_BASE_IMAGE.HINT
     dependencies: [conda_build, py_build]
     endpointBuild: true
-    launchTest: true
-    launchProd: true
     serviceOptions:
       serviceName: tpsmm
       containerName: tpsmm_container
       launchDockerfile: Dockerfile.tpsmm_base.launch
       portMappings: []
+      launch:
+        test: true
+        prod: false
       mountVolumes:
         - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/checkpoints:${cont_tps}/checkpoints
         - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:${cont_tps}/shape_predictor_68_face_landmarks.dat

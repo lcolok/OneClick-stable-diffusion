@@ -5,6 +5,7 @@ import {
   EnvironmentConfig,
   ServiceOptions,
   BuildConfigTypes,
+  ProjectOption,
 } from '@types';
 import { dockerComposeGen } from '@utils';
 import { path as projectRootDir } from 'app-root-path';
@@ -28,17 +29,17 @@ function generateTestServices(
 
 const productionServices: ServiceOptions[] = globalConfig.projectOptions
   .filter(
-    (option: BuildConfigTypes) =>
-      option.serviceOptions !== undefined && option.launchProd,
+    (option: ProjectOption) =>
+      option.serviceOptions && option.serviceOptions.launch?.prod,
   )
-  .map((option: BuildConfigTypes) => option.serviceOptions) as ServiceOptions[];
+  .map((option: ProjectOption) => option.serviceOptions) as ServiceOptions[];
 
 const testServices: ServiceOptions[] = globalConfig.projectOptions
   .filter(
-    (option: BuildConfigTypes) =>
-      option.serviceOptions !== undefined && option.launchTest,
+    (option: ProjectOption) =>
+      option.serviceOptions && option.serviceOptions.launch?.test,
   )
-  .map((option: BuildConfigTypes) => option.serviceOptions) as ServiceOptions[];
+  .map((option: ProjectOption) => option.serviceOptions) as ServiceOptions[];
 
 // console.log(globalConfig.projectOptions);
 // console.log(productionServices);

@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import nunjucks from 'nunjucks';
-import { GlobalConfigTypes } from '@types';
+import { GlobalConfigTypes, BuildConfigTypes } from '@types';
 import { generateBuildConfigTypesWithDockerfilePath } from './imageBuildConfig';
 
 const configFile = path.join(__dirname, './globalConfig.yaml');
@@ -44,13 +44,10 @@ const buildConfig =
   generateBuildConfigTypesWithDockerfilePath(parsedGlobalConfig);
 
 const projectOptions = Object.keys(buildConfig).map((key) => {
-  const { label, hint, serviceOptions, launchTest, launchProd } =
-    buildConfig[key];
+  const { label, hint, serviceOptions } = buildConfig[key];
   return {
     value: key,
     label,
-    launchTest,
-    launchProd,
     ...(hint && { hint }),
     ...(serviceOptions && { serviceOptions }),
   };
