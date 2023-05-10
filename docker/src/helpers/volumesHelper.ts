@@ -79,7 +79,7 @@ function generateVolumesForComfyUI({
       target: '/root/.cache',
     },
     {
-      source: `${host_comfyui_dir}/models`,
+      source: `${host_comfyui_dir}/ComfyUI/models`,
       target: `${container_comfyui_dir}/models`,
     },
     {

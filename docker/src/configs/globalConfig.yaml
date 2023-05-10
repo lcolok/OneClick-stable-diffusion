@@ -100,7 +100,7 @@ dockerBuildConfig:
         COMFYUI_PORT: 8188
       mountVolumes:
         - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache
-        - /mnt/flies/AI_research/Stable_Diffusion/models:/home/ComfyUI/models
+        - /mnt/flies/AI_research/Stable_Diffusion/ComfyUI/models:/home/ComfyUI/models
         - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/Stable-diffusion:/home/ComfyUI/models/checkpoints
         - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/models:/home/ComfyUI/models/controlnet
         - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/Lora:/home/ComfyUI/models/loras
