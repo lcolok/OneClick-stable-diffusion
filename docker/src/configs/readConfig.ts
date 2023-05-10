@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as path from 'path';
 import nunjucks from 'nunjucks';
-import { GlobalConfigTypes, BuildConfigTypes } from '@types';
+import { GlobalConfigTypes } from '@types';
 import { generateBuildConfigTypesWithDockerfilePath } from './imageBuildConfig';
 
 const configFile = path.join(__dirname, './globalConfig.yaml');
@@ -35,7 +35,11 @@ const replacedYamlContent = env.renderString(
 const parsedGlobalConfig = yaml.load(replacedYamlContent) as GlobalConfigTypes;
 
 const buildList = Object.keys(parsedGlobalConfig.dockerBuildConfig).filter(
-  (key) => parsedGlobalConfig.dockerBuildConfig[key].endpointBuild,
+  (key) =>
+    parsedGlobalConfig.dockerBuildConfig[key].endpointBuild &&
+    parsedYaml.dockerBuildConfig[key].serviceOptions &&
+    (parsedYaml.dockerBuildConfig[key].serviceOptions.launch?.prod ||
+      parsedYaml.dockerBuildConfig[key].serviceOptions.launch?.test),
 );
 
 // console.log(parsedGlobalConfig.dockerBuildConfig.sdwebui_ext_build.serviceOptions.mountVolumes);
