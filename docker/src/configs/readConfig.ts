@@ -14,6 +14,17 @@ const templateVariables = parsedYaml.templateVariables;
 delete parsedYaml.templateVariables;
 
 const env = nunjucks.configure({ tags: { variableStart: '${', variableEnd: '}' } });
+
+// Render strings in arrays
+for (const key in parsedYaml.dockerBuildConfig) {
+  const serviceOptions = parsedYaml.dockerBuildConfig[key].serviceOptions;
+  if (serviceOptions && serviceOptions.mountVolumes) {
+    serviceOptions.mountVolumes = serviceOptions.mountVolumes.map((volume: string) =>
+      env.renderString(volume, templateVariables),
+    );
+  }
+}
+
 const replacedYamlContent = env.renderString(yaml.dump(parsedYaml), templateVariables);
 
 const parsedGlobalConfig = yaml.load(replacedYamlContent) as GlobalConfigTypes;
@@ -22,7 +33,7 @@ const buildList = Object.keys(parsedGlobalConfig.dockerBuildConfig).filter(
   (key) => parsedGlobalConfig.dockerBuildConfig[key].endpointBuild,
 );
 
-console.log(parsedGlobalConfig.dockerBuildConfig.sdwebui_ext_build.serviceOptions.mountVolumes);
+// console.log(parsedGlobalConfig.dockerBuildConfig.sdwebui_ext_build.serviceOptions.mountVolumes);
 
 const buildConfig = generateBuildConfigTypesWithDockerfilePath(parsedGlobalConfig);
 

@@ -4,14 +4,18 @@ defaults: &defaults
   contextDir: ./context
 
 templateVariables:
+  # 基础路径
+  host_base: /mnt/flies/AI_research/Stable_Diffusion
   # 宿主中的Stable Diffusion WebUI文件夹路径
-  hsd: /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master
+  host_sdw: ${host_base}/stable-diffusion-webui-master
   # 容器中的Stable Diffusion WebUI文件夹路径
-  csd: /home/stable-diffusion-webui
+  cont_sdw: /home/stable-diffusion-webui
   # 宿主中的 ComfyUI 文件夹路径
-  hcu: /mnt/flies/AI_research/Stable_Diffusion/ComfyUI
+  host_cui: ${host_base}/ComfyUI
   # 容器中的 ComfyUI 文件夹路径
-  ccu: /home/ComfyUI
+  cont_cui: /home/ComfyUI
+  # 容器中的 TPSMM 文件夹路径
+  cont_tps: /home/Thin-Plate-Spline-Motion-Model
 
 # 引用锚点
 dockerBuildConfig:
@@ -53,18 +57,18 @@ dockerBuildConfig:
         JUPYTER_PORT: 33333
         SDWEBUI_PORT: 7860
       mountVolumes:
-        - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache
-        - ${hsd}/models:${csd}/models
-        - ${hsd}/embeddings:${csd}/embeddings
-        - ${hsd}/interrogate:${csd}/interrogate
-        - ${hsd}/models/SadTalker/checkpoints:${csd}/extensions/SadTalker/checkpoints/
-        - ${hsd}/models/SadTalker/gfpgan:${csd}/extensions/SadTalker/gfpgan/
-        - ${hsd}/outputs:${csd}/outputs
-        - ${hsd}/extensions/sd-webui-controlnet/models:${csd}/extensions/sd-webui-controlnet/models
-        - ${hsd}/extensions/sd-webui-controlnet/annotator/downloads:${csd}/extensions/sd-webui-controlnet/annotator/downloads
-        - ${hsd}/cache.json:${csd}/cache.json
-        - ${hsd}/config.json:${csd}/config.json
-        - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:${csd}/extensions/stable-diffusion-webui-wildcards/wildcards
+        - ${host_base}/.cache:/root/.cache
+        - ${host_sdw}/models:${cont_sdw}/models
+        - ${host_sdw}/embeddings:${cont_sdw}/embeddings
+        - ${host_sdw}/interrogate:${cont_sdw}/interrogate
+        - ${host_sdw}/models/SadTalker/checkpoints:${cont_sdw}/extensions/SadTalker/checkpoints/
+        - ${host_sdw}/models/SadTalker/gfpgan:${cont_sdw}/extensions/SadTalker/gfpgan/
+        - ${host_sdw}/outputs:${cont_sdw}/outputs
+        - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_sdw}/extensions/sd-webui-controlnet/models
+        - ${host_sdw}/extensions/sd-webui-controlnet/annotator/downloads:${cont_sdw}/extensions/sd-webui-controlnet/annotator/downloads
+        - ${host_sdw}/cache.json:${cont_sdw}/cache.json
+        - ${host_sdw}/config.json:${cont_sdw}/config.json
+        - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:${cont_sdw}/extensions/stable-diffusion-webui-wildcards/wildcards
 
   lama_cleaner_build:
     <<: *defaults
@@ -82,7 +86,7 @@ dockerBuildConfig:
       portMappings:
         LAMA_CLEANER_PORT: 8080
       mountVolumes:
-        - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache
+        - ${host_base}/.cache:/root/.cache
 
   comfyui_base_build:
     <<: *defaults
@@ -109,12 +113,12 @@ dockerBuildConfig:
       portMappings:
         COMFYUI_PORT: 8188
       mountVolumes:
-        - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache
-        - ${hcu}/models:${ccu}/models
-        - ${hsd}/models/Stable-diffusion:${ccu}/models/checkpoints
-        - ${hsd}/extensions/sd-webui-controlnet/models:${ccu}/models/controlnet
-        - ${hsd}/models/Lora:${ccu}/models/loras
-        - ${hcu}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${ccu}/custom_nodes/comfy_controlnet_preprocessors/ckpts
+        - ${host_base}/.cache:/root/.cache
+        - ${cont_cui}/models:${cont_cui}/models
+        - ${host_sdw}/models/Stable-diffusion:${cont_cui}/models/checkpoints
+        - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_cui}/models/controlnet
+        - ${host_sdw}/models/Lora:${cont_cui}/models/loras
+        - ${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
 
   tpsmm_base_build:
     <<: *defaults
@@ -131,9 +135,9 @@ dockerBuildConfig:
       launchDockerfile: Dockerfile.tpsmm_base.launch
       portMappings: []
       mountVolumes:
-        - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/checkpoints:/home/Thin-Plate-Spline-Motion-Model/checkpoints
-        - /home/lco/下载/tps_docker_demo:/home/Thin-Plate-Spline-Motion-Model/input
-        - /home/lco/下载/output:/home/Thin-Plate-Spline-Motion-Model/output
-        - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:/home/Thin-Plate-Spline-Motion-Model/predict.py
-        - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predictor.py:/home/Thin-Plate-Spline-Motion-Model/predictor.py
-        - /home/lco/GitHub/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:/home/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat
+        - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/checkpoints:${cont_tps}/checkpoints
+        - /home/lco/下载/tps_docker_demo:${cont_tps}/input
+        - /home/lco/下载/output:${cont_tps}/output
+        - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:${cont_tps}/predict.py
+        - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predictor.py:${cont_tps}/predictor.py
+        - /home/lco/GitHub/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:${cont_tps}/shape_predictor_68_face_landmarks.dat
