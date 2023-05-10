@@ -3,6 +3,16 @@ defaults: &defaults
   dockerfilesDir: ./dockerfile
   contextDir: ./context
 
+templateVariables:
+  # 宿主中的Stable Diffusion WebUI文件夹路径
+  hsd: /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master
+  # 容器中的Stable Diffusion WebUI文件夹路径
+  csd: /home/stable-diffusion-webui
+  # 宿主中的 ComfyUI 文件夹路径
+  hcu: /mnt/flies/AI_research/Stable_Diffusion/ComfyUI
+  # 容器中的 ComfyUI 文件夹路径
+  ccu: /home/ComfyUI
+
 # 引用锚点
 dockerBuildConfig:
   conda_build:
@@ -44,17 +54,17 @@ dockerBuildConfig:
         SDWEBUI_PORT: 7860
       mountVolumes:
         - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models:/home/stable-diffusion-webui/models
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/embeddings:/home/stable-diffusion-webui/embeddings
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/interrogate:/home/stable-diffusion-webui/interrogate
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/SadTalker/checkpoints:/home/stable-diffusion-webui/extensions/SadTalker/checkpoints/
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/SadTalker/gfpgan:/home/stable-diffusion-webui/extensions/SadTalker/gfpgan/
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/outputs:/home/stable-diffusion-webui/outputs
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/models:/home/stable-diffusion-webui/extensions/sd-webui-controlnet/models
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/annotator/downloads:/home/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/cache.json:/home/stable-diffusion-webui/cache.json
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/config.json:/home/stable-diffusion-webui/config.json
-        - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:/home/stable-diffusion-webui/extensions/stable-diffusion-webui-wildcards/wildcards
+        - ${hsd}/models:${csd}/models
+        - ${hsd}/embeddings:${csd}/embeddings
+        - ${hsd}/interrogate:${csd}/interrogate
+        - ${hsd}/models/SadTalker/checkpoints:${csd}/extensions/SadTalker/checkpoints/
+        - ${hsd}/models/SadTalker/gfpgan:${csd}/extensions/SadTalker/gfpgan/
+        - ${hsd}/outputs:${csd}/outputs
+        - ${hsd}/extensions/sd-webui-controlnet/models:${csd}/extensions/sd-webui-controlnet/models
+        - ${hsd}/extensions/sd-webui-controlnet/annotator/downloads:${csd}/extensions/sd-webui-controlnet/annotator/downloads
+        - ${hsd}/cache.json:${csd}/cache.json
+        - ${hsd}/config.json:${csd}/config.json
+        - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:${csd}/extensions/stable-diffusion-webui-wildcards/wildcards
 
   lama_cleaner_build:
     <<: *defaults
@@ -100,11 +110,11 @@ dockerBuildConfig:
         COMFYUI_PORT: 8188
       mountVolumes:
         - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache
-        - /mnt/flies/AI_research/Stable_Diffusion/ComfyUI/models:/home/ComfyUI/models
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/Stable-diffusion:/home/ComfyUI/models/checkpoints
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/models:/home/ComfyUI/models/controlnet
-        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/Lora:/home/ComfyUI/models/loras
-        - /mnt/flies/AI_research/Stable_Diffusion/ComfyUI/custom_nodes/comfy_controlnet_preprocessors/ckpts:/home/ComfyUI/custom_nodes/comfy_controlnet_preprocessors/ckpts
+        - ${hcu}/models:${ccu}/models
+        - ${hsd}/models/Stable-diffusion:${ccu}/models/checkpoints
+        - ${hsd}/extensions/sd-webui-controlnet/models:${ccu}/models/controlnet
+        - ${hsd}/models/Lora:${ccu}/models/loras
+        - ${hcu}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${ccu}/custom_nodes/comfy_controlnet_preprocessors/ckpts
 
   tpsmm_base_build:
     <<: *defaults
