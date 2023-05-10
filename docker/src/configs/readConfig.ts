@@ -8,45 +8,48 @@ import { generateBuildConfigTypesWithDockerfilePath } from './imageBuildConfig';
 const configFile = path.join(__dirname, './globalConfig.yaml');
 const yamlContent = fs.readFileSync(configFile, 'utf8');
 
-const parsedYaml = yaml.load(yamlContent) as any;
-const templateVariables = parsedYaml.templateVariables;
+const rawConfig = yaml.load(yamlContent) as any;
+const config = {
+  dockerBuildConfig: {},
+  templateVariables: {},
+  ...rawConfig,
+};
 
-delete parsedYaml.templateVariables;
+if (config.templateVariables) {
+  const env = nunjucks.configure({
+    tags: { variableStart: '${', variableEnd: '}' },
+  });
+  config.templateVariables = env.renderString(
+    JSON.stringify(config.templateVariables),
+    config.templateVariables,
+  );
+  config.templateVariables = JSON.parse(config.templateVariables);
+}
 
-const env = nunjucks.configure({
-  tags: { variableStart: '${', variableEnd: '}' },
-});
-
-// Render strings in arrays
-for (const key in parsedYaml.dockerBuildConfig) {
-  const serviceOptions = parsedYaml.dockerBuildConfig[key].serviceOptions;
+for (const key in config.dockerBuildConfig) {
+  const buildConfig = config.dockerBuildConfig[key];
+  const serviceOptions = buildConfig.serviceOptions;
   if (serviceOptions && serviceOptions.mountVolumes) {
-    serviceOptions.mountVolumes = serviceOptions.mountVolumes.map(
-      (volume: string) => env.renderString(volume, templateVariables),
+    const env = nunjucks.configure({
+      tags: { variableStart: '${', variableEnd: '}' },
+    });
+    buildConfig.serviceOptions.mountVolumes = serviceOptions.mountVolumes.map(
+      (volume: string) => env.renderString(volume, config.templateVariables),
     );
   }
 }
 
-const replacedYamlContent = env.renderString(
-  yaml.dump(parsedYaml),
-  templateVariables,
-);
+const buildList = Object.keys(config.dockerBuildConfig).filter((key) => {
+  const buildConfig = config.dockerBuildConfig[key];
+  const serviceOptions = buildConfig.serviceOptions;
+  return (
+    buildConfig.endpointBuild &&
+    serviceOptions &&
+    (serviceOptions.launch?.prod || serviceOptions.launch?.test)
+  );
+});
 
-const parsedGlobalConfig = yaml.load(replacedYamlContent) as GlobalConfigTypes;
-
-const buildList = Object.keys(parsedGlobalConfig.dockerBuildConfig).filter(
-  (key) =>
-    parsedGlobalConfig.dockerBuildConfig[key].endpointBuild &&
-    parsedYaml.dockerBuildConfig[key].serviceOptions &&
-    (parsedYaml.dockerBuildConfig[key].serviceOptions.launch?.prod ||
-      parsedYaml.dockerBuildConfig[key].serviceOptions.launch?.test),
-);
-
-// console.log(parsedGlobalConfig.dockerBuildConfig.sdwebui_ext_build.serviceOptions.mountVolumes);
-
-const buildConfig =
-  generateBuildConfigTypesWithDockerfilePath(parsedGlobalConfig);
-
+const buildConfig = generateBuildConfigTypesWithDockerfilePath(config);
 const projectOptions = Object.keys(buildConfig).map((key) => {
   const { label, hint, serviceOptions } = buildConfig[key];
   return {
@@ -58,8 +61,8 @@ const projectOptions = Object.keys(buildConfig).map((key) => {
 });
 
 export const globalConfig: GlobalConfigTypes = {
-  ...parsedGlobalConfig,
-  buildList: buildList,
-  buildConfig: buildConfig,
-  projectOptions: projectOptions,
+  ...config,
+  buildList,
+  buildConfig,
+  projectOptions,
 };
