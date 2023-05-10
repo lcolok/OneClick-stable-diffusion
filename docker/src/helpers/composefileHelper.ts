@@ -29,16 +29,16 @@ function generateTestServices(
 }
 
 const productionServices: ServiceOptions[] = [
-  // {
-  //   serviceName: 'sd_service',
-  //   containerName: 'sd_container',
-  //   launchDockerfile: 'Dockerfile.sdwebui_ext.launch',
-  //   portMappings: {
-  //     JUPYTER_PORT: 33333,
-  //     SDWEBUI_PORT: 7860,
-  //   },
-  //   mountVolumes: generatedVolumesForSdWebUI,
-  // },
+  {
+    serviceName: 'sd_service',
+    containerName: 'sd_container',
+    launchDockerfile: 'Dockerfile.sdwebui_ext.launch',
+    portMappings: {
+      JUPYTER_PORT: 33333,
+      SDWEBUI_PORT: 7860,
+    },
+    mountVolumes: generatedVolumesForSdWebUI,
+  },
   // {
   //   serviceName: 'lama_cleaner',
   //   containerName: 'lama_cleaner_container',

@@ -1,8 +1,6 @@
 import { SelectOptions } from '@clack/prompts';
 
 export interface GlobalConfigTypes {
-  dockerfilesDir: string;
-  contextDir: string;
   dockerBuildConfig: BuildConfigTypes;
   buildList: string[];
   buildConfig: BuildConfigTypes;
@@ -17,19 +15,21 @@ export interface BuildConfigTypes {
     tag: string; // 镜像标签
     dockerfile: string; // Dockerfile 文件名
     launchDockerfile: string; // 启动 Dockerfile 文件名
-    dockerfilePath: string; // Dockerfile 文件路径
-    contextPath: string; // 构建上下文路径
     label: string; // 项目标签
     hint?: string; // 项目提示
     dependencies: string[]; // 依赖列表
     endpointBuild?: boolean; // 是否为端点构建
+    dockerfilesDir: string; // Dockerfile 文件夹路径
+    absDockerfilePath: string; // 经过绝对路径处理的 Dockerfile 文件路径
+    contextDir: string; // 构建上下文文件夹路径
+    absContextPath: string; // 经过绝对路径处理的构建上下文路径
   };
 }
 
 export interface BuildImageOptions {
   tag: string;
-  dockerfilePath: string;
-  contextPath: string;
+  absDockerfilePath: string;
+  absContextPath: string;
   flags?: string[];
 }
 

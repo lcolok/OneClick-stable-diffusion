@@ -25,8 +25,8 @@ import i18next from '@i18n';
 // 创建一个通用函数用于构建镜像
 export async function buildImage({
   tag,
-  dockerfilePath,
-  contextPath,
+  absDockerfilePath,
+  absContextPath,
   flags = [],
 }: BuildImageOptions): Promise<void> {
   await runCommand('docker', [
@@ -34,8 +34,8 @@ export async function buildImage({
     '-t',
     tag,
     '-f',
-    dockerfilePath,
-    contextPath,
+    absDockerfilePath,
+    absContextPath,
     ...flags,
   ]);
 }
@@ -107,8 +107,8 @@ export async function buildImagesRecursively({
     // 调用 buildImage 函数构建镜像
     await buildImage({
       tag: selectedConfig.tag,
-      dockerfilePath: selectedConfig.dockerfilePath!,
-      contextPath: selectedConfig.contextPath!,
+      absDockerfilePath: selectedConfig.absDockerfilePath as string,
+      absContextPath: selectedConfig.absContextPath as string,
       flags: noCacheFlag,
     });
     // 提示镜像构建成功
