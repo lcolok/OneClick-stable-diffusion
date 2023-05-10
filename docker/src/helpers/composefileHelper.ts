@@ -27,19 +27,15 @@ function generateTestServices(
   });
 }
 
-const productionServices: ServiceOptions[] = globalConfig.projectOptions
-  .filter(
-    (option: ProjectOption) =>
-      option.serviceOptions && option.serviceOptions.launch?.prod,
-  )
-  .map((option: ProjectOption) => option.serviceOptions) as ServiceOptions[];
+const productionServices: ServiceOptions[] =
+  globalConfig.projectOptions.flatMap((option: ProjectOption) =>
+    option.serviceOptions?.launch?.prod ? [option.serviceOptions] : [],
+  );
 
-const testServices: ServiceOptions[] = globalConfig.projectOptions
-  .filter(
-    (option: ProjectOption) =>
-      option.serviceOptions && option.serviceOptions.launch?.test,
-  )
-  .map((option: ProjectOption) => option.serviceOptions) as ServiceOptions[];
+const testServices: ServiceOptions[] = globalConfig.projectOptions.flatMap(
+  (option: ProjectOption) =>
+    option.serviceOptions?.launch?.test ? [option.serviceOptions] : [],
+);
 
 // console.log(globalConfig.projectOptions);
 // console.log(productionServices);
