@@ -114,11 +114,11 @@ dockerBuildConfig:
         COMFYUI_PORT: 8188
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
-        - ${cont_cui}/models:${cont_cui}/models
         - ${host_sdw}/models/Stable-diffusion:${cont_cui}/models/checkpoints
         - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_cui}/models/controlnet
         - ${host_sdw}/models/Lora:${cont_cui}/models/loras
-        - ${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
+        - ${host_cui}/models:${cont_cui}/models
+        - ${host_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
 
   tpsmm_base_build:
     <<: *defaults
@@ -136,8 +136,9 @@ dockerBuildConfig:
       portMappings: []
       mountVolumes:
         - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/checkpoints:${cont_tps}/checkpoints
+        - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:${cont_tps}/shape_predictor_68_face_landmarks.dat
         - /home/lco/下载/tps_docker_demo:${cont_tps}/input
         - /home/lco/下载/output:${cont_tps}/output
         - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:${cont_tps}/predict.py
         - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predictor.py:${cont_tps}/predictor.py
-        - /home/lco/GitHub/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:${cont_tps}/shape_predictor_68_face_landmarks.dat
+       
