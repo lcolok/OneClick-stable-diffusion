@@ -23,7 +23,6 @@ dockerBuildConfig:
   sdwebui_base_build:
     <<: *defaults
     tag: sdwebui_base:rtx4090
-    launchDockerfile: Dockerfile.sdwebui_base.launch
     dockerfile: Dockerfile.sdwebui_base
     label: SDWEBUI_BASE_IMAGE.LABEL
     dependencies: [conda_build, py_build]
@@ -31,12 +30,31 @@ dockerBuildConfig:
   sdwebui_ext_build:
     <<: *defaults
     tag: sdwebui_ext:rtx4090
-    launchDockerfile: Dockerfile.sdwebui_ext.launch
     dockerfile: Dockerfile.sdwebui_ext
     label: SDWEBUI_EXT_IMAGE.LABEL
     hint: SDWEBUI_EXT_IMAGE.HINT
     dependencies: [conda_build, py_build, sdwebui_base_build]
     endpointBuild: true
+    serviceOptions:
+      serviceName: sd_service
+      containerName: sd_container
+      launchDockerfile: Dockerfile.sdwebui_ext.launch
+      portMappings:
+        JUPYTER_PORT: 33333
+        SDWEBUI_PORT: 7860
+      mountVolumes:
+        - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models:/home/stable-diffusion-webui/models
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/embeddings:/home/stable-diffusion-webui/embeddings
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/interrogate:/home/stable-diffusion-webui/interrogate
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/SadTalker/checkpoints:/home/stable-diffusion-webui/extensions/SadTalker/checkpoints/
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/SadTalker/gfpgan:/home/stable-diffusion-webui/extensions/SadTalker/gfpgan/
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/outputs:/home/stable-diffusion-webui/outputs
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/models:/home/stable-diffusion-webui/extensions/sd-webui-controlnet/models
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/annotator/downloads:/home/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/cache.json:/home/stable-diffusion-webui/cache.json
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/config.json:/home/stable-diffusion-webui/config.json
+        - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:/home/stable-diffusion-webui/extensions/stable-diffusion-webui-wildcards/wildcards
 
   lama_cleaner_build:
     <<: *defaults
@@ -47,6 +65,14 @@ dockerBuildConfig:
     hint: LAMA_CLEANER_IMAGE.HINT
     dependencies: [conda_build, py_build]
     endpointBuild: true
+    serviceOptions:
+      serviceName: lama_cleaner
+      containerName: lama_cleaner_container
+      launchDockerfile: Dockerfile.lama_cleaner.launch
+      portMappings:
+        LAMA_CLEANER_PORT: 8080
+      mountVolumes:
+        - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache
 
   comfyui_base_build:
     <<: *defaults
@@ -66,6 +92,19 @@ dockerBuildConfig:
     hint: COMFYUI_EXT_IMAGE.HINT
     dependencies: [conda_build, py_build, comfyui_base_build]
     endpointBuild: true
+    serviceOptions:
+      serviceName: comfyui
+      containerName: comfyui_container
+      launchDockerfile: Dockerfile.comfyui.launch
+      portMappings:
+        COMFYUI_PORT: 8188
+      mountVolumes:
+        - /mnt/flies/AI_research/Stable_Diffusion/.cache:/root/.cache
+        - /mnt/flies/AI_research/Stable_Diffusion/models:/home/ComfyUI/models
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/Stable-diffusion:/home/ComfyUI/models/checkpoints
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/extensions/sd-webui-controlnet/models:/home/ComfyUI/models/controlnet
+        - /mnt/flies/AI_research/Stable_Diffusion/stable-diffusion-webui-master/models/Lora:/home/ComfyUI/models/loras
+        - /mnt/flies/AI_research/Stable_Diffusion/ComfyUI/custom_nodes/comfy_controlnet_preprocessors/ckpts:/home/ComfyUI/custom_nodes/comfy_controlnet_preprocessors/ckpts
 
   tpsmm_base_build:
     <<: *defaults
@@ -74,3 +113,17 @@ dockerBuildConfig:
     dockerfile: Dockerfile.tpsmm_base
     label: TPSMM_BASE_IMAGE.LABEL
     hint: TPSMM_BASE
+    dependencies: [conda_build, py_build]
+    endpointBuild: true
+    serviceOptions:
+      serviceName: tpsmm
+      containerName: tpsmm_container
+      launchDockerfile: Dockerfile.tpsmm_base.launch
+      portMappings: []
+      mountVolumes:
+        - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/checkpoints:/home/Thin-Plate-Spline-Motion-Model/checkpoints
+        - /home/lco/下载/tps_docker_demo:/home/Thin-Plate-Spline-Motion-Model/input
+        - /home/lco/下载/output:/home/Thin-Plate-Spline-Motion-Model/output
+        - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:/home/Thin-Plate-Spline-Motion-Model/predict.py
+        - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predictor.py:/home/Thin-Plate-Spline-Motion-Model/predictor.py
+        - /home/lco/GitHub/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:/home/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat

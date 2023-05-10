@@ -23,11 +23,12 @@ const buildConfig =
 
 // 根据构建配置对象生成项目选项数组
 const projectOptions = Object.keys(buildConfig).map((key) => {
-  const { label, hint } = buildConfig[key];
+  const { label, hint, serviceOptions } = buildConfig[key];
   return {
     value: key,
     label,
     ...(hint && { hint }),
+    ...(serviceOptions && { serviceOptions }),
   };
 });
 

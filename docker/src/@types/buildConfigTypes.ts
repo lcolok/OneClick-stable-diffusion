@@ -1,4 +1,5 @@
 import { SelectOptions } from '@clack/prompts';
+import { ServiceOptions } from '@types';
 
 export interface GlobalConfigTypes {
   dockerBuildConfig: BuildConfigTypes;
@@ -14,7 +15,6 @@ export interface BuildConfigTypes {
   [key: string]: {
     tag: string; // 镜像标签
     dockerfile: string; // Dockerfile 文件名
-    launchDockerfile: string; // 启动 Dockerfile 文件名
     label: string; // 项目标签
     hint?: string; // 项目提示
     dependencies: string[]; // 依赖列表
@@ -23,6 +23,7 @@ export interface BuildConfigTypes {
     absDockerfilePath: string; // 经过绝对路径处理的 Dockerfile 文件路径
     contextDir: string; // 构建上下文文件夹路径
     absContextPath: string; // 经过绝对路径处理的构建上下文路径
+    serviceOptions: ServiceOptions;
   };
 }
 
