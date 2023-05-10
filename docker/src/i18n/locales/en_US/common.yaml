@@ -53,11 +53,14 @@ LAMA_CLEANER_IMAGE:
   LABEL: 🧹 Build LAMA Cleaner Image
   HINT: Includes LAMA Cleaner
 COMFYUI_BASE_IMAGE:
-  LABEL: 🛋️ Build ComfyUI Image
+  LABEL: 🎨 Build ComfyUI Image
   HINT: Includes ComfyUI
 COMFYUI_EXT_IMAGE:
-  LABEL: 🧩 Build ComfyUI Extended Image
+  LABEL: 🛋️ Build ComfyUI Extended Image
   HINT: Includes WASNodes, ControlNet Preprocessorsetc.
+TPSMM_BASE_IMAGE:
+  LABEL: 🎭 Build TPSMM Base Image
+  HINT: Thin Plate Spline Motion Model
 SCREEN_NOT_FOUND: screen not found, now installing...
 SCREEN_INSTALLED_SUCCESSFULLY: screen installed successfully.
 SCREEN_INSTALLATION_FAILED: Error installing screen, please install manually.

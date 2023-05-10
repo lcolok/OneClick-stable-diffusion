@@ -126,7 +126,7 @@ dockerBuildConfig:
     launchDockerfile: Dockerfile.tpsmm_base.launch
     dockerfile: Dockerfile.tpsmm_base
     label: TPSMM_BASE_IMAGE.LABEL
-    hint: TPSMM_BASE
+    hint: TPSMM_BASE_IMAGE.HINT
     dependencies: [conda_build, py_build]
     endpointBuild: true
     serviceOptions:

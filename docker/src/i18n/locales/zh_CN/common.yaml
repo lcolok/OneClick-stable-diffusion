@@ -56,8 +56,11 @@ COMFYUI_BASE_IMAGE:
   LABEL: 🎨 构建ComfyUI基础镜像
   HINT: 包含ComfyUI基础版
 COMFYUI_EXT_IMAGE:
-  LABEL: 🎨 构建ComfyUI附带常用插件的镜像
+  LABEL: 🛋️ 构建ComfyUI附带常用插件的镜像
   HINT: 包含ComfyUI基础版和常用插件
+TPSMM_BASE_IMAGE:
+  LABEL: 🎭 构建TPSMM基础镜像
+  HINT: 包含薄板样条插值运动模型
 SCREEN_NOT_FOUND: 未检测到 screen，现在将自动安装...
 SCREEN_INSTALLED_SUCCESSFULLY: 已成功安装 screen。
 SCREEN_INSTALLATION_FAILED: 安装 screen 时出错，请手动安装。
