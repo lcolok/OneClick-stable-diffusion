@@ -15,7 +15,7 @@ templateVariables:
   # 容器中的 ComfyUI 文件夹路径
   cont_cui: /home/ComfyUI
   # 容器中的 TPSMM 文件夹路径
-  cont_tps: /home/Thin-Plate-Spline-Motion-Model
+  cont_stk: /home/StableTalker
 
 # 引用锚点
 dockerBuildConfig:
@@ -126,26 +126,28 @@ dockerBuildConfig:
         - ${host_cui}/models:${cont_cui}/models
         - ${host_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
 
-  tpsmm_base_build:
+  stable_talker_build:
     <<: *defaults
-    tag: tpsmm_base:rtx4090
-    dockerfile: Dockerfile.tpsmm_base
-    label: TPSMM_BASE_IMAGE.LABEL
-    hint: TPSMM_BASE_IMAGE.HINT
+    tag: stable_talker:rtx4090
+    dockerfile: Dockerfile.stable_talker
+    label: STABLE_TALKER_IMAGE.LABEL
+    hint: STABLE_TALKER_IMAGE.HINT
     dependencies: [conda_build, py_build]
     endpointBuild: true
     serviceOptions:
-      serviceName: tpsmm
-      containerName: tpsmm_container
-      launchDockerfile: Dockerfile.tpsmm_base.launch
+      serviceName: st
+      containerName: st_container
+      launchDockerfile: Dockerfile.stable_talker.launch
       portMappings: []
       launch:
         test: true
         prod: false
       mountVolumes:
-        - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/checkpoints:${cont_tps}/checkpoints
-        - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:${cont_tps}/shape_predictor_68_face_landmarks.dat
-        - /home/lco/下载/tps_docker_demo:${cont_tps}/input
-        - /home/lco/下载/output:${cont_tps}/output
-        - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:${cont_tps}/predict.py
-        - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predictor.py:${cont_tps}/predictor.py
+        - /home/lco/GitHub/StableTalker:${cont_stk}
+        - /home/lco/下载/tps_docker_demo:${cont_stk}/input
+        - /home/lco/下载/output:${cont_stk}/output
+        - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/checkpoints:${cont_stk}/models
+        # - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:${cont_stk}/shape_predictor_68_face_landmarks.dat
+
+        # - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:${cont_stk}/predict.py
+        # - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predictor.py:${cont_stk}/predictor.py

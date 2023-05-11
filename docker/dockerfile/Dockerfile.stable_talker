@@ -1,0 +1,36 @@
+FROM py:3.10.6-torch2.0.0
+
+RUN apt-get update \
+    && apt-get install -y build-essential \
+    && conda activate py3.10.6 \
+    && conda install -y \
+        cffi \
+        cycler \
+        decorator \
+        imageio \
+        kiwisolver \
+        matplotlib \
+        networkx \
+        pandas \
+        pycparser \
+        pyparsing \
+        python-dateutil \
+        pytz \
+        PyWavelets \
+        PyYAML \
+        scikit-image \
+        six \
+        tqdm \
+        scipy \
+        scikit-learn \
+        Pillow \
+        numpy \
+    && conda install -y -c conda-forge dlib \
+    && pip install \
+        imageio-ffmpeg \
+        face-alignment \
+        cog \
+        moviepy
+
+ENV NOTEBOOK_DIR /home
+WORKDIR $NOTEBOOK_DIR
