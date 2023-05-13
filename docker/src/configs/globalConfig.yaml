@@ -138,7 +138,8 @@ dockerBuildConfig:
       serviceName: st
       containerName: st_container
       launchDockerfile: Dockerfile.stable_talker.launch
-      portMappings: []
+      portMappings: 
+        STABLE_TALKER_PORT: 7868
       launch:
         test: true
         prod: false
@@ -147,6 +148,7 @@ dockerBuildConfig:
         - /home/lco/下载/tps_docker_demo:${cont_stk}/input
         - /home/lco/下载/output:${cont_stk}/output
         - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/checkpoints:${cont_stk}/models
+        - ~/.ssh:/root/.ssh-localhost:ro
         # - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:${cont_stk}/shape_predictor_68_face_landmarks.dat
 
         # - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:${cont_stk}/predict.py

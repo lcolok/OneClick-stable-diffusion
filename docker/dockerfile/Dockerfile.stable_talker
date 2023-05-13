@@ -32,5 +32,12 @@ RUN apt-get update \
         cog \
         moviepy
 
+RUN conda activate py3.10.6 && conda install -c conda-forge kedro && pip install kedro-viz
+
+RUN conda activate py3.10.6 && \
+    pip install pytz gradio snakeviz
+
 ENV NOTEBOOK_DIR /home
 WORKDIR $NOTEBOOK_DIR
+
+# ENTRYPOINT [ "bash", "-c", "/root/miniconda/envs/py3.10.6/bin/luigid" ]
