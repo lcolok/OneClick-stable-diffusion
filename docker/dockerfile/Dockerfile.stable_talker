@@ -37,6 +37,14 @@ RUN conda activate py3.10.6 && conda install -c conda-forge kedro && pip install
 RUN conda activate py3.10.6 && \
     pip install pytz gradio snakeviz
 
+# GFPGAN dependencies
+RUN conda activate py3.10.6 && \
+    pip install basicsr facexlib realesrgan
+
+# GFPGAN dependencies in requirements.txt
+RUN conda activate py3.10.6 && \
+    pip install lmdb numpy opencv-python pyyaml scipy tb-nightly tqdm yapf
+
 ENV NOTEBOOK_DIR /home
 WORKDIR $NOTEBOOK_DIR
 
