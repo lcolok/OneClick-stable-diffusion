@@ -15,15 +15,43 @@ def find_temp_folder():
                 yaml_files.append(yaml_abs_path)
     return yaml_files
 
+import socket
 
+def get_local_ip() -> str:
+    # 获取本机 IP 地址
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(('8.8.8.8', 80))
+    local_ip = s.getsockname()[0]
+    s.close()
+    return local_ip
+
+def print_linked_ports(output_file: str) -> None:
+    local_ip = get_local_ip()
+
+    with open(output_file, 'r') as f:
+        docker_compose = yaml.safe_load(f)
+
+    services = docker_compose.get('services', {})
+    for service_name, service_config in services.items():
+        ports = service_config.get('ports', [])
+        if ports:
+            print(f"Service: {service_name}")
+            for port_mapping in ports:
+                local_port = port_mapping.split(':')[0]
+                link = f"http://{local_ip}:{local_port}"
+                print(f"Link: {link}")
+        else:
+            print(f"Service: {service_name} - No ports defined")
+        print()  # 打印空行以分隔服务之间的输出
 
 import random
 import yaml
 
+
 def generate_service(service_name, port, service_template,workdir):
     new_service = service_template.copy()
     new_service['container_name'] = f'{service_name}_container'
-    new_service['environment'][-1] = f'SDWEBUI_PORT={port}'
+    new_service['environment'][-1] = f'SDWEBUI_PORT=7860'
     new_service['ports'] = [f'{port}:7860']
     new_volumes = []
     for volume in new_service['volumes']:
@@ -33,13 +61,21 @@ def generate_service(service_name, port, service_template,workdir):
     new_service['volumes'] = new_volumes
     return {service_name: new_service}
 
+def print_highlighted_command(output_file: str) -> None:
+    command = f"docker-compose -f {output_file} up"
+    print("\033[33m复制以下命令执行\033[0m")
+    command_ansi = "\033[7m\033[1m" + command + "\033[0m"
+    print("\n" + command_ansi + "\n")
+
+
 def generate_docker_compose_template(template_file, output_file, num_services, port_range):
     with open(template_file, 'r') as f:
         temp_yaml = yaml.safe_load(f)
 
     if 'services' not in temp_yaml or not temp_yaml['services']:
-        raise ValueError("模板文件中没有找到有效的服务定义。")
-
+        # raise ValueError("模板文件中没有找到有效的服务定义。")
+        return
+    
     services = {}
     original_service_name = list(temp_yaml['services'].keys())[0]
     original_service_template = temp_yaml['services'][original_service_name]
@@ -54,37 +90,30 @@ def generate_docker_compose_template(template_file, output_file, num_services, p
     with open(output_file, 'w') as f:
         yaml.dump(temp_yaml, f, default_flow_style=False)
 
+    # 打印高亮的命令行
+    print_highlighted_command(output_file)
+    # 打印全部端口
+    print_linked_ports(output_file)
+
 from pathlib import Path
 
-
-from rich.console import Console
-from rich.style import Style
-
-# 创建一个 Rich Console 实例
-console = Console()
 
 temp_folder_paths = find_temp_folder()
 if temp_folder_paths:
     for yaml_path in temp_folder_paths:
-        print("Absolute path of YAML file:", yaml_path)
+        # print("Absolute path of YAML file:", yaml_path)
         yaml_path = Path(yaml_path)
         dir_path = yaml_path.parent
         file_name = yaml_path.stem
         file_ext = yaml_path.suffix
 
         if ".batchLaunch" in file_name:
-            console.print(f"跳过处理文件: {yaml_path}", style="yellow")
+            print(f"跳过处理文件: {yaml_path}")
             continue
         
         batch_launch_file = dir_path / f"{file_name}.batchLaunch{file_ext}"
         generate_docker_compose_template(str(yaml_path), batch_launch_file, 10, (15000, 65535))
 
-        # 打印高亮的命令行
-        command = f"docker-compose -f {batch_launch_file} up"
-        command_style = Style(reverse=True, bold=True, color="green")
-        console.print("复制以下命令执行", style="yellow")
-        console.print("\n" + command + "\n", style=command_style )
-
-        # 进一步处理 batch_launch_file，例如使用它进行文件操作
 else:
     print("找不到名为 'temp' 的文件夹或没有找到 YAML 文件。")
+
