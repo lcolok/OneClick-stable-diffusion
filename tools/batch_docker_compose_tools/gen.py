@@ -15,8 +15,7 @@ def find_temp_folder():
                 yaml_files.append(yaml_abs_path)
     return yaml_files
 
-def print_linked_ports(output_file: str) -> None:
-    local_ip = '127.0.0.1'
+def print_linked_ports(output_file: str, ip = '127.0.0.1') -> None:
 
     with open(output_file, 'r') as f:
         docker_compose = yaml.safe_load(f)
@@ -28,7 +27,7 @@ def print_linked_ports(output_file: str) -> None:
             print(f"Service: {service_name}")
             for port_mapping in ports:
                 local_port = port_mapping.split(':')[0]
-                link = f"http://{local_ip}:{local_port}"
+                link = f"http://{ip}:{local_port}"
                 print(f"Link: {link}")
         else:
             print(f"Service: {service_name} - No ports defined")
@@ -61,7 +60,7 @@ def print_highlighted_command(output_file: str) -> None:
     print("\n" + command_ansi + "\n")
 
 
-def generate_docker_compose_template(template_file, output_file, num_services, port_range):
+def generate_docker_compose_template(template_file, output_file, num_services, port_range, ip):
     with open(template_file, 'r') as f:
         temp_yaml = yaml.safe_load(f)
 
@@ -86,27 +85,37 @@ def generate_docker_compose_template(template_file, output_file, num_services, p
     # 打印高亮的命令行
     print_highlighted_command(output_file)
     # 打印全部端口
-    print_linked_ports(output_file)
+    print_linked_ports(output_file, ip)
 
+import os
+import yaml
+import random
 from pathlib import Path
+import argparse
 
+def main():
+    parser = argparse.ArgumentParser(description="Generate Docker Compose files.")
+    parser.add_argument('--ip', default='127.0.0.1', help='The IP to use for the services.')
+    parser.add_argument('--num', type=int, default=5, help='The number of services to start.')
+    args = parser.parse_args()
 
-temp_folder_paths = find_temp_folder()
-if temp_folder_paths:
-    for yaml_path in temp_folder_paths:
-        # print("Absolute path of YAML file:", yaml_path)
-        yaml_path = Path(yaml_path)
-        dir_path = yaml_path.parent
-        file_name = yaml_path.stem
-        file_ext = yaml_path.suffix
+    temp_folder_paths = find_temp_folder()
+    if temp_folder_paths:
+        for yaml_path in temp_folder_paths:
+            yaml_path = Path(yaml_path)
+            dir_path = yaml_path.parent
+            file_name = yaml_path.stem
+            file_ext = yaml_path.suffix
 
-        if ".batchLaunch" in file_name:
-            print(f"跳过处理文件: {yaml_path}")
-            continue
-        
-        batch_launch_file = dir_path / f"{file_name}.batchLaunch{file_ext}"
-        generate_docker_compose_template(str(yaml_path), batch_launch_file, 10, (15000, 65535))
+            if ".batchLaunch" in file_name:
+                print(f"跳过处理文件: {yaml_path}")
+                continue
 
-else:
-    print("找不到名为 'temp' 的文件夹或没有找到 YAML 文件。")
+            batch_launch_file = dir_path / f"{file_name}.batchLaunch{file_ext}"
+            generate_docker_compose_template(str(yaml_path), batch_launch_file, args.num, (15000, 65535),args.ip)
+            # ... 你的代码 ...
+    else:
+        print("找不到名为 'temp' 的文件夹或没有找到 YAML 文件。")
 
+if __name__ == "__main__":
+    main()
