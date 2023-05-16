@@ -56,6 +56,13 @@ def generate_docker_compose_template(template_file, output_file, num_services, p
 
 from pathlib import Path
 
+
+from rich.console import Console
+from rich.style import Style
+
+# 创建一个 Rich Console 实例
+console = Console()
+
 temp_folder_paths = find_temp_folder()
 if temp_folder_paths:
     for yaml_path in temp_folder_paths:
@@ -64,13 +71,19 @@ if temp_folder_paths:
         dir_path = yaml_path.parent
         file_name = yaml_path.stem
         file_ext = yaml_path.suffix
-        
+
         if ".batchLaunch" in file_name:
-            print(f"跳过处理文件: {yaml_path}")
+            console.print(f"跳过处理文件: {yaml_path}", style="yellow")
             continue
         
         batch_launch_file = dir_path / f"{file_name}.batchLaunch{file_ext}"
-        generate_docker_compose_template(str(yaml_path), batch_launch_file, 8, (15000, 65535))
+        generate_docker_compose_template(str(yaml_path), batch_launch_file, 10, (15000, 65535))
+
+        # 打印高亮的命令行
+        command = f"docker-compose -f {batch_launch_file} up"
+        command_style = Style(reverse=True, bold=True, color="green")
+        console.print("复制以下命令执行", style="yellow")
+        console.print("\n" + command + "\n", style=command_style )
 
         # 进一步处理 batch_launch_file，例如使用它进行文件操作
 else:
