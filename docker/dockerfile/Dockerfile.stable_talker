@@ -45,7 +45,5 @@ RUN conda activate py3.10.6 && \
 RUN conda activate py3.10.6 && \
     pip install lmdb numpy opencv-python pyyaml scipy tb-nightly tqdm yapf
 
-ENV NOTEBOOK_DIR /home
-WORKDIR $NOTEBOOK_DIR
 
 # ENTRYPOINT [ "bash", "-c", "/root/miniconda/envs/py3.10.6/bin/luigid" ]
