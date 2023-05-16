@@ -7,54 +7,74 @@ WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui/extensions/
 
 # 安装中文语言包
 RUN git clone --depth=1 https://github.com/dtlnor/stable-diffusion-webui-localization-zh_CN.git
+
 # 安装图库浏览器
 RUN git clone --depth=1 https://github.com/AlUlkesh/stable-diffusion-webui-images-browser.git
+
 # 安装Wildcards
 RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
+
 ## 映射wildcards预设文件夹到拓展目录下
 # RUN mkdir -p /app/stable-diffusion-webui-localization-zh_CN/configs/wildcards_lib
 # RUN ln -s /app/stable-diffusion-webui-localization-zh_CN/configs/wildcards_lib /app/stable-diffusion-webui-images-browser/extensions/stable-diffusion-webui-wildcards/wildcards
 # 安装sd_save_intermediate_images插件(保存预测过程的中间图像)
 RUN git clone --depth=1 https://github.com/AlUlkesh/sd_save_intermediate_images.git
-# 安装openpose-editor
-RUN git clone --depth=1 https://github.com/fkunn1326/openpose-editor.git
-# 安装CLIP Interrogator extension
-RUN git clone --depth=1 https://github.com/pharmapsychotic/clip-interrogator-ext.git
-# 安装Additonal-Networks
-RUN git clone --depth=1 https://github.com/kohya-ss/sd-webui-additional-networks.git
-# 安装sd_web_ui_preset_utils并载入预设
-RUN git clone --depth=1 https://github.com/Gerschel/sd_web_ui_preset_utils.git
-# RUN mkdir -p /app/OneClick-stable-diffusion/configs/sd_web_ui_preset_utils
-# RUN ln -s /app/Gerschel/sd_web_ui_preset_utils/presets.json /app/OneClick-stable-diffusion/configs/sd_web_ui_preset_utils/presets.json
-# 安装sd-webui-ar
-RUN git clone --depth=1 https://github.com/alemelis/sd-webui-ar.git
-# 安装 Aspect Ratio Helper
-RUN git clone --depth=1 https://github.com/thomasasfk/sd-webui-aspect-ratio-helper.git
+
+# # 安装openpose-editor
+# RUN git clone --depth=1 https://github.com/fkunn1326/openpose-editor.git
+
+# # 安装CLIP Interrogator extension（生成图像推理过程中间帧的工具）
+# RUN git clone --depth=1 https://github.com/pharmapsychotic/clip-interrogator-ext.git
+
+# # 安装Additonal-Networks
+# RUN git clone --depth=1 https://github.com/kohya-ss/sd-webui-additional-networks.git
+
+# # 安装sd_web_ui_preset_utils并载入预设
+# RUN git clone --depth=1 https://github.com/Gerschel/sd_web_ui_preset_utils.git
+# # RUN mkdir -p /app/OneClick-stable-diffusion/configs/sd_web_ui_preset_utils
+# # RUN ln -s /app/Gerschel/sd_web_ui_preset_utils/presets.json /app/OneClick-stable-diffusion/configs/sd_web_ui_preset_utils/presets.json
+
+# # 安装sd-webui-ar
+# RUN git clone --depth=1 https://github.com/alemelis/sd-webui-ar.git
+
+# # 安装 Aspect Ratio Helper
+# RUN git clone --depth=1 https://github.com/thomasasfk/sd-webui-aspect-ratio-helper.git
+
 # 安装ControlNet插件
 # RUN pip install mediapipe==0.9.1.0 svglib fvcore opencv-python timm
 RUN git clone --depth=1 https://github.com/Mikubill/sd-webui-controlnet.git
-# 安装SadTalker
-RUN git clone --depth=1 https://github.com/Winfredy/SadTalker && \
-    cd SadTalker && \
-    pip install -r requirements.txt
-RUN conda install ffmpeg
-# 安装Locon插件(LyCORIS、LoCon、Loha都能读取)
-RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-locon
-# 安装LyCORIS插件
-RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris
+
+# # 安装SadTalker
+# RUN git clone --depth=1 https://github.com/Winfredy/SadTalker && \
+#     cd SadTalker && \
+#     pip install -r requirements.txt
+# RUN conda install ffmpeg
+
+# # 安装Locon插件(LyCORIS、LoCon、Loha都能读取)
+# RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-locon
+
+# # 安装LyCORIS插件
+# RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris
+
 # 安装depthmap2mask
 RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://github.com/isl-org/MiDaS midas && cd midas && git checkout b845b78
+
 # # 安装Civitai插件
 # RUN git clone --depth=1 https://github.com/civitai/sd_civitai_extension
-# 安装 SD-CN-Animation 拓展
-RUN git clone --depth=1 https://github.com/volotat/SD-CN-Animation
+
+# # 安装 SD-CN-Animation 拓展
+# RUN git clone --depth=1 https://github.com/volotat/SD-CN-Animation
+
 # 安装双语包
 RUN git clone --depth=1 https://github.com/journey-ad/sd-webui-bilingual-localization.git
-# 安装 Ultimate SD Upscale 拓展
-RUN git clone --depth=1 https://github.com/Coyote-A/ultimate-upscale-for-automatic1111
+
+# # 安装 Ultimate SD Upscale 拓展
+# RUN git clone --depth=1 https://github.com/Coyote-A/ultimate-upscale-for-automatic1111
+
 # 安装 SD-WebUI-LoCon-Block-Weight 拓展
 RUN git clone --depth=1 https://github.com/hako-mikan/sd-webui-lora-block-weight.git
-# 安装 SD-WebUI-LoCon-Block-Weight 拓展
+
+# 安装 SD-WebUI-ChatGPT-Utilities 拓展
 RUN git clone --depth=1 https://github.com/hallatore/stable-diffusion-webui-chatgpt-utilities
 
 # 进行一次安装，以便将插件的依赖安装到容器中
