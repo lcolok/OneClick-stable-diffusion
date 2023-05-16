@@ -2,6 +2,7 @@ FROM sdwebui_ext:rtx4090
 
 ENV SDWEBUI_PORT=${SDWEBUI_PORT}
 ENV JUPYTER_PORT=${JUPYTER_PORT}
+ENV OPENAI_API_BASE="https://ws.mirav.cn/v1"
 
 # 复制启动脚本到容器中
 COPY /context/scripts/*.sh /scripts/
