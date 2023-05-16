@@ -15,18 +15,19 @@ def find_temp_folder():
                 yaml_files.append(yaml_abs_path)
     return yaml_files
 
-import socket
+import requests
 
-def get_local_ip() -> str:
-    # 获取本机 IP 地址
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(('8.8.8.8', 80))
-    local_ip = s.getsockname()[0]
-    s.close()
-    return local_ip
+def get_public_ip() -> str:
+    # 使用 ipify 服务获取公网 IP 地址
+    response = requests.get('https://api.ipify.org?format=json')
+    if response.status_code == 200:
+        data = response.json()
+        return data['ip']
+    else:
+        return ''  # 请求失败，返回空字符串
 
 def print_linked_ports(output_file: str) -> None:
-    local_ip = get_local_ip()
+    public_ip = get_public_ip()
 
     with open(output_file, 'r') as f:
         docker_compose = yaml.safe_load(f)
@@ -38,11 +39,12 @@ def print_linked_ports(output_file: str) -> None:
             print(f"Service: {service_name}")
             for port_mapping in ports:
                 local_port = port_mapping.split(':')[0]
-                link = f"http://{local_ip}:{local_port}"
+                link = f"http://{public_ip}:{local_port}"
                 print(f"Link: {link}")
         else:
             print(f"Service: {service_name} - No ports defined")
         print()  # 打印空行以分隔服务之间的输出
+
 
 import random
 import yaml
