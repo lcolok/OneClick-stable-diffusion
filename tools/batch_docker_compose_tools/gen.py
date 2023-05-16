@@ -54,7 +54,10 @@ def generate_service(service_name, port, service_template,workdir):
 def print_highlighted_command(output_file: str) -> None:
     command = f"docker-compose -f {output_file} up"
     print("\033[33m复制以下命令执行\033[0m")
-    command_ansi = "\033[7m\033[1m" + command + "\033[0m"
+
+    clash_sevice_stop_cmd = 'systemctl stop clash'
+
+    command_ansi = "\033[7m\033[1m" + clash_sevice_stop_cmd+' && '+command + "\033[0m"
     print("\n" + command_ansi + "\n")
 
 
