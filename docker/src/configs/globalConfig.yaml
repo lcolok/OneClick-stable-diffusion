@@ -14,7 +14,9 @@ templateVariables:
   host_cui: ${host_base}/ComfyUI
   # 容器中的 ComfyUI 文件夹路径
   cont_cui: /home/ComfyUI
-  # 容器中的 TPSMM 文件夹路径
+  # 宿主中的 StableTalker 文件夹路径
+  host_stk: ${host_base}/StableTalker
+  # 容器中的 StableTalker 文件夹路径
   cont_stk: /home/StableTalker
 
 # 引用锚点
@@ -146,10 +148,10 @@ dockerBuildConfig:
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
         - /home/lco/GitHub/StableTalker:${cont_stk}
-        - /home/lco/下载/tps_docker_demo:${cont_stk}/input
-        - /home/lco/下载/output:${cont_stk}/output
-        - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/checkpoints:${cont_stk}/models
+        - ${host_stk}/output:${cont_stk}/output
+        - ${host_stk}/models:${cont_stk}/models
         - ~/.ssh:/root/.ssh-localhost:ro
+        - ${host_stk}/submodules/GFPGAN/gfpgan/weights:${cont_stk}/submodules/GFPGAN/gfpgan/weights
         # - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:${cont_stk}/shape_predictor_68_face_landmarks.dat
 
         # - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:${cont_stk}/predict.py
