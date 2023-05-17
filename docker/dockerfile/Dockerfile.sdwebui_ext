@@ -8,8 +8,11 @@ WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui/extensions/
 # 安装中文语言包
 RUN git clone --depth=1 https://github.com/dtlnor/stable-diffusion-webui-localization-zh_CN.git
 
-# 安装图库浏览器
-RUN git clone --depth=1 https://github.com/AlUlkesh/stable-diffusion-webui-images-browser.git
+# # 安装图库浏览器
+# RUN git clone --depth=1 https://github.com/AlUlkesh/stable-diffusion-webui-images-browser.git
+
+# 安装Infinite Image Browsing
+RUN git clone --depth=1 https://github.com/zanllp/sd-webui-infinite-image-browsing
 
 # 安装Wildcards
 RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
@@ -17,8 +20,9 @@ RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-
 ## 映射wildcards预设文件夹到拓展目录下
 # RUN mkdir -p /app/stable-diffusion-webui-localization-zh_CN/configs/wildcards_lib
 # RUN ln -s /app/stable-diffusion-webui-localization-zh_CN/configs/wildcards_lib /app/stable-diffusion-webui-images-browser/extensions/stable-diffusion-webui-wildcards/wildcards
-# 安装sd_save_intermediate_images插件(保存预测过程的中间图像)
-RUN git clone --depth=1 https://github.com/AlUlkesh/sd_save_intermediate_images.git
+
+# # 安装sd_save_intermediate_images插件(保存预测过程的中间图像)
+# RUN git clone --depth=1 https://github.com/AlUlkesh/sd_save_intermediate_images.git
 
 # # 安装openpose-editor
 # RUN git clone --depth=1 https://github.com/fkunn1326/openpose-editor.git

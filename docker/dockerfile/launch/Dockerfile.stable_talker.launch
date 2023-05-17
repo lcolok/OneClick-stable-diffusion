@@ -1,6 +1,7 @@
 FROM stable_talker:rtx4090
 
 ENV STABLE_TALKER_PORT=${STABLE_TALKER_PORT}
+ENV JUPYTER_PORT=${JUPYTER_PORT}
 
 # 复制启动脚本到容器中
 COPY /context/scripts/*.sh /scripts/
@@ -9,4 +10,5 @@ RUN chmod +x /scripts/*.sh
 ENV NOTEBOOK_DIR /home
 WORKDIR $NOTEBOOK_DIR/StableTalker
 
-ENTRYPOINT /scripts/run_stable_talker.sh
+# ENTRYPOINT /scripts/run_stable_talker.sh
+# ENTRYPOINT /scripts/run_jupyter.sh
