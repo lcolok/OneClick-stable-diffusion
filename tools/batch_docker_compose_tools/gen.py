@@ -59,7 +59,6 @@ def print_highlighted_command(output_file: str) -> None:
     command_ansi = "\033[7m\033[1m" + clash_sevice_stop_cmd+' && '+command + "\033[0m"
     print("\n" + command_ansi + "\n")
 
-
 def generate_docker_compose_template(template_file, output_file, num_services, port_range, ip):
     with open(template_file, 'r') as f:
         temp_yaml = yaml.safe_load(f)
@@ -72,10 +71,20 @@ def generate_docker_compose_template(template_file, output_file, num_services, p
     original_service_name = list(temp_yaml['services'].keys())[0]
     original_service_template = temp_yaml['services'][original_service_name]
 
+    min_port, max_port = port_range
+    available_ports = set(range(min_port, max_port + 1))  # Create a set of available ports
+    used_ports = set()  # Track used ports
+
+    if len(available_ports) < num_services:
+        print("端口范围内可用的端口数量不足。")
+        print(f"已为你自动匹配端口数量: {len(available_ports)}")
+        num_services = len(available_ports)
+
     for i in range(num_services):
-        port = random.randint(*port_range)
+        port = random.choice(list(available_ports - used_ports))
         service_name = f'sd_service_test_{i+1}'
         services.update(generate_service(service_name, port, original_service_template,'/assets'))
+        used_ports.add(port)
 
     temp_yaml['services'] = services
 
@@ -112,7 +121,7 @@ def main():
                 continue
 
             batch_launch_file = dir_path / f"{file_name}.batchLaunch{file_ext}"
-            generate_docker_compose_template(str(yaml_path), batch_launch_file, args.num, (15000, 65535),args.ip)
+            generate_docker_compose_template(str(yaml_path), batch_launch_file, args.num, (15000, 15004),args.ip)
             # ... 你的代码 ...
     else:
         print("找不到名为 'temp' 的文件夹或没有找到 YAML 文件。")
