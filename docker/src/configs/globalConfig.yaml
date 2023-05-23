@@ -59,21 +59,23 @@ dockerBuildConfig:
         JUPYTER_PORT: 33333
         SDWEBUI_PORT: 7860
       launch:
-        test: false
-        prod: false
+        test: true
+        prod: true
       mountVolumes:
-        - ${host_base}/.cache:/root/.cache
-        - ${host_sdw}/models:${cont_sdw}/models
-        - ${host_sdw}/embeddings:${cont_sdw}/embeddings
-        - ${host_sdw}/interrogate:${cont_sdw}/interrogate
-        - ${host_sdw}/models/SadTalker/checkpoints:${cont_sdw}/extensions/SadTalker/checkpoints/
-        - ${host_sdw}/models/SadTalker/gfpgan:${cont_sdw}/extensions/SadTalker/gfpgan/
-        - ${host_sdw}/outputs:${cont_sdw}/outputs
-        - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_sdw}/extensions/sd-webui-controlnet/models
-        - ${host_sdw}/extensions/sd-webui-controlnet/annotator/downloads:${cont_sdw}/extensions/sd-webui-controlnet/annotator/downloads
-        - ${host_sdw}/cache.json:${cont_sdw}/cache.json
-        - ${host_sdw}/config.json:${cont_sdw}/config.json
-        - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:${cont_sdw}/extensions/stable-diffusion-webui-wildcards/wildcards
+        - ${host_base}/.cache:/root/.cache:rw
+        - ${host_sdw}/models:${cont_sdw}/models:ro
+        - ${host_sdw}/embeddings:${cont_sdw}/embeddings:ro
+        - ${host_sdw}/interrogate:${cont_sdw}/interrogate:ro
+        - ${host_sdw}/models/SadTalker/checkpoints:${cont_sdw}/extensions/SadTalker/checkpoints/:ro
+        - ${host_sdw}/models/SadTalker/gfpgan:${cont_sdw}/extensions/SadTalker/gfpgan/:ro
+        - ${host_sdw}/outputs:${cont_sdw}/outputs:rw
+        - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_sdw}/extensions/sd-webui-controlnet/models:ro
+        - ${host_sdw}/extensions/sd-webui-controlnet/annotator/downloads:${cont_sdw}/extensions/sd-webui-controlnet/annotator/downloads:ro
+        - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth
+        - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth
+        - ${host_sdw}/cache.json:${cont_sdw}/cache.json:rw
+        - ${host_sdw}/config.json:${cont_sdw}/config.json:rw
+        - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:${cont_sdw}/extensions/stable-diffusion-webui-wildcards/wildcards:ro
 
   lama_cleaner_build:
     <<: *defaults
@@ -140,10 +142,10 @@ dockerBuildConfig:
       serviceName: st
       containerName: st_container
       launchDockerfile: Dockerfile.stable_talker.launch
-      portMappings: 
+      portMappings:
         STABLE_TALKER_PORT: 7868
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
@@ -151,7 +153,7 @@ dockerBuildConfig:
         - ${host_stk}/output:${cont_stk}/output
         - ${host_stk}/models:${cont_stk}/models
         - ~/.ssh:/root/.ssh-localhost:ro
-        - ${host_stk}/submodules/GFPGAN/gfpgan/weights:${cont_stk}/submodules/GFPGAN/gfpgan/weights
+        # - ${host_stk}/submodules/GFPGAN/gfpgan/weights:${cont_stk}/submodules/GFPGAN/gfpgan/weights
         # - /mnt/flies/AI_research/Thin-Plate-Spline-Motion-Model/shape_predictor_68_face_landmarks.dat:${cont_stk}/shape_predictor_68_face_landmarks.dat
 
         # - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:${cont_stk}/predict.py

@@ -12,7 +12,9 @@ RUN git clone --depth=1 https://github.com/dtlnor/stable-diffusion-webui-localiz
 # RUN git clone --depth=1 https://github.com/AlUlkesh/stable-diffusion-webui-images-browser.git
 
 # 安装Infinite Image Browsing
-RUN git clone --depth=1 https://github.com/zanllp/sd-webui-infinite-image-browsing
+RUN git clone https://github.com/zanllp/sd-webui-infinite-image-browsing.git && \
+cd sd-webui-infinite-image-browsing && \
+git checkout 4720b15
 
 # 安装Wildcards
 RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
@@ -41,8 +43,8 @@ RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-
 # # 安装sd-webui-ar
 # RUN git clone --depth=1 https://github.com/alemelis/sd-webui-ar.git
 
-# # 安装 Aspect Ratio Helper
-# RUN git clone --depth=1 https://github.com/thomasasfk/sd-webui-aspect-ratio-helper.git
+# 安装 Aspect Ratio Helper
+RUN git clone --depth=1 https://github.com/thomasasfk/sd-webui-aspect-ratio-helper.git
 
 # 安装ControlNet插件
 # RUN pip install mediapipe==0.9.1.0 svglib fvcore opencv-python timm
@@ -80,6 +82,13 @@ RUN git clone --depth=1 https://github.com/hako-mikan/sd-webui-lora-block-weight
 
 # 安装 SD-WebUI-ChatGPT-Utilities 拓展
 RUN git clone --depth=1 https://github.com/hallatore/stable-diffusion-webui-chatgpt-utilities
+
+# 安装 sd-webui-segment-anything 拓展
+RUN git clone --depth=1 https://github.com/continue-revolution/sd-webui-segment-anything
+# 安装 grounddino 依赖
+RUN git clone --depth=1 https://github.com/IDEA-Research/GroundingDINO.git
+ENV TORCH_CUDA_ARCH_LIST="6.0;6.1;7.0;7.5;8.0;8.6+PTX"
+RUN cd GroundingDINO/ && python -m pip install .
 
 # 进行一次安装，以便将插件的依赖安装到容器中
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui
