@@ -19,12 +19,9 @@ git checkout 4720b15
 # 安装Wildcards
 RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
 
-## 映射wildcards预设文件夹到拓展目录下
-# RUN mkdir -p /app/stable-diffusion-webui-localization-zh_CN/configs/wildcards_lib
-# RUN ln -s /app/stable-diffusion-webui-localization-zh_CN/configs/wildcards_lib /app/stable-diffusion-webui-images-browser/extensions/stable-diffusion-webui-wildcards/wildcards
-
-# # 安装sd_save_intermediate_images插件(保存预测过程的中间图像)
-# RUN git clone --depth=1 https://github.com/AlUlkesh/sd_save_intermediate_images.git
+# 安装sd_save_intermediate_images插件(保存预测过程的中间图像)
+RUN git clone --depth=1 https://github.com/AlUlkesh/sd_save_intermediate_images.git
+RUN apt-get update && apt-get install -y ffmpeg
 
 # # 安装openpose-editor
 # RUN git clone --depth=1 https://github.com/fkunn1326/openpose-editor.git
@@ -74,9 +71,6 @@ RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://gi
 # 安装双语包
 RUN git clone --depth=1 https://github.com/journey-ad/sd-webui-bilingual-localization.git
 
-# # 安装 Ultimate SD Upscale 拓展
-# RUN git clone --depth=1 https://github.com/Coyote-A/ultimate-upscale-for-automatic1111
-
 # 安装 SD-WebUI-LoCon-Block-Weight 拓展
 RUN git clone --depth=1 https://github.com/hako-mikan/sd-webui-lora-block-weight.git
 
@@ -89,6 +83,9 @@ RUN git clone --depth=1 https://github.com/continue-revolution/sd-webui-segment-
 RUN git clone --depth=1 https://github.com/IDEA-Research/GroundingDINO.git
 ENV TORCH_CUDA_ARCH_LIST="6.0;6.1;7.0;7.5;8.0;8.6+PTX;8.9;9.0"
 RUN cd GroundingDINO/ && python -m pip install .
+
+# 安装 Ultimate SD Upscale 拓展
+RUN git clone --depth=1 https://github.com/Coyote-A/ultimate-upscale-for-automatic1111
 
 # 进行一次安装，以便将插件的依赖安装到容器中
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui
