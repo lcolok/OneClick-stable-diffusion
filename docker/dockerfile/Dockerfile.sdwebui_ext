@@ -11,11 +11,6 @@ RUN git clone --depth=1 https://github.com/dtlnor/stable-diffusion-webui-localiz
 # # 安装图库浏览器
 # RUN git clone --depth=1 https://github.com/AlUlkesh/stable-diffusion-webui-images-browser.git
 
-# 安装Infinite Image Browsing
-RUN git clone https://github.com/zanllp/sd-webui-infinite-image-browsing.git && \
-cd sd-webui-infinite-image-browsing && \
-git checkout 4720b15
-
 # 安装Wildcards
 RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
 
@@ -26,7 +21,7 @@ RUN apt-get update && apt-get install -y ffmpeg
 # # 安装openpose-editor
 # RUN git clone --depth=1 https://github.com/fkunn1326/openpose-editor.git
 
-# # 安装CLIP Interrogator extension（生成图像推理过程中间帧的工具）
+# # 安装CLIP Interrogator extension（提示词反推插件)
 # RUN git clone --depth=1 https://github.com/pharmapsychotic/clip-interrogator-ext.git
 
 # # 安装Additonal-Networks
@@ -37,8 +32,8 @@ RUN apt-get update && apt-get install -y ffmpeg
 # # RUN mkdir -p /app/OneClick-stable-diffusion/configs/sd_web_ui_preset_utils
 # # RUN ln -s /app/Gerschel/sd_web_ui_preset_utils/presets.json /app/OneClick-stable-diffusion/configs/sd_web_ui_preset_utils/presets.json
 
-# # 安装sd-webui-ar
-# RUN git clone --depth=1 https://github.com/alemelis/sd-webui-ar.git
+# 安装sd-webui-ar
+RUN git clone --depth=1 https://github.com/alemelis/sd-webui-ar.git
 
 # 安装 Aspect Ratio Helper
 RUN git clone --depth=1 https://github.com/thomasasfk/sd-webui-aspect-ratio-helper.git
@@ -56,8 +51,8 @@ RUN git clone --depth=1 https://github.com/Mikubill/sd-webui-controlnet.git
 # # 安装Locon插件(LyCORIS、LoCon、Loha都能读取)
 # RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-locon
 
-# # 安装LyCORIS插件
-# RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris
+# 安装LyCORIS插件
+RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris
 
 # 安装depthmap2mask
 RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://github.com/isl-org/MiDaS midas && cd midas && git checkout b845b78
@@ -86,6 +81,18 @@ RUN cd GroundingDINO/ && python -m pip install .
 
 # 安装 Ultimate SD Upscale 拓展
 RUN git clone --depth=1 https://github.com/Coyote-A/ultimate-upscale-for-automatic1111
+
+# 安装Infinite Image Browsing
+RUN git clone https://github.com/zanllp/sd-webui-infinite-image-browsing.git 
+# && \
+# cd sd-webui-infinite-image-browsing && \
+# git checkout 4720b15
+
+# 安装 !After Detailer 拓展,用于SD生成脸孔后进行自动化inpainting
+RUN git clone --depth=1 https://github.com/Bing-su/adetailer
+
+# 安装去背景插件
+RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-rembg
 
 # 进行一次安装，以便将插件的依赖安装到容器中
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui

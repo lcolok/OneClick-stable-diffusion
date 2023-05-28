@@ -75,6 +75,7 @@ dockerBuildConfig:
         - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth
         - ${host_sdw}/cache.json:${cont_sdw}/cache.json:rw
         - ${host_sdw}/config.json:${cont_sdw}/config.json:rw
+        - ${host_sdw}/ui-config:${cont_sdw}/ui-config:rw
         - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:${cont_sdw}/extensions/stable-diffusion-webui-wildcards/wildcards:ro
 
   lama_cleaner_build:
@@ -92,7 +93,7 @@ dockerBuildConfig:
       portMappings:
         LAMA_CLEANER_PORT: 8080
       launch:
-        test: false
+        test: true
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
