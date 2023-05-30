@@ -94,6 +94,12 @@ RUN git clone --depth=1 https://github.com/Bing-su/adetailer
 # 安装去背景插件
 RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-rembg
 
+# # 安装 Kitchen Theme
+# RUN git clone --depth=1 https://github.com/canisminor1990/sd-web-ui-kitchen-theme
+
+# # 安装 sd_lama_cleaner
+# RUN git clone --depth=1 https://github.com/aka7774/sd_lama_cleaner
+
 # 进行一次安装，以便将插件的依赖安装到容器中
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui
 ENV COMMANDLINE_ARGS --skip-torch-cuda-test
