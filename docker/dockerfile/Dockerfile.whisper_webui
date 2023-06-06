@@ -1,0 +1,26 @@
+FROM py:3.10.6-torch2.0.0
+
+RUN apt-get update && apt-get install -y ffmpeg
+
+ENV NOTEBOOK_DIR /home
+RUN cd $NOTEBOOK_DIR && \
+    git clone https://github.com/jhj0517/Whisper-WebUI;
+
+RUN cd $NOTEBOOK_DIR/Whisper-WebUI && \
+    conda activate py3.10.6 && \
+    pip install -r requirements.txt && \
+    cd /; 
+
+RUN cd $NOTEBOOK_DIR && \
+    git clone https://github.com/ycyy/faster-whisper-webui;
+
+RUN cd $NOTEBOOK_DIR/faster-whisper-webui && \
+    conda activate py3.10.6 && \
+    pip install -r requirements-fasterWhisper.txt && \
+    cd /; 
+
+RUN cd $NOTEBOOK_DIR/faster-whisper-webui && \
+    mkdir models && \
+    cd models && \
+    git clone https://github.com/snakers4/silero-vad && \
+    cd /; 

@@ -42,11 +42,11 @@ RUN git clone --depth=1 https://github.com/thomasasfk/sd-webui-aspect-ratio-help
 # RUN pip install mediapipe==0.9.1.0 svglib fvcore opencv-python timm
 RUN git clone --depth=1 https://github.com/Mikubill/sd-webui-controlnet.git
 
-# # 安装SadTalker
-# RUN git clone --depth=1 https://github.com/Winfredy/SadTalker && \
-#     cd SadTalker && \
-#     pip install -r requirements.txt
-# RUN conda install ffmpeg
+# 安装SadTalker
+RUN git clone --depth=1 https://github.com/Winfredy/SadTalker && \
+    cd SadTalker && \
+    pip install -r requirements.txt
+RUN conda install ffmpeg
 
 # # 安装Locon插件(LyCORIS、LoCon、Loha都能读取)
 # RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-locon
@@ -99,6 +99,12 @@ RUN git clone --depth=1 https://github.com/AUTOMATIC1111/stable-diffusion-webui-
 
 # # 安装 sd_lama_cleaner
 # RUN git clone --depth=1 https://github.com/aka7774/sd_lama_cleaner
+
+# 安装 sd-webui-depthmap-script
+RUN git clone --depth=1 https://github.com/thygate/stable-diffusion-webui-depthmap-script
+
+# 安装 sd-webui-openpose-editor
+RUN git clone --depth=1 https://github.com/huchenlei/sd-webui-openpose-editor
 
 # 进行一次安装，以便将插件的依赖安装到容器中
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui

@@ -1,0 +1,14 @@
+FROM whisper_webui:rtx4090
+
+ENV WHISPER_WEBUI_PORT=${WHISPER_WEBUI_PORT}
+ENV FASTER_WHISPER_WEBUI_PORT=${FASTER_WHISPER_WEBUI_PORT}
+
+# 复制启动脚本到容器中
+COPY /context/scripts/*.sh /scripts/
+RUN chmod +x /scripts/*.sh
+
+ENV NOTEBOOK_DIR /home
+# WORKDIR $NOTEBOOK_DIR/Whisper-WebUI
+WORKDIR $NOTEBOOK_DIR/faster-whisper-webui
+
+ENTRYPOINT /scripts/run_faster_whisper_webui.sh

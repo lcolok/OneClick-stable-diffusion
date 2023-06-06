@@ -18,6 +18,14 @@ templateVariables:
   host_stk: ${host_base}/StableTalker
   # 容器中的 StableTalker 文件夹路径
   cont_stk: /home/StableTalker
+  # 宿主中的 Whisper-WebUI 文件夹路径
+  host_ww: ${host_base}/Whisper-WebUI
+  # 容器中的 Whisper-WebUI 文件夹路径
+  cont_ww: /home/Whisper-WebUI
+  # 宿主中的 Faster-Whisper-WebUI 文件夹路径
+  host_fww: ${host_base}/faster-whisper-webui
+  # 容器中的 Faster-Whisper-WebUI 文件夹路径
+  cont_fww: /home/faster-whisper-webui
 
 # 引用锚点
 dockerBuildConfig:
@@ -69,8 +77,8 @@ dockerBuildConfig:
         - ${host_sdw}/models/SadTalker/checkpoints:${cont_sdw}/extensions/SadTalker/checkpoints/:ro
         - ${host_sdw}/models/SadTalker/gfpgan:${cont_sdw}/extensions/SadTalker/gfpgan/:ro
         - ${host_sdw}/outputs:${cont_sdw}/outputs:rw
-        - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_sdw}/extensions/sd-webui-controlnet/models:ro
-        - ${host_sdw}/extensions/sd-webui-controlnet/annotator/downloads:${cont_sdw}/extensions/sd-webui-controlnet/annotator/downloads:ro
+        - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_sdw}/extensions/sd-webui-controlnet/models:rw
+        - ${host_sdw}/extensions/sd-webui-controlnet/annotator/downloads:${cont_sdw}/extensions/sd-webui-controlnet/annotator/downloads:rw
         - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth
         - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth
         - ${host_sdw}/cache.json:${cont_sdw}/cache.json:rw
@@ -128,6 +136,7 @@ dockerBuildConfig:
         - ${host_sdw}/models/Stable-diffusion:${cont_cui}/models/checkpoints
         - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_cui}/models/controlnet
         - ${host_sdw}/models/Lora:${cont_cui}/models/loras
+        - ${host_sdw}/models/VAE:${cont_cui}/models/vae
         - ${host_cui}/models:${cont_cui}/models
         - ${host_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
 
@@ -146,7 +155,7 @@ dockerBuildConfig:
       portMappings:
         STABLE_TALKER_PORT: 7868
       launch:
-        test: false
+        test: true
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
@@ -159,3 +168,27 @@ dockerBuildConfig:
 
         # - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predict.py:${cont_stk}/predict.py
         # - /home/lco/GitHub/OneClick-stable-diffusion/python/tpsmm/predictor.py:${cont_stk}/predictor.py
+
+  whisper_webui_build:
+    <<: *defaults
+    tag: whisper_webui:rtx4090
+    dockerfile: Dockerfile.whisper_webui
+    label: WHISPER_WEBUI_IMAGE.LABEL
+    hint: WHISPER_WEBUI_IMAGE.HINT
+    dependencies: [conda_build, py_build]
+    endpointBuild: true
+    serviceOptions:
+      serviceName: ww
+      containerName: ww_container
+      launchDockerfile: Dockerfile.whisper_webui.launch
+      portMappings:
+        WHISPER_WEBUI_PORT: 9000
+        FASTER_WHISPER_WEBUI_PORT: 9001
+      launch:
+        test: true
+        prod: false
+      mountVolumes:
+        - ${host_base}/.cache:/root/.cache
+        - ${host_ww}:${cont_ww}
+        - ${host_ww}/models:${cont_ww}/models
+        - ${host_fww}/models/faster-whisper:${cont_fww}/models/faster-whisper
