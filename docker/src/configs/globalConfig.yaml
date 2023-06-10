@@ -71,8 +71,8 @@ dockerBuildConfig:
         prod: true
       mountVolumes:
         - ${host_base}/.cache:/root/.cache:rw
-        - ${host_sdw}/models:${cont_sdw}/models:ro
-        - ${host_sdw}/embeddings:${cont_sdw}/embeddings:ro
+        - ${host_sdw}/models:${cont_sdw}/models:rw
+        - ${host_sdw}/embeddings:${cont_sdw}/embeddings:rw
         - ${host_sdw}/interrogate:${cont_sdw}/interrogate:ro
         - ${host_sdw}/models/SadTalker/checkpoints:${cont_sdw}/extensions/SadTalker/checkpoints/:ro
         - ${host_sdw}/models/SadTalker/gfpgan:${cont_sdw}/extensions/SadTalker/gfpgan/:ro

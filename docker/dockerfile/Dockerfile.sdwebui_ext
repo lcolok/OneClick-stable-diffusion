@@ -106,6 +106,12 @@ RUN git clone --depth=1 https://github.com/thygate/stable-diffusion-webui-depthm
 # 安装 sd-webui-openpose-editor
 RUN git clone --depth=1 https://github.com/huchenlei/sd-webui-openpose-editor
 
+# 安装 sd-webui-3d-open-pose-editor
+RUN git clone --depth=1 https://github.com/nonnonstop/sd-webui-3d-open-pose-editor
+
+# 安装 sd-webui-civitai-helper（C站助手）
+RUN git clone --depth=1 https://github.com/butaixianran/Stable-Diffusion-Webui-Civitai-Helper
+
 # 进行一次安装，以便将插件的依赖安装到容器中
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui
 ENV COMMANDLINE_ARGS --skip-torch-cuda-test
