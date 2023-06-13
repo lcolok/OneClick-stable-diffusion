@@ -27,6 +27,9 @@ templateVariables:
   # 容器中的 Faster-Whisper-WebUI 文件夹路径
   cont_fww: /home/faster-whisper-webui
 
+  # 容器中的kohya_ss文件夹路径
+  cont_ks: /home/kohya_ss
+
 # 引用锚点
 dockerBuildConfig:
   conda_build:
@@ -68,7 +71,7 @@ dockerBuildConfig:
         SDWEBUI_PORT: 7860
       launch:
         test: true
-        prod: true
+        prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache:rw
         - ${host_sdw}/models:${cont_sdw}/models:rw
@@ -81,6 +84,7 @@ dockerBuildConfig:
         - ${host_sdw}/extensions/sd-webui-controlnet/annotator/downloads:${cont_sdw}/extensions/sd-webui-controlnet/annotator/downloads:rw
         - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth
         - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth
+        - ${host_sdw}/extensions/sd-webui-agent-scheduler/task_scheduler.sqlite3:${cont_sdw}/extensions/sd-webui-agent-scheduler/task_scheduler.sqlite3:rw
         - ${host_sdw}/cache.json:${cont_sdw}/cache.json:rw
         - ${host_sdw}/config.json:${cont_sdw}/config.json:rw
         - ${host_sdw}/ui-config:${cont_sdw}/ui-config:rw
@@ -155,7 +159,7 @@ dockerBuildConfig:
       portMappings:
         STABLE_TALKER_PORT: 7868
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
@@ -185,10 +189,34 @@ dockerBuildConfig:
         WHISPER_WEBUI_PORT: 9000
         FASTER_WHISPER_WEBUI_PORT: 9001
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
         - ${host_ww}:${cont_ww}
         - ${host_ww}/models:${cont_ww}/models
         - ${host_fww}/models/faster-whisper:${cont_fww}/models/faster-whisper
+
+  kohya_ss_build:
+    <<: *defaults
+    tag: kohya_ss:rtx4090
+    dockerfile: Dockerfile.kohya_ss
+    label: KOHYA_SS_IMAGE.LABEL
+    hint: KOHYA_SS_IMAGE.HINT
+    dependencies: [conda_build, py_build]
+    endpointBuild: true
+    serviceOptions:
+      serviceName: ks
+      containerName: ks_container
+      launchDockerfile: Dockerfile.kohya_ss.launch
+      portMappings:
+        KOHYA_SS_PORT: 8888
+        TENSOBOARD_PORT_1: 6006
+        TENSOBOARD_PORT_2: 6007
+      launch:
+        test: true
+        prod: false
+      mountVolumes:
+        - ${host_base}/.cache:/root/.cache:rw
+        - ${host_sdw}/models:${cont_ks}/models:rw
+        - ${host_base}/training_session:${cont_ks}/training_session:rw
