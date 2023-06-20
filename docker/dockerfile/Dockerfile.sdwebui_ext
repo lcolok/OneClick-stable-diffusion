@@ -57,8 +57,8 @@ RUN git clone --depth=1 https://github.com/KohakuBlueleaf/a1111-sd-webui-lycoris
 # 安装depthmap2mask
 RUN cd $NOTEBOOK_DIR/stable-diffusion-webui/repositories && git clone https://github.com/isl-org/MiDaS midas && cd midas && git checkout b845b78
 
-# # 安装Civitai插件
-# RUN git clone --depth=1 https://github.com/civitai/sd_civitai_extension
+# 安装Civitai插件
+RUN git clone --depth=1 https://github.com/civitai/sd_civitai_extension
 
 # # 安装 SD-CN-Animation 拓展
 # RUN git clone --depth=1 https://github.com/volotat/SD-CN-Animation
@@ -114,6 +114,21 @@ RUN git clone --depth=1 https://github.com/butaixianran/Stable-Diffusion-Webui-C
 
 # 安装 sd-webui-agent-scheduler（Agent调度器）
 RUN git clone --depth=1 https://github.com/ArtVentureX/sd-webui-agent-scheduler
+
+# 安装 sd-webui-wd14-tagger（WD14标签器）
+RUN git clone --depth=1 https://github.com/toriato/stable-diffusion-webui-wd14-tagger
+
+# 安装 sd-webui-prompt-all-in-one（提示词构建辅助）
+RUN git clone --depth=1 https://github.com/Physton/sd-webui-prompt-all-in-one
+
+# 安装 sd-webui-stablesr（稳定的SR）
+RUN git clone --depth=1 https://github.com/pkuliyi2015/sd-webui-stablesr
+
+# 安装 multi-diffusion-upscaler-for-automatic1111（多种方法的Upscaler）
+RUN git clone --depth=1 https://github.com/pkuliyi2015/multidiffusion-upscaler-for-automatic1111
+
+# 安装 sd-webui-inpaint-anything（运用SAM算法来进行局部重绘的SD插件工具）
+RUN git clone --depth=1 https://github.com/Uminosachi/sd-webui-inpaint-anything
 
 # 进行一次安装，以便将插件的依赖安装到容器中
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui

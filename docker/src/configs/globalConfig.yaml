@@ -6,6 +6,8 @@ defaults: &defaults
 templateVariables:
   # 基础路径
   host_base: /mnt/flies/AI_research/Stable_Diffusion
+  # 容器中的基础路径
+  cont_base: /home
   # 宿主中的Stable Diffusion WebUI文件夹路径
   host_sdw: ${host_base}/stable-diffusion-webui-master
   # 容器中的Stable Diffusion WebUI文件夹路径
@@ -85,10 +87,12 @@ dockerBuildConfig:
         - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth
         - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth
         - ${host_sdw}/extensions/sd-webui-agent-scheduler/task_scheduler.sqlite3:${cont_sdw}/extensions/sd-webui-agent-scheduler/task_scheduler.sqlite3:rw
+        - ${host_sdw}/extensions/sd-webui-stablesr/models:${cont_sdw}/extensions/sd-webui-stablesr/models:rw
         - ${host_sdw}/cache.json:${cont_sdw}/cache.json:rw
         - ${host_sdw}/config.json:${cont_sdw}/config.json:rw
         - ${host_sdw}/ui-config:${cont_sdw}/ui-config:rw
         - /home/lco/GitHub/OneClick-stable-diffusion/configs/wildcards_lib:${cont_sdw}/extensions/stable-diffusion-webui-wildcards/wildcards:ro
+        - /mnt/Projects/AI/Fine_tune/LoRA:${cont_base}/training_session:rw
 
   lama_cleaner_build:
     <<: *defaults
@@ -218,5 +222,29 @@ dockerBuildConfig:
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache:rw
-        - ${host_sdw}/models:${cont_ks}/models:rw
-        - ${host_base}/training_session:${cont_ks}/training_session:rw
+        - ${host_sdw}/models:${cont_base}/models:rw
+        - /mnt/Projects/AI/Fine_tune/LoRA:${cont_base}/training_session:rw
+ 
+  rerender_build:
+    <<: *defaults
+    tag: rerender:rtx4090
+    dockerfile: Dockerfile.rerender
+    label: RERENDER_IMAGE.LABEL
+    hint: RERENDER_IMAGE.HINT
+    dependencies: [conda_build, py_build]
+    endpointBuild: true
+    serviceOptions:
+      serviceName: rr
+      containerName: rr_container
+      launchDockerfile: Dockerfile.rerender.launch
+      portMappings:
+        RERENDER_PORT: 8888
+        TENSOBOARD_PORT_1: 6006
+        TENSOBOARD_PORT_2: 6007
+      launch:
+        test: false
+        prod: false
+      mountVolumes:
+        - ${host_base}/.cache:/root/.cache:rw
+        - ${host_sdw}/models:${cont_base}/models:rw
+        - /mnt/Projects/AI/Fine_tune/LoRA:${cont_base}/training_session:rw

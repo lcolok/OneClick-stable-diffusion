@@ -1,0 +1,10 @@
+FROM rerender:rtx4090
+
+# ENV KOHYA_SS_PORT=${KOHYA_SS_PORT}
+
+# 复制启动脚本到容器中
+COPY /context/scripts/*.sh /scripts/
+RUN chmod +x /scripts/*.sh
+
+# 启动
+ENTRYPOINT /scripts/run_rerender.sh
