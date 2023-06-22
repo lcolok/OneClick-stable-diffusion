@@ -137,14 +137,16 @@ dockerBuildConfig:
       portMappings:
         COMFYUI_PORT: 8188
       launch:
-        test: false
+        test: true
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
         - ${host_sdw}/models/Stable-diffusion:${cont_cui}/models/checkpoints
+        - ${host_sdw}/embeddings:${cont_cui}/models/embeddings
         - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_cui}/models/controlnet
         - ${host_sdw}/models/Lora:${cont_cui}/models/loras
         - ${host_sdw}/models/VAE:${cont_cui}/models/vae
+        - ${host_cui}/output:${cont_cui}/output
         - ${host_cui}/models:${cont_cui}/models
         - ${host_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
 
@@ -163,7 +165,7 @@ dockerBuildConfig:
       portMappings:
         STABLE_TALKER_PORT: 7868
       launch:
-        test: false
+        test: true
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
