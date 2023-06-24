@@ -195,7 +195,7 @@ dockerBuildConfig:
         WHISPER_WEBUI_PORT: 9000
         FASTER_WHISPER_WEBUI_PORT: 9001
       launch:
-        test: false
+        test: true
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache

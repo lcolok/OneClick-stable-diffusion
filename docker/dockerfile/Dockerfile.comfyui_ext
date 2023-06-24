@@ -11,7 +11,11 @@ RUN git clone https://github.com/Fannovel16/comfy_controlnet_preprocessors
 RUN cd comfy_controlnet_preprocessors && \
     conda activate py3.10.6 && \
     python -m pip install ftfy && \
-    python -m pip install -r requirements.txt
+    python -m pip install -r requirements.txt && \
+    cd ../;
+    
+# 创建新的 config.yaml 文件并替换原有的文件
+RUN echo -e "annotator_ckpts_path: \"./ckpts\"\nskip_v1: False" > comfy_controlnet_preprocessors/config.yaml
 
 # RUN cd comfy_controlnet_preprocessors && conda activate py3.10.6 && python install.py
 
