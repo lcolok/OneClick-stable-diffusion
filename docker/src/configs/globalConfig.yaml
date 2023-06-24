@@ -250,3 +250,23 @@ dockerBuildConfig:
         - ${host_base}/.cache:/root/.cache:rw
         - ${host_sdw}/models:${cont_base}/models:rw
         - /mnt/Projects/AI/Fine_tune/LoRA:${cont_base}/training_session:rw
+
+  auto_undercoat_build:
+    <<: *defaults
+    tag: auto_undercoat:rtx4090
+    dockerfile: Dockerfile.auto_undercoat
+    label: AUTO_UNDERCOAT_IMAGE.LABEL
+    hint: AUTO_UNDERCOAT_IMAGE.HINT
+    dependencies: [conda_build, py_build]
+    endpointBuild: true
+    serviceOptions:
+      serviceName: au
+      containerName: au_container
+      launchDockerfile: Dockerfile.auto_undercoat.launch
+      portMappings:
+        AUTO_UNDERCOAT_PORT: 9999
+      launch:
+        test: false
+        prod: false
+      mountVolumes:
+        - ${host_base}/.cache:/root/.cache:rw

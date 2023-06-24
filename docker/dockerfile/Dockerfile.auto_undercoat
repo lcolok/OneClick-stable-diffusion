@@ -1,0 +1,25 @@
+FROM py:3.10.6-torch2.0.0
+
+ENV NOTEBOOK_DIR /home
+
+WORKDIR $NOTEBOOK_DIR
+
+# 设置默认 shell 为 bash，并使用“-i”选项启动shell
+SHELL ["/bin/bash", "-c", "-i"]
+
+RUN git clone https://github.com/mattyamonaca/auto_undercoat;
+
+RUN cd auto_undercoat && \
+    conda activate py3.10.6 && \
+    pip install -r requirements.txt && \
+    cd /
+
+RUN conda activate py3.10.6 && \
+    pip install packbits
+
+RUN codecs_file="/root/miniconda/envs/py3.10.6/lib/python3.10/site-packages/pytoshop/codecs.py" && \
+    backup_file="${codecs_file}.bak" && \
+    cp "${codecs_file}" "${backup_file}" && \
+    sed -i 's/from \. import packbits/import packbits/g' "${codecs_file}"
+
+RUN echo "Modification complete. pytoshop should now work correctly."
