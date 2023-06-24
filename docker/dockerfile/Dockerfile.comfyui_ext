@@ -13,9 +13,9 @@ RUN cd comfy_controlnet_preprocessors && \
     python -m pip install ftfy && \
     python -m pip install -r requirements.txt && \
     cd ../;
-    
+
 # 创建新的 config.yaml 文件并替换原有的文件
-RUN echo -e "annotator_ckpts_path: \"./ckpts\"\nskip_v1: False" > comfy_controlnet_preprocessors/config.yaml
+RUN echo -e "annotator_ckpts_path: \"./custom_nodes/comfy_controlnet_preprocessors/ckpts\"\nskip_v1: False" > comfy_controlnet_preprocessors/config.yaml
 
 # RUN cd comfy_controlnet_preprocessors && conda activate py3.10.6 && python install.py
 
@@ -23,3 +23,8 @@ RUN git clone https://github.com/WASasquatch/was-node-suite-comfyui
 RUN cd was-node-suite-comfyui && \
     conda activate py3.10.6 && \
     python -m pip install -r requirements.txt
+
+# 在 was-node-suite-comfyui 中创建 repos 文件夹并克隆 BLIP-Python 仓库，以便在 comfyui 中可以调用 BLIP Model Loader 和 BLIP Analyze Image 节点
+RUN cd was-node-suite-comfyui && \
+    mkdir repos && \
+    git clone --depth=1 https://github.com/WASasquatch/BLIP-Python;
