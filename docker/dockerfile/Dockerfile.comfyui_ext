@@ -29,6 +29,7 @@ RUN cd was-node-suite-comfyui && \
     mkdir repos && \
     cd repos && \
     git clone --depth=1 https://github.com/WASasquatch/BLIP-Python && \
+    mv BLIP-Python BLIP && \
     cd /;
 
 RUN git clone --depth=1 https://github.com/pythongosssss/ComfyUI-Custom-Scripts;

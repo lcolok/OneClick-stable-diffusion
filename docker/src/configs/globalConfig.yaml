@@ -146,6 +146,7 @@ dockerBuildConfig:
         - ${host_sdw}/extensions/sd-webui-controlnet/models:${cont_cui}/models/controlnet
         - ${host_sdw}/models/Lora:${cont_cui}/models/loras
         - ${host_sdw}/models/VAE:${cont_cui}/models/vae
+        - ${host_cui}/input:${cont_cui}/input
         - ${host_cui}/output:${cont_cui}/output
         - ${host_cui}/models:${cont_cui}/models
         - ${host_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
