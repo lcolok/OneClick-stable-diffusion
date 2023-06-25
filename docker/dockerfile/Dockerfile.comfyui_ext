@@ -27,4 +27,26 @@ RUN cd was-node-suite-comfyui && \
 # 在 was-node-suite-comfyui 中创建 repos 文件夹并克隆 BLIP-Python 仓库，以便在 comfyui 中可以调用 BLIP Model Loader 和 BLIP Analyze Image 节点
 RUN cd was-node-suite-comfyui && \
     mkdir repos && \
-    git clone --depth=1 https://github.com/WASasquatch/BLIP-Python;
+    cd repos && \
+    git clone --depth=1 https://github.com/WASasquatch/BLIP-Python && \
+    cd /;
+
+RUN git clone --depth=1 https://github.com/pythongosssss/ComfyUI-Custom-Scripts;
+
+RUN git clone --depth=1 https://github.com/xXAdonesXx/NodeGPT && \
+    cd NodeGPT && \
+    mv Textnode.py ../ && \
+    cd /;
+
+RUN git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Impact-Pack
+
+# 使用 sed 命令将 download_url 的几行代码替换为 pass, 以避免在安装时下载文件
+RUN cd ComfyUI-Impact-Pack && \
+    sed -i 's/download_url("https:\/\/huggingface.co\/dustysys\/ddetailer\/resolve\/main\/mmdet\/bbox\/mmdet_anime-face_yolov3.pth", bbox_path)/pass/g' ./install.py && \
+    sed -i 's/download_url("https:\/\/raw.githubusercontent.com\/Bing-su\/dddetailer\/master\/config\/mmdet_anime-face_yolov3.py", bbox_path)/pass/g' ./install.py && \
+    sed -i 's/download_url("https:\/\/dl.fbaipublicfiles.com\/segment_anything\/sam_vit_b_01ec64.pth", sam_path)/pass/g' ./install.py
+
+RUN cd ComfyUI-Impact-Pack && \
+    conda activate py3.10.6 && \
+    python install.py && \
+    cd /;

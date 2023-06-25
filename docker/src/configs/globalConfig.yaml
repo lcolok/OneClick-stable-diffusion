@@ -109,7 +109,7 @@ dockerBuildConfig:
       portMappings:
         LAMA_CLEANER_PORT: 8080
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
@@ -195,7 +195,7 @@ dockerBuildConfig:
         WHISPER_WEBUI_PORT: 9000
         FASTER_WHISPER_WEBUI_PORT: 9001
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
@@ -220,7 +220,7 @@ dockerBuildConfig:
         TENSOBOARD_PORT_1: 6006
         TENSOBOARD_PORT_2: 6007
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache:rw
