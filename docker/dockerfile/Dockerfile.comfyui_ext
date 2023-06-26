@@ -51,3 +51,7 @@ RUN cd ComfyUI-Impact-Pack && \
     conda activate py3.10.6 && \
     python install.py && \
     cd /;
+
+# RUN git clone --depth=1 https://github.com/ssitu/ComfyUI_NestedNodeBuilder;
+
+RUN git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Workflow-Component;
