@@ -52,8 +52,19 @@ RUN cd ComfyUI-Impact-Pack && \
     python install.py && \
     cd /;
 
-# RUN git clone --depth=1 https://github.com/ssitu/ComfyUI_NestedNodeBuilder;
+RUN git clone --depth=1 https://github.com/ssitu/ComfyUI_NestedNodeBuilder;
 
 RUN git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Workflow-Component;
 
 RUN git clone --depth=1 https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes
+
+# 安装必要的软件包
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+    
+# 下载Loopback节点并解压文件
+RUN wget https://civitai.com/api/download/models/32123 -O models.zip \
+    && unzip models.zip \
+    && rm models.zip
