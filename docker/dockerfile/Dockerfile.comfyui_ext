@@ -55,6 +55,7 @@ RUN cd ComfyUI-Impact-Pack && \
 RUN git clone --depth=1 https://github.com/ssitu/ComfyUI_NestedNodeBuilder;
 
 RUN git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Workflow-Component;
+RUN git clone --depth=1 https://github.com/BlenderNeko/ComfyUI_TiledKSampler;
 RUN cd ComfyUI-Workflow-Component && \
     cd components && \
     git clone --depth=1 https://github.com/lcolok/logic_workflow && \
