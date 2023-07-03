@@ -150,6 +150,9 @@ dockerBuildConfig:
         - ${host_cui}/output:${cont_cui}/output
         - ${host_cui}/models:${cont_cui}/models
         - ${host_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
+        - /home/lco/GitHub/ComfyUI-LogicAI:${cont_cui}/custom_nodes/ComfyUI-LogicAI
+        # - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth:${cont_cui}/models/groundingdino/weights/groundingdino_swinb_cogcoor.pth
+        # - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth:${cont_cui}/models/groundingdino/weights/groundingdino_swint_ogc.pth
 
   stable_talker_build:
     <<: *defaults
@@ -166,7 +169,7 @@ dockerBuildConfig:
       portMappings:
         STABLE_TALKER_PORT: 7868
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
@@ -221,7 +224,7 @@ dockerBuildConfig:
         TENSOBOARD_PORT_1: 6006
         TENSOBOARD_PORT_2: 6007
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache:rw

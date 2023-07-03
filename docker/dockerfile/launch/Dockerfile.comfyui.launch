@@ -7,4 +7,4 @@ COPY /context/scripts/*.sh /scripts/
 RUN chmod +x /scripts/*.sh
 
 # 启动
-ENTRYPOINT /scripts/run_comfyui.sh
+# ENTRYPOINT /scripts/run_comfyui.sh

@@ -34,10 +34,11 @@ RUN cd was-node-suite-comfyui && \
 
 RUN git clone --depth=1 https://github.com/pythongosssss/ComfyUI-Custom-Scripts;
 
-RUN git clone --depth=1 https://github.com/xXAdonesXx/NodeGPT && \
-    cd NodeGPT && \
-    mv Textnode.py ../ && \
-    cd /;
+# RUN git clone --depth=1 https://github.com/xXAdonesXx/NodeGPT && \
+#     cd NodeGPT && \
+#     mv Textnode.py ../ && \
+#     cd ../ && \
+#     rm -rf NodeGPT;
 
 RUN git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Impact-Pack
 
@@ -51,7 +52,7 @@ RUN cd ComfyUI-Impact-Pack && \
     conda activate py3.10.6 && \
     python install.py && \
     cd /;
-
+    
 RUN git clone --depth=1 https://github.com/ssitu/ComfyUI_NestedNodeBuilder;
 
 RUN git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Workflow-Component;
@@ -73,3 +74,32 @@ RUN apt-get update && apt-get install -y \
 RUN wget https://civitai.com/api/download/models/32123 -O models.zip \
     && unzip models.zip \
     && rm models.zip
+
+# RUN wget https://github.com/canisminor1990/kitchen-comfyui/releases/download/v1.0.0/web.zip
+# # 解压 web.zip 文件并替换目标文件夹
+# # RUN rm -rf $NOTEBOOK_DIR/ComfyUI/web && mkdir $NOTEBOOK_DIR/ComfyUI/web
+# RUN unzip -o web.zip -d $NOTEBOOK_DIR/ComfyUI/web && rm web.zip
+
+# 下载grounddino项目并手动编译
+RUN cd $NOTEBOOK_DIR && git clone --depth=1 https://github.com/IDEA-Research/GroundingDINO.git;
+ENV TORCH_CUDA_ARCH_LIST="6.0;6.1;7.0;7.5;8.0;8.6+PTX;8.9;9.0"
+RUN cd $NOTEBOOK_DIR/GroundingDINO/ && python -m pip install . && cd /;
+
+# 安装 grounddino 依赖
+# RUN pip install groundingdino-py
+
+# RUN git clone https://github.com/lcolok/ComfyUI-LogicAI
+
+RUN apt update && apt install -y curl tree
+# 安装 VS Code（code-server）
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+# 安装 VS Code 扩展
+RUN code-server --install-extension ms-python.black-formatter
+RUN code-server --install-extension ms-python.python
+RUN code-server --install-extension GitHub.copilot-nightly
+
+
+# 因为此自定义插件加载所需耗时太长，为了方便开发调试，临时删除 comfy_controlnet_preprocessors
+RUN rm -rf comfy_controlnet_preprocessors
+RUN mkdir comfy_controlnet_preprocessors
+RUN touch comfy_controlnet_preprocessors/__init__.py
