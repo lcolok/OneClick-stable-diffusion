@@ -7,10 +7,13 @@ ENV NOTEBOOK_DIR /home
 SHELL ["/bin/bash", "-c", "-i"]
 
 RUN cd $NOTEBOOK_DIR && \
-    git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
-    cd stable-diffusion-webui && \
-    git checkout baf6946 && \
-    cd /;
+    git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
+
+# RUN cd $NOTEBOOK_DIR && \
+#     git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
+#     cd stable-diffusion-webui && \
+#     git checkout baf6946 && \
+#     cd /;
 
 RUN cd $NOTEBOOK_DIR/stable-diffusion-webui && \
     conda activate py3.10.6 && \

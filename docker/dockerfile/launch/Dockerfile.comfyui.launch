@@ -6,5 +6,10 @@ ENV COMFYUI_PORT=${COMFYUI_PORT}
 COPY /context/scripts/*.sh /scripts/
 RUN chmod +x /scripts/*.sh
 
+# 快速启动方式
+COPY /context/scripts/*.sh /
+RUN cp /run_comfyui.sh /cui.sh
+RUN chmod +x /*.sh
+
 # 启动
 # ENTRYPOINT /scripts/run_comfyui.sh

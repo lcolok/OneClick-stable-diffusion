@@ -134,6 +134,9 @@ RUN git clone --depth=1 https://github.com/Uminosachi/sd-webui-inpaint-anything
 RUN python -m pip install salesforce-lavis
 RUN git clone --depth=1 https://github.com/Tps-F/sd-webui-blip2
 
+# 安装模型转换器 sd-webui-model-converter
+RUN git clone --depth=1 https://github.com/Akegarasu/sd-webui-model-converter
+
 # 进行一次安装，以便将插件的依赖安装到容器中
 WORKDIR $NOTEBOOK_DIR/stable-diffusion-webui
 ENV COMMANDLINE_ARGS --skip-torch-cuda-test

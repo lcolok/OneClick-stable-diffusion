@@ -72,7 +72,7 @@ dockerBuildConfig:
         JUPYTER_PORT: 33333
         SDWEBUI_PORT: 7860
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache:rw
@@ -151,6 +151,7 @@ dockerBuildConfig:
         - ${host_cui}/models:${cont_cui}/models
         - ${host_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
         - /home/lco/GitHub/ComfyUI-LogicAI:${cont_cui}/custom_nodes/ComfyUI-LogicAI
+        - /home/lco/GitHub/ComfyUI-Impact-Pack:${cont_cui}/custom_nodes/ComfyUI-Impact-Pack
         # - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth:${cont_cui}/models/groundingdino/weights/groundingdino_swinb_cogcoor.pth
         # - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth:${cont_cui}/models/groundingdino/weights/groundingdino_swint_ogc.pth
 
@@ -169,7 +170,7 @@ dockerBuildConfig:
       portMappings:
         STABLE_TALKER_PORT: 7868
       launch:
-        test: false
+        test: true
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache
