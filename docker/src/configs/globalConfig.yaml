@@ -72,7 +72,7 @@ dockerBuildConfig:
         JUPYTER_PORT: 33333
         SDWEBUI_PORT: 7860
       launch:
-        test: false
+        test: true
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache:rw
@@ -88,6 +88,7 @@ dockerBuildConfig:
         - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth:${cont_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth
         - ${host_sdw}/extensions/sd-webui-agent-scheduler/task_scheduler.sqlite3:${cont_sdw}/extensions/sd-webui-agent-scheduler/task_scheduler.sqlite3:rw
         - ${host_sdw}/extensions/sd-webui-stablesr/models:${cont_sdw}/extensions/sd-webui-stablesr/models:rw
+        - ${host_sdw}/extensions/sd-webui-prompt-free-diffusion/models:${cont_sdw}/extensions/sd-webui-prompt-free-diffusion/models:rw
         - ${host_sdw}/cache.json:${cont_sdw}/cache.json:rw
         - ${host_sdw}/config.json:${cont_sdw}/config.json:rw
         - ${host_sdw}/ui-config:${cont_sdw}/ui-config:rw
@@ -152,6 +153,7 @@ dockerBuildConfig:
         - ${host_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts:${cont_cui}/custom_nodes/comfy_controlnet_preprocessors/ckpts
         - /home/lco/GitHub/ComfyUI-LogicAI:${cont_cui}/custom_nodes/ComfyUI-LogicAI
         - /home/lco/GitHub/ComfyUI-Impact-Pack:${cont_cui}/custom_nodes/ComfyUI-Impact-Pack
+        # - /home/lco/GitHub/ComfyUI-Workflow-Component:${cont_cui}/custom_nodes/ComfyUI-Workflow-Component
         # - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swinb_cogcoor.pth:${cont_cui}/models/groundingdino/weights/groundingdino_swinb_cogcoor.pth
         # - ${host_sdw}/extensions/sd-webui-segment-anything/models/grounding-dino/groundingdino_swint_ogc.pth:${cont_cui}/models/groundingdino/weights/groundingdino_swint_ogc.pth
 
@@ -170,7 +172,7 @@ dockerBuildConfig:
       portMappings:
         STABLE_TALKER_PORT: 7868
       launch:
-        test: true
+        test: false
         prod: false
       mountVolumes:
         - ${host_base}/.cache:/root/.cache

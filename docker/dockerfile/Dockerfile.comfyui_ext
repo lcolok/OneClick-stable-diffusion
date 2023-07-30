@@ -97,6 +97,19 @@ RUN wget https://civitai.com/api/download/models/32123 -O models.zip \
     && unzip models.zip \
     && rm models.zip
 
+# RUN git clone --depth=1 https://github.com/ltdrdata/ComfyUI-Manager
+
+# RUN git clone --depth=1 https://github.com/bmad4ever/ComfyUI-Bmad-DirtyUndoRedo
+
+# RUN git clone --depth=1 https://github.com/LucianoCirino/efficiency-nodes-comfyui
+
+# RUN git clone --depth=1 https://github.com/BlenderNeko/ComfyUI_SeeCoder
+
+# # IntToText节点：将输入的整数转换为字符串形式。
+# # SeedWithText节点：生成随机种子，并返回种子的整数值、字符串形式以及带有前缀的组合字符串。
+# # SaveImage节点：用于保存输入的图像到指定目录，并返回保存的结果，包括文件名、子目录和类型信息。
+# RUN wget -O alkemann.py https://gist.github.com/alkemann/7361b8eb966f29c8238fd323409efb68/raw/alkemann.py
+
 # RUN wget https://github.com/canisminor1990/kitchen-comfyui/releases/download/v1.0.0/web.zip
 # # 解压 web.zip 文件并替换目标文件夹
 # # RUN rm -rf $NOTEBOOK_DIR/ComfyUI/web && mkdir $NOTEBOOK_DIR/ComfyUI/web

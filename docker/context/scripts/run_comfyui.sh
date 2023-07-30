@@ -6,6 +6,9 @@ eval "$(conda shell.bash hook)"
 # 切换到主程序目录
 cd $NOTEBOOK_DIR/ComfyUI
 
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+
 # 快速启动,但是前提是已经安装了依赖,否则无法正常启动,需要进一步调试
 conda activate py3.10.6 &&
     python main.py --enable-cors-header --port ${COMFYUI_PORT} --listen --dont-upcast-attention --highvram --use-pytorch-cross-attention
